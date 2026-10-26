@@ -1,0 +1,64 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # JDK and Gradle versions come from gradle.properties, so bumping Minecraft never needs a CI edit.
+      - name: Read targets from gradle.properties
+        id: props
+        shell: bash
+        run: |
+          echo "java=$(grep -E '^java_version=' gradle.properties | cut -d= -f2 | tr -d '\r')" >> "$GITHUB_OUTPUT"
+          echo "gradle=$(grep -E '^gradle_version=' gradle.properties | cut -d= -f2 | tr -d '\r')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ steps.props.outputs.java }}
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ steps.props.outputs.gradle }}
+
+      - name: Build
+        shell: bash
+        run: gradle build --stacktrace --console=plain 2>&1 | tee build.log
+
+      - name: Summarize problems (paste this to Claude)
+        if: failure()
+        shell: bash
+        run: |
+          {
+            echo '### Build failed - first problems'
+            echo '```'
+            grep -E "error:|FAILURE|What went wrong|Could not (resolve|find|get)|Execution failed|Plugin .* not found" build.log | head -60 || true
+            echo '```'
+            echo 'Paste the block above, or download the `build-log` artifact, and send it to Claude.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: ignore
+
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: jar
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-dev.jar
