@@ -1,0 +1,29 @@
+{
+  "claude_immersive_portals.config.title": "Immersive Portals (Claude port) - Options",
+  "claude_immersive_portals.config.done": "Done",
+  "claude_immersive_portals.config.on": "ON",
+  "claude_immersive_portals.config.off": "OFF",
+
+  "claude_immersive_portals.config.enabled": "Portal rendering: %s",
+  "claude_immersive_portals.config.enabled.tip": "Master switch. When off, portals behave like plain teleporters.",
+  "claude_immersive_portals.config.max_layers": "Portal-in-portal depth: %s",
+  "claude_immersive_portals.config.max_layers.tip": "How many portals can be seen through each other. Higher looks better and costs much more GPU time.",
+  "claude_immersive_portals.config.render_limit": "Portals per frame: %s",
+  "claude_immersive_portals.config.render_limit.tip": "Upper bound on portals drawn each frame.",
+  "claude_immersive_portals.config.render_mode": "Render mode: %s",
+  "claude_immersive_portals.config.render_mode.tip": "AUTO picks the best mode for your setup. COMPATIBILITY trades quality for fewer conflicts with other rendering mods.",
+  "claude_immersive_portals.config.shader_compat": "Shader pack support: %s",
+  "claude_immersive_portals.config.shader_compat.tip": "Iris integration. AUTO enables it whenever a shader pack is active.",
+  "claude_immersive_portals.config.dh_compat": "Distant Horizons: %s",
+  "claude_immersive_portals.config.dh_compat.tip": "Load and show the destination dimension's distant terrain through portals (needs Distant Horizons).",
+  "claude_immersive_portals.config.dh_radius": "Remote LOD radius: %s",
+  "claude_immersive_portals.config.dh_radius.tip": "How far (in chunks) distant terrain is loaded for the other side of a portal.",
+  "claude_immersive_portals.config.debug_overlay": "Debug overlay: %s",
+  "claude_immersive_portals.config.debug_overlay.tip": "Show portal counts and render timings.",
+
+  "claude_immersive_portals.config.value.auto": "Auto",
+  "claude_immersive_portals.config.value.normal": "Normal",
+  "claude_immersive_portals.config.value.compatibility": "Compatibility",
+  "claude_immersive_portals.config.value.on": "On",
+  "claude_immersive_portals.config.value.off": "Off"
+}

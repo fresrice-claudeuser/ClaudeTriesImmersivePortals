@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        maven { name = 'Fabric'; url = 'https://maven.fabricmc.net/' }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    // Both Loom plugin ids are version-pinned here from gradle.properties.
+    // Which one is *applied* is decided by the single `id` line in build.gradle
+    // (tools/bump_mc.py rewrites it).
+    plugins {
+        id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+        id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    }
+}
+
+rootProject.name = 'claude-immersive-portals'

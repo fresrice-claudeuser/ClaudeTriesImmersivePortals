@@ -1,0 +1,97 @@
+// ============================================================================
+//  Claude's Immersive Portals port - build script
+//
+//  Everything version-specific comes from gradle.properties. The one thing a
+//  properties file cannot change is the Loom plugin id below, so
+//  tools/bump_mc.py rewrites that single line when you change Minecraft version.
+// ============================================================================
+plugins {
+    id 'java'
+    // BUMP-MARKER (Loom plugin id):
+    //   net.fabricmc.fabric-loom-remap -> Minecraft 1.21.11 and older (obfuscated; remaps to intermediary)
+    //   net.fabricmc.fabric-loom       -> Minecraft 26.1 and newer   (unobfuscated; no remapping)
+    id 'net.fabricmc.fabric-loom-remap'
+}
+
+def obfuscated = project.minecraft_obfuscated.toBoolean()
+def javaRelease = project.java_version.toInteger()
+
+// Dependency configuration names differ between remapping and non-remapping Loom.
+def cfgImplementation = obfuscated ? 'modImplementation' : 'implementation'
+def cfgCompileOnly    = obfuscated ? 'modCompileOnly'    : 'compileOnly'
+def cfgLocalRuntime   = obfuscated ? 'modLocalRuntime'   : 'localRuntime'
+
+version = "${project.mod_version}+mc${project.minecraft_version}"
+group = project.maven_group
+base { archivesName = project.archives_base_name }
+
+repositories {
+    maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/releases/'
+        content { includeGroup 'com.terraformersmc' }
+    }
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // Source is written against Mojang names from day one, so 1.21.11 -> 26.1 needs no rename pass.
+    if (obfuscated) {
+        mappings loom.officialMojangMappings()
+    }
+
+    add(cfgImplementation, "net.fabricmc:fabric-loader:${project.fabric_loader_version}")
+    add(cfgImplementation, "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
+
+    // Mod Menu: compile against its API, optional at runtime (see fabric.mod.json "recommends").
+    add(cfgCompileOnly, "com.terraformersmc:modmenu:${project.modmenu_version}")
+    add(cfgLocalRuntime, "com.terraformersmc:modmenu:${project.modmenu_version}")
+
+    // Dev-only: lets ./gradlew runClient exercise the Iris + Sodium path. Not shipped.
+    if (project.dev_runtime.toBoolean()) {
+        add(cfgLocalRuntime, "maven.modrinth:sodium:${project.sodium_version}")
+        add(cfgLocalRuntime, "maven.modrinth:iris:${project.iris_version}")
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(javaRelease)
+    targetCompatibility = JavaVersion.toVersion(javaRelease)
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = javaRelease
+}
+
+processResources {
+    def expansions = [
+        mod_id               : project.mod_id,
+        mod_name             : project.mod_name,
+        version              : project.version,
+        minecraft_dependency : project.minecraft_dependency,
+        java_version         : project.java_version,
+        fabric_loader_version: project.fabric_loader_version,
+    ]
+    inputs.properties(expansions)
+    filesMatching('fabric.mod.json') {
+        expand(expansions)
+    }
+}
+
+jar {
+    from('LICENSE')
+}
+
+// ./gradlew mcInfo  -> shows what the build is currently targeting.
+tasks.register('mcInfo') {
+    doLast {
+        println "Minecraft ${project.minecraft_version} (preset ${project.mc_preset}) | obfuscated=${obfuscated} | " +
+                "Java ${project.java_version} | Fabric API ${project.fabric_api_version} | Loom ${project.loom_version}"
+    }
+}
