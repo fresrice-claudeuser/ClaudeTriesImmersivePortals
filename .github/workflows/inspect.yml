@@ -1,0 +1,54 @@
+name: inspect
+
+# Asks the real Minecraft 1.21.11 jar what classes look like (javap), so porting is driven by facts.
+# Run it from the Actions tab: inspect -> Run workflow, then download the "inspect" artifact (inspect.txt).
+on:
+  workflow_dispatch:
+    inputs:
+      classes:
+        description: 'Class names, space-separated. Bare (ServerLevel), fully qualified, or ~text to search class names'
+        required: true
+        default: ResourceKey CompoundTag MinecraftServer ServerLevel ServerPlayer WorldBorder BorderChangeListener ChunkMap ServerChunkCache CommandSourceStack PlayerList WorldData ServerLevelData ~LoadListener ~ProgressListener ~Permission
+      members:
+        description: 'Optional regex: only print members matching it (empty = print everything)'
+        required: false
+        default: 'location|identifier|keySet|getAllKeys|getString|createLevels|ServerLevel\(|teleportTo|spawn|ermission|hasWork|removeTicketsOnClosing|pollTask|applySettings|addListener|Listener|levels|executor|storageSource|waitUntilNextTick|server;|size\(|BorderChange'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read targets from gradle.properties
+        id: props
+        shell: bash
+        run: |
+          echo "java=$(grep -E '^java_version=' gradle.properties | cut -d= -f2 | tr -d '\r')" >> "$GITHUB_OUTPUT"
+          echo "gradle=$(grep -E '^gradle_version=' gradle.properties | cut -d= -f2 | tr -d '\r')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ steps.props.outputs.java }}
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ steps.props.outputs.gradle }}
+
+      - name: Inspect
+        shell: bash
+        env:
+          CLASSES: ${{ inputs.classes }}
+          MEMBERS: ${{ inputs.members }}
+        run: gradle -q inspect -PinspectClasses="$CLASSES" -PinspectMembers="$MEMBERS" 2>&1 | tee inspect.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: inspect
+          path: inspect.txt
+          if-no-files-found: ignore
