@@ -17,6 +17,10 @@ RULES = [
      r"\bnet\.minecraft\.resources\.ResourceLocation\b", "net.minecraft.resources.Identifier"),
     ("1.21.11", "ResourceLocation was renamed Identifier",
      r"\bResourceLocation\b", "Identifier"),
+    ("1.21.11", "ResourceKey.location() was renamed identifier() (verified with `inspect`; every .location() in DimLib was a ResourceKey)",
+     r"\.location\(\)", ".identifier()"),
+    ("1.21.5", "CompoundTag.getAllKeys() was replaced by keySet() (verified with `inspect`)",
+     r"\.getAllKeys\(\)", ".keySet()"),
 ]
 
 

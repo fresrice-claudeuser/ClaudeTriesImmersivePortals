@@ -1,0 +1,39 @@
+# Requests for the `inspect` workflow (Actions -> inspect -> Run workflow). One per line; '#' = comment.
+# Forms:  Name | Name:memberRegex | ~textInClassName | Name@src:methodRegex (decompiled source)
+# This file overrides the workflow's "classes" box, so you never have to type anything.
+
+# ---- Wave 1 (DimLib): still-open compile errors -------------------------------------------------------------
+# World border: DelegateBorderChangeListener is gone, WorldBorder is now a SavedData, ServerLevelData.getWorldBorder is gone
+WorldBorder
+net.minecraft.world.level.border.WorldBorder$Settings
+net.minecraft.server.MinecraftServer@src:createLevels
+net.minecraft.world.level.Level@src:getWorldBorder
+net.minecraft.server.level.ServerLevel@src:getWorldBorder
+net.minecraft.server.players.PlayerList@src:addWorldborderListener
+# Spawn position: getSharedSpawnPos() is gone, ServerLevel.getRespawnData() replaces it
+net.minecraft.world.level.storage.LevelData$RespawnData
+# Command permissions: CommandSourceStack.hasPermission(int) is gone
+~Permission
+Commands:ermission|LEVEL_
+CommandSourceStack:ermission
+# Chunk shutdown: ServerChunkCache.removeTicketsOnClosing() is gone
+ServerChunkCache
+net.minecraft.server.level.ServerChunkCache@src:close
+net.minecraft.server.level.ServerLevel@src:close
+net.minecraft.server.MinecraftServer@src:stopServer
+# Entity.getServer / level()
+Entity:getServer|level\(
+
+# ---- Wave 1 (DimLib): mixin targets (compile cannot check these; a wrong name crashes at game start) --------
+MappedRegistry
+WorldDimensions
+PrimaryLevelData:Lifecycle|worldGenSettings
+ClientboundChangeDifficultyPacket
+PlayerList:placeNewPlayer|server
+BackupConfirmScreen
+Minecraft:updateLevelInEngines
+ClientPacketListener:levels
+MinecraftServer:isStopped|isDedicatedServer|waitUntilNextTick|levelKeys|getLevel|getWorldData|registryAccess|overworld|saveAllChunks
+WorldData
+DerivedLevelData
+ServerLevelData

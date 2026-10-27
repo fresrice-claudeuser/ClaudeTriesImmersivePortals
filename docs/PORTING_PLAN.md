@@ -41,7 +41,7 @@ Each wave has a **gate**. Compile-green is never a gate on its own (mixins fail 
 3. **Fix** - send `build.log` (the `build-log` artifact) to Claude. Claude reads only the failing upstream files, and returns fixes as new files under `overlays/` plus new rules for `port_codemods.py` where a rename repeats.
 4. Repeat until green, then run the wave's gate.
 
-**Ground truth instead of memory:** Actions -> `inspect` runs `javap` on the exact Minecraft jar the mod compiles against and returns the real members of any class (bare name, fully qualified, or `~text` to search class names). Overlay files only take effect when `import-wave` is run again.
+**Ground truth instead of memory:** Actions -> `inspect` runs `javap` on the exact Minecraft jar the mod compiles against and returns the real members of any class (bare name, fully qualified, or `~text` to search class names). Requests live in `inspect-request.txt` (Claude edits it; you just run the workflow): `Name`, `Name:memberRegex`, `~text`, or `Name@src:methodRegex` for decompiled source. Fixes come in three layers, applied by `import-wave` in this order: `overlays/` (whole-file replacements), `tools/port_codemods.py` (mechanical renames), `tools/port_patches.py` (exact-text edits that fail loudly if upstream text differs). Overlay and patch files only take effect when `import-wave` is run again.
 
 ## 4. Waves
 
