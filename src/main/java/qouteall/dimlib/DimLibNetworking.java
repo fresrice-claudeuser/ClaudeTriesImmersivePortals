@@ -61,15 +61,15 @@ public class DimLibNetworking {
                 Identifier dimTypeId = dimensionTypes.getKey(dimType);
                 
                 if (dimTypeId == null) {
-                    LOGGER.error("Cannot find dimension type for {}", dimId.location());
+                    LOGGER.error("Cannot find dimension type for {}", dimId.identifier());
                     LOGGER.error(
                         "Registered dimension types {}", dimensionTypes.keySet()
                     );
-                    dimTypeId = BuiltinDimensionTypes.OVERWORLD.location();
+                    dimTypeId = BuiltinDimensionTypes.OVERWORLD.identifier();
                 }
                 
                 dimIdToDimTypeId.putString(
-                    dimId.location().toString(),
+                    dimId.identifier().toString(),
                     dimTypeId.toString()
                 );
             }
@@ -83,12 +83,12 @@ public class DimLibNetworking {
             ImmutableMap.Builder<ResourceKey<Level>, ResourceKey<DimensionType>> builder =
                 new ImmutableMap.Builder<>();
             
-            for (String key : tag.getAllKeys()) {
+            for (String key : tag.keySet()) {
                 ResourceKey<Level> dimId = ResourceKey.create(
                     Registries.DIMENSION,
                     Identifier.parse(key)
                 );
-                String dimTypeId = tag.getString(key);
+                String dimTypeId = tag.getStringOr(key, "");
                 ResourceKey<DimensionType> dimType = ResourceKey.create(
                     Registries.DIMENSION_TYPE,
                     Identifier.parse(dimTypeId)
@@ -108,7 +108,7 @@ public class DimLibNetworking {
             
             LOGGER.info(
                 "Client received dimension info\n{}",
-                String.join("\n", dimIdToTypeIdTag.getAllKeys())
+                String.join("\n", dimIdToTypeIdTag.keySet())
             );
             
             var dimIdToDimType = this.toMap();
@@ -144,3 +144,4 @@ public class DimLibNetworking {
         );
     }
 }
+// [tools/port_patches.py: patches applied]

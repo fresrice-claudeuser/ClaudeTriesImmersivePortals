@@ -5,7 +5,10 @@ import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
+import net.minecraft.server.MinecraftServer;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,6 +16,10 @@ import qouteall.dimlib.DimLibNetworking;
 
 @Mixin(PlayerList.class)
 public class MixinPlayerList {
+    @Shadow
+    @Final
+    private MinecraftServer server;
+
     // send it right after login packet
     @Inject(
         method = "placeNewPlayer",
@@ -29,8 +36,9 @@ public class MixinPlayerList {
     ) {
         player.connection.send(
             ServerPlayNetworking.createS2CPacket(
-                DimLibNetworking.DimSyncPacket.createPacket(player.server)
+                DimLibNetworking.DimSyncPacket.createPacket(this.server)
             )
         );
     }
 }
+// [tools/port_patches.py: patches applied]

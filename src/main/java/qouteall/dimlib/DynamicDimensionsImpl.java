@@ -18,7 +18,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.progress.ChunkProgressListener;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.BiomeManager;
@@ -58,7 +57,7 @@ public class DynamicDimensionsImpl {
         Identifier dimensionId,
         LevelStem levelStem
     ) {
-        /**{@link MinecraftServer#createLevels(ChunkProgressListener)}*/
+        /**{@link MinecraftServer#createLevels()}*/
         
         ResourceKey<Level> dimensionResourceKey = ResourceKey.create(
             Registries.DIMENSION, dimensionId
@@ -93,7 +92,6 @@ public class DynamicDimensionsImpl {
             derivedLevelData,
             dimensionResourceKey,
             levelStem,
-            new DummyProgressListener(),
             false, // isDebug
             obfuscatedSeed,
             ImmutableList.of(),
@@ -148,7 +146,7 @@ public class DynamicDimensionsImpl {
         
         Validate.isTrue(server.isRunning(), "Server is not running");
         
-        LOGGER.info("Started Removing Dimension {}", dimension.location());
+        LOGGER.info("Started Removing Dimension {}", dimension.identifier());
         
         ((IMinecraftServer) server).dimlib_addTask(() -> {
             DimensionAPI.SERVER_PRE_REMOVE_DIMENSION_EVENT.invoker().accept(world);
@@ -215,9 +213,9 @@ public class DynamicDimensionsImpl {
             // force remove it from registry, so it will not be saved into level.dat
             Registry<LevelStem> levelStemRegistry = server.registryAccess()
                 .lookupOrThrow(Registries.LEVEL_STEM);
-            ((IMappedRegistry) levelStemRegistry).dimlib_forceRemove(dimension.location());
+            ((IMappedRegistry) levelStemRegistry).dimlib_forceRemove(dimension.identifier());
             
-            LOGGER.info("Removed Dimension {}", dimension.location());
+            LOGGER.info("Removed Dimension {}", dimension.identifier());
             
             Packet<ClientCommonPacketListener> dimSyncPacket = ServerPlayNetworking.createS2CPacket(
                 DimLibNetworking.DimSyncPacket.createPacket(server)
@@ -267,33 +265,12 @@ public class DynamicDimensionsImpl {
             player.sendSystemMessage(
                 Component.literal(
                     "Teleported to spawn pos because dimension %s had been removed"
-                        .formatted(world.dimension().location())
+                        .formatted(world.dimension().identifier())
                 )
             );
         }
     }
     
-    private static class DummyProgressListener implements ChunkProgressListener {
-        
-        @Override
-        public void updateSpawnPos(ChunkPos center) {
-        
-        }
-        
-        @Override
-        public void onStatusChange(ChunkPos chunkPosition, @Nullable ChunkStatus newStatus) {
-        
-        }
-        
-        @Override
-        public void start() {
-        
-        }
-        
-        @Override
-        public void stop() {
-        
-        }
-    }
     
 }
+// [tools/port_patches.py: patches applied]

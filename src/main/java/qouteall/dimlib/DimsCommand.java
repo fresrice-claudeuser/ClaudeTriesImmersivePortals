@@ -97,7 +97,7 @@ public class DimsCommand {
                     context.getSource().sendSuccess(() -> Component.literal(
                         ("Dynamically removed dimension %s . Its world file is not yet deleted. " +
                             "Note: if the datapack config for that dimension exists, the dimension will be re-added after server restart.")
-                            .formatted(dimension.dimension().location())
+                            .formatted(dimension.dimension().identifier())
                     ), true);
                     
                     return 0;
@@ -112,7 +112,7 @@ public class DimsCommand {
                 MutableComponent text = Component.literal(
                     server.levelKeys()
                         .stream()
-                        .map(k -> k.location().toString())
+                        .map(k -> k.identifier().toString())
                         .sorted()
                         .collect(Collectors.joining("\n"))
                 );
@@ -131,7 +131,7 @@ public class DimsCommand {
                     MappedRegistry<LevelStem> dimensionRegistry =
                         DimensionImpl.getDimensionRegistry(world.getServer());
                     
-                    LevelStem levelStem = dimensionRegistry.getValue(world.dimension().location());
+                    LevelStem levelStem = dimensionRegistry.getValue(world.dimension().identifier());
                     
                     if (levelStem == null) {
                         context.getSource().sendFailure(
