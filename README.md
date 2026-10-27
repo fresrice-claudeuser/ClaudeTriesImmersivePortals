@@ -23,6 +23,10 @@ seamless teleportation) to **Minecraft 1.21.11 on Fabric**.
 3. Optional, one click: **Actions -> import-upstream -> Run workflow**. Pulls a reference copy of upstream into `upstream/`
    and writes `docs/upstream-inventory.md` (no local tools needed; this is the Windows-friendly route).
 
+## How the port proceeds
+
+Upstream code is copied in verbatim by **Actions -> import-wave**, then fixed against real compile errors. Hand fixes live in `overlays/` so they survive re-imports. Details: [docs/PORTING_PLAN.md](docs/PORTING_PLAN.md).
+
 ## Running it locally
 
 Needs a JDK matching `java_version` in `gradle.properties` (21 now, 25 for 26.x).

@@ -8,7 +8,8 @@ Checked on 2026-10-26. Numbers and availability drift; re-verify before relying 
 |---|---|
 | No official 1.21.11 build exists. Upstream `iPortalTeam/ImmersivePortalsMod` was **archived 2026-04-21**; its newest code (`1.21` branch, v6.0.6) targets **MC 1.21.1** (Fabric API 0.109, Sodium 0.6.0, Iris 1.8.0). Its `build.gradle` uses **Mojang mappings + Parchment** (`loom.layered`), *not* Yarn - the `yarn_mappings` property in `gradle.properties` is an unused leftover **(verified by reading build.gradle through the GitHub connector)** | A source port across ten Minecraft versions. **No Yarn->Mojang migration is needed**: names, mixin targets and the access widener are already Mojang-named |
 | An upstream discussion calls a 1.21.4/1.21.5 port "very difficult" because rendering was rewritten, and another user asks for 1.21.11 | The rendering rewrite is the wall (Wave 4) |
-| Upstream depends on **DimLib** (`v1.1.0-mc1.21.1`). DimLib has published builds only for 1.21.1 and 1.20.4 | DimLib has to be ported too (Wave 1) |
+| Upstream depends on **DimLib** (`iPortalTeam/DimLib`, **CC0**, ~9 top-level files + 9 mixins). Its branches: `1.20.4`, `1.20.6`, `1.21`, **`1.21.3`**. Only `1.21.1` and `1.20.4` were released | DimLib is ported in Wave 1 from its `1.21.3` branch. Its one config option (MidnightConfig) is replaced by a plain static flag |
+| Immersive Portals has a **`1.21.3` branch**: five "WIP update to 1.21.3" commits (30 Nov - 6 Dec 2024) on top of 6.0.6, Sodium on, **Iris off** (`enable_iris=false`), then nothing. `master` is 2020 history | Unfinished, so not a base to trust, but a useful reference for the first (1.21.2) rendering changes |
 | Upstream layout **(verified)**: one Gradle project; packages `qouteall.imm_ptl.core`, `qouteall.imm_ptl.peripheral`, `qouteall.q_misc_util`. Dependencies: Cloth Config (bundled), **DimLib** from `iPortalTeam/DimLib` via JitPack (bundled), Mod Menu / Sodium / Iris / GravityChanger optional | Port scope = core + peripheral + q_misc_util + DimLib. Cloth Config is replaced by our vanilla options screen |
 | **Iris 1.10.x on 1.21.11 hard-requires Sodium 0.8.x** (Fabric's resolver says so in user crash reports) | "Works with Iris" implies "works with Sodium 0.8" first (Wave 5) |
 | Upstream's own Iris support patches Iris internals ("hack the shader rendering process") and lists limits: translucents in front of portals, TAA, motion blur, portal overlay, cross-portal entity rendering | Upstream's Iris glue is pinned to Iris 1.8.0 and cannot be copied. It must be re-derived against Iris 1.10.x |
@@ -33,13 +34,20 @@ I cannot compile or run Minecraft in my environment, and I cannot see your repo.
 
 Each wave has a **gate**. Compile-green is never a gate on its own (mixins fail at load, not compile).
 
+## 3b. How a wave runs
+
+1. **Import** - Actions -> `import-wave` -> Run workflow (copies upstream files verbatim; defaults are pre-filled for the current wave). It applies `overlays/` (our hand fixes, which survive re-imports), runs `tools/port_codemods.py` (mechanical renames proven by real builds), commits, and starts `build`.
+2. **Build** - the `build` workflow compiles against real Minecraft 1.21.11; every error is listed (`-Xmaxerrs 2000`).
+3. **Fix** - send `build.log` (the `build-log` artifact) to Claude. Claude reads only the failing upstream files, and returns fixes as new files under `overlays/` plus new rules for `port_codemods.py` where a rename repeats.
+4. Repeat until green, then run the wave's gate.
+
 ## 4. Waves
 
 | # | Wave | Gate (all must pass) |
 |---|---|---|
 | 0 | **Scaffold** - build, CI, bump tool, config, Mod Menu screen, compat probes. *This commit.* | CI green; `runClient` shows the options screen; log prints detected Sodium/Iris/DH versions |
 | 0.5 | **Import.** Bring upstream files in (GitHub connector, `tools/import_upstream.sh`, or the `import-upstream` workflow) as a pristine reference in `upstream/`, then move packages into `src/` wave by wave. **No mapping migration** (already Mojang names). Replace Cloth Config usage with the existing options screen. | Inventory reviewed; `upstream/` committed |
-| 1 | **Base libraries**: upstream's misc utils + a DimLib port (dynamic dimensions) | Dedicated server boots to `Done`; log has no `FAILED during APPLY` / `was not applied` |
+| 1 | **DimLib** (dynamic dimensions), imported from DimLib `1.21.3` by the `import-wave` workflow, MidnightConfig replaced via `overlays/`, then fixed against real 1.21.11 compile errors. (`q_misc_util` moves to Wave 2 with the core it is entangled with.) | Build green; dedicated server boots to `Done`; log has no `FAILED during APPLY` / `was not applied` |
 | 2 | **Portal core, no rendering**: portal entity, networking payloads, teleportation, chunk tracking, commands. Render hooks stubbed | Server boot; client connects; `/portal` commands work; teleport through a portal works (no see-through) |
 | 3 | **Client multi-world**: remote `ClientLevel`s and per-dimension level renderers | Client logs remote-chunk sync; no leaks on dimension change |
 | 4 | **Vanilla portal rendering** (no Sodium, no shaders): off-screen view render, front clipping, culling, portal-in-portal. **The wall.** | See through a portal in vanilla; depth 2 works; F3+T and resizing do not crash |

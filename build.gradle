@@ -67,6 +67,8 @@ java {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = javaRelease
+    // Show every error: the port is driven by compile errors, and javac stops at 100 by default.
+    options.compilerArgs.addAll(['-Xmaxerrs', '2000'])
 }
 
 processResources {
