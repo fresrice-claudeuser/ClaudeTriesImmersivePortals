@@ -1,0 +1,67 @@
+name: import-wave
+
+# Copies files from another repo into this one VERBATIM (same relative paths), applies overlays/ and the
+# mechanical renames in tools/port_codemods.py, commits, and starts the build.
+# Run it from the Actions tab: import-wave -> Run workflow. The defaults are the DimLib import (Wave 1).
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: Source repo (owner/name)
+        required: true
+        default: iPortalTeam/DimLib
+      ref:
+        description: Branch or tag to copy from
+        required: true
+        default: '1.21.3'
+      paths:
+        description: Space-separated paths to copy (the same path is used in this repo)
+        required: true
+        default: src/main/java/qouteall/dimlib src/main/resources/dimlib.mixins.json
+      delete:
+        description: Space-separated paths to delete afterwards (optional)
+        required: false
+        default: src/main/java/qouteall/dimlib/config/DimLibModmenuIntegration.java
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import
+        shell: bash
+        env:
+          SRC_REPO: ${{ inputs.repo }}
+          SRC_REF: ${{ inputs.ref }}
+          PATHS: ${{ inputs.paths }}
+          DELETE: ${{ inputs.delete }}
+        run: bash tools/import_wave.sh
+
+      - name: Commit and push
+        shell: bash
+        env:
+          SRC_REPO: ${{ inputs.repo }}
+          SRC_REF: ${{ inputs.ref }}
+          PATHS: ${{ inputs.paths }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -m "Import ${SRC_REPO}@${SRC_REF} (${SRC_SHA}): ${PATHS}"
+          git push
+
+      # Pushes made with the built-in token do not start other workflows, so start the build explicitly.
+      - name: Start the build
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build.yml --ref "${{ github.ref_name }}"
