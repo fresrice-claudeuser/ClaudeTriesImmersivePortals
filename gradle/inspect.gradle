@@ -1,0 +1,87 @@
+// Used by the "inspect" workflow:
+//     gradle -q inspect -PinspectClasses="ServerLevel ResourceKey ~Permission" [-PinspectMembers=regex]
+//
+// Asks the REAL Minecraft jar (the exact one the mod compiles against) what a class looks like, so the
+// port is driven by facts instead of memory.
+//   ServerLevel                     bare name: found in any package
+//   net.minecraft.server.level.ServerLevel   fully qualified name
+//   ~Permission                     lists every net.minecraft / com.mojang class whose name contains the text
+//   -PinspectMembers=location|identifier   optional regex: only matching members (plus class headers) are printed
+// This file is only applied when -PinspectClasses is given (see build.gradle), so it can never break a normal build.
+tasks.register('inspect') {
+    doLast {
+        def requested = project.property('inspectClasses').toString().trim().split(/\s+/).findAll { it }
+        def memberText = (project.findProperty('inspectMembers') ?: '').toString().trim()
+        def memberPattern = memberText ? java.util.regex.Pattern.compile('(?i)' + memberText) : null
+
+        def jars = sourceSets.main.compileClasspath.files.findAll { it.isFile() && it.name.endsWith('.jar') }
+        def classpath = sourceSets.main.compileClasspath.asPath
+        def javap = new File(System.getProperty('java.home'), 'bin/javap').absolutePath
+
+        // dotted class name -> jar it lives in
+        def index = [:]
+        jars.each { jar ->
+            def zip = new java.util.zip.ZipFile(jar)
+            try {
+                java.util.Collections.list(zip.entries()).each { entry ->
+                    def entryName = entry.name
+                    if (entryName.endsWith('.class')) {
+                        index[entryName.substring(0, entryName.length() - 6).replace('/', '.')] = jar.name
+                    }
+                }
+            } finally {
+                zip.close()
+            }
+        }
+        println "# indexed ${index.size()} classes from ${jars.size()} jars"
+
+        requested.each { name ->
+            println ''
+            println "################ ${name}"
+
+            if (name.startsWith('~')) {
+                def needle = name.substring(1).toLowerCase()
+                def hits = index.keySet().findAll {
+                    it.toLowerCase().contains(needle) && (it.startsWith('net.minecraft.') || it.startsWith('com.mojang.'))
+                }.sort()
+                println(hits ? hits.join('\n') : '(no class name contains that text)')
+                return
+            }
+
+            def matches
+            if (name.contains('.')) {
+                matches = index.containsKey(name) ? [name] : []
+            } else {
+                matches = index.keySet().findAll { it.endsWith('.' + name) && !it.contains('$') }.sort()
+            }
+            if (matches.isEmpty()) {
+                println '(class not found in the Minecraft / Fabric jars)'
+                return
+            }
+            if (matches.size() > 8) {
+                println "# ${matches.size()} matches, showing the first 8: use a fully qualified name to pick one"
+                matches = matches.take(8)
+            }
+
+            matches.each { fq ->
+                println "=== ${fq}   [${index[fq]}]"
+                def inner = index.keySet().findAll { it.startsWith(fq + '$') }.sort()
+                if (inner) {
+                    println '# inner classes: ' + inner.collect { it.substring(fq.length()) }.join(' ')
+                }
+                def process = new ProcessBuilder(javap, '-p', '-cp', classpath, fq).redirectErrorStream(true).start()
+                def text = process.inputStream.getText('UTF-8')
+                process.waitFor()
+                text.readLines().each { line ->
+                    if (line.startsWith('Compiled from')) {
+                        return
+                    }
+                    boolean isHeader = line.endsWith('{') || line.equals('}')
+                    if (memberPattern == null || isHeader || memberPattern.matcher(line).find()) {
+                        println line
+                    }
+                }
+            }
+        }
+    }
+}

@@ -25,7 +25,7 @@ seamless teleportation) to **Minecraft 1.21.11 on Fabric**.
 
 ## How the port proceeds
 
-Upstream code is copied in verbatim by **Actions -> import-wave**, then fixed against real compile errors. Hand fixes live in `overlays/` so they survive re-imports. Details: [docs/PORTING_PLAN.md](docs/PORTING_PLAN.md).
+Upstream code is copied in verbatim by **Actions -> import-wave**, then fixed against real compile errors. Hand fixes live in `overlays/` so they survive re-imports (re-run import-wave after changing them). **Actions -> inspect** shows the real members of any Minecraft class. Details: [docs/PORTING_PLAN.md](docs/PORTING_PLAN.md).
 
 ## Running it locally
 

@@ -90,6 +90,11 @@ jar {
     from('LICENSE')
 }
 
+// ./gradlew inspect -PinspectClasses="ServerLevel"  (see gradle/inspect.gradle and the "inspect" workflow)
+if (project.hasProperty('inspectClasses')) {
+    apply from: "${rootDir}/gradle/inspect.gradle"
+}
+
 // ./gradlew mcInfo  -> shows what the build is currently targeting.
 tasks.register('mcInfo') {
     doLast {
