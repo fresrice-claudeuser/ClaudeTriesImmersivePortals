@@ -59,22 +59,29 @@ PATCHES = [
     dict(file=D + "mixin/common/MixinPlayerList.java", kind="text",
          old="createPacket(player.server)", new="createPacket(this.server)"),
 
-    # --- 1.21.11 world border: WorldBorder is SavedData now; BorderChangeListener.DelegateBorderChangeListener and
-    #     ServerLevelData.getWorldBorder() are gone (build error + inspect). Mirroring the overworld border into
-    #     dynamic dimensions is dropped for now; see docs/PORTING_PLAN.md "Known behaviour differences". ---
+    # --- 1.21.11 world border: every dimension has its own WorldBorder (SavedData); BorderChangeListener.Delegate...
+    #     and ServerLevelData.getWorldBorder() are gone. Verified against decompiled MinecraftServer.createLevels:
+    #     per level it only calls setAbsoluteMaxSize(...) and PlayerList.addWorldborderListener(level). ---
     dict(file=D + "DynamicDimensionsImpl.java", kind="regex",
          old=r"[ \t]*worldBorder\.addListener\(\s*new BorderChangeListener\.DelegateBorderChangeListener\(newWorld\.getWorldBorder\(\)\)\s*\);[ \t]*\n",
-         new="        // 1.21.11: DelegateBorderChangeListener is gone; the overworld border is not mirrored into the new dimension here.\n"),
+         new=("        // 1.21.11: world borders are per dimension now (SavedData). Like vanilla createLevels, a new level only needs its\n"
+              "        // absolute max size set and the packet-broadcasting listener registered; nothing is mirrored from the overworld.\n"
+              "        newWorld.getWorldBorder().setAbsoluteMaxSize(server.getAbsoluteMaxWorldSize());\n"
+              "        server.getPlayerList().addWorldborderListener(newWorld);\n")),
     dict(file=D + "DynamicDimensionsImpl.java", kind="text",
          old="        worldBorder.applySettings(serverLevelData.getWorldBorder());\n", new=""),
     dict(file=D + "DynamicDimensionsImpl.java", kind="regex",
          old=r"[ \t]*for \(ServerLevel serverWorld : server\.getAllLevels\(\)\) \{.*?DelegateBorderChangeListener\(serverWorld\.getWorldBorder\(\)\)\s*\);\s*\}\s*\}[ \t]*\n",
          new="        // 1.21.11: no per-dimension border listeners to rebuild (DelegateBorderChangeListener is gone).\n"),
 
-    # --- ServerChunkCache.removeTicketsOnClosing() is gone. The wait loop still drains chunk tasks; the later
-    #     saveAllChunks + world.close() save whatever is still loaded. Re-check against MinecraftServer.stopServer. ---
     dict(file=D + "DynamicDimensionsImpl.java", kind="text",
-         old="                    world.getChunkSource().removeTicketsOnClosing();\n", new=""),
+         old="            resetWorldBorderListener(server);\n", new=""),
+
+    # --- ServerChunkCache.removeTicketsOnClosing() was renamed deactivateTicketsOnClosing(); vanilla stopServer uses it.
+    #     It matters: ChunkMap.hasWork() includes distanceManager.hasTickets(), so without this call the wait loop
+    #     below always runs into its 15 second timeout. ---
+    dict(file=D + "DynamicDimensionsImpl.java", kind="text",
+         old="world.getChunkSource().removeTicketsOnClosing();", new="world.getChunkSource().deactivateTicketsOnClosing();"),
 
     # --- ServerLevel.getSharedSpawnPos() is gone; ServerLevel.getRespawnData() returns LevelData.RespawnData.
     #     `.pos()` is a guess that the next build confirms or rejects. ---
@@ -90,7 +97,10 @@ PATCHES = [
     # --- Mixin targets that would crash at game start: Minecraft.updateLevelInEngines now has two overloads ---
     dict(file=D + "mixin/client/MixinMinecraft.java", kind="text",
          old='method = "updateLevelInEngines"',
-         new='method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;)V"'),
+         new='method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;Z)V"'),
+    dict(file=D + "mixin/client/MixinMinecraft.java", kind="text",
+         old="onClientReset(ClientLevel level, CallbackInfo ci)",
+         new="onClientReset(ClientLevel level, boolean clearSounds, CallbackInfo ci)"),
 ]
 
 

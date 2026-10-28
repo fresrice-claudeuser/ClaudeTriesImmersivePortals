@@ -49,7 +49,7 @@ Each wave has a **gate**. Compile-green is never a gate on its own (mixins fail 
 |---|---|---|
 | 0 | **Scaffold** - build, CI, bump tool, config, Mod Menu screen, compat probes. *This commit.* | CI green; `runClient` shows the options screen; log prints detected Sodium/Iris/DH versions |
 | 0.5 | **Import.** Bring upstream files in (GitHub connector, `tools/import_upstream.sh`, or the `import-upstream` workflow) as a pristine reference in `upstream/`, then move packages into `src/` wave by wave. **No mapping migration** (already Mojang names). Replace Cloth Config usage with the existing options screen. | Inventory reviewed; `upstream/` committed |
-| 1 | **DimLib** (dynamic dimensions), imported from DimLib `1.21.3` by the `import-wave` workflow, MidnightConfig replaced via `overlays/`, then fixed against real 1.21.11 compile errors. (`q_misc_util` moves to Wave 2 with the core it is entangled with.) | Build green; dedicated server boots to `Done`; log has no `FAILED during APPLY` / `was not applied` |
+| 1 | **DimLib** (dynamic dimensions), imported from DimLib `1.21.3` by the `import-wave` workflow, MidnightConfig replaced via `overlays/`, then fixed against real 1.21.11 compile errors. (`q_misc_util` moves to Wave 2 with the core it is entangled with.) | Build green; **Actions -> server-boot passes** (real dedicated server reaches `Done` with no mixin/class errors) |
 | 2 | **Portal core, no rendering**: portal entity, networking payloads, teleportation, chunk tracking, commands. Render hooks stubbed | Server boot; client connects; `/portal` commands work; teleport through a portal works (no see-through) |
 | 3 | **Client multi-world**: remote `ClientLevel`s and per-dimension level renderers | Client logs remote-chunk sync; no leaks on dimension change |
 | 4 | **Vanilla portal rendering** (no Sodium, no shaders): off-screen view render, front clipping, culling, portal-in-portal. **The wall.** | See through a portal in vanilla; depth 2 works; F3+T and resizing do not crash |
@@ -62,19 +62,22 @@ Validation order inside every wave (each step catches what the previous cannot):
 boot, grepping the log for mixin APPLY failures -> real client boot (client mixins are invisible to a
 server boot) -> in-client play-through.
 
-## 4b. Known behaviour differences from upstream (Wave 1)
+## 4b. Behaviour differences from upstream (Wave 1)
 
-Things dropped or changed to get DimLib compiling on 1.21.11. Each one needs checking against the real 1.21.11 source
-(`inspect-request.txt` already asks for it) before Wave 1 is called done.
+Checked against the decompiled 1.21.11 `MinecraftServer` (via `inspect`).
 
-| Change | Why | Risk |
+| Change | Why | Status |
 |---|---|---|
-| Overworld world border is no longer mirrored into dynamic dimensions | `DelegateBorderChangeListener` and `ServerLevelData.getWorldBorder()` no longer exist; `WorldBorder` is `SavedData` now | A new dimension may get a default border instead of the overworld's |
-| `removeTicketsOnClosing()` call removed from the dimension-removal wait loop | The method no longer exists | Removal may wait longer, or save chunks later (`saveAllChunks` + `world.close()` still run) |
-| Spawn position read through `getRespawnData().pos()` | `getSharedSpawnPos()` no longer exists | `.pos()` is unverified until the next build |
-| DimLib's "don't warn again" experimental-settings choice lasts one session | MidnightConfig removed | Warning reappears next launch |
-| `/dims` commands need `LEVEL_GAMEMASTERS` | `hasPermission(int)` replaced by `Commands.hasPermission(PermissionCheck)` | None expected (same as level 2) |
-| `MixinMinecraft` hooks only the one-argument `updateLevelInEngines` | The method now has two overloads | Client cache may not clear if disconnect uses the other overload |
+| New dynamic dimensions get their own world border and the packet listener; the overworld border is **not** mirrored | In 1.21.11 every dimension has its own `WorldBorder` saved data; vanilla `createLevels` does only `setAbsoluteMaxSize` + `addWorldborderListener` per level | Matches vanilla, **done** |
+| `removeTicketsOnClosing()` -> `deactivateTicketsOnClosing()` | Renamed; `ChunkMap.hasWork()` includes `distanceManager.hasTickets()`, so omitting it would stall every removal for 15 s | Matches vanilla `stopServer`, **done** |
+| Spawn position via `getRespawnData().pos()` | `getSharedSpawnPos()` removed | Compiles and exists in the jar, **done** |
+| `/dims` commands need `LEVEL_GAMEMASTERS` | `hasPermission(int)` replaced | Same as old level 2, **done** |
+| `MixinMinecraft` hooks `updateLevelInEngines(ClientLevel, boolean)` | The one-argument overload just delegates to it | **done** |
+| `MixinBackupConfirmScreen` hooks the 6-argument constructor | The 5-argument one delegates to it | **done** |
+| DimLib's "don't warn again" choice lasts one session | MidnightConfig removed | Accepted limitation |
+
+Still unproven until the server-boot gate runs: that every DimLib mixin actually applies (`defaultRequire: 1` makes a
+bad target a hard crash at startup, never a silent skip).
 
 ## 5. Known unknowns
 

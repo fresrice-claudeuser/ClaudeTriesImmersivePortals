@@ -40,16 +40,18 @@ public class MixinBackupConfirmScreen extends Screen {
     
     /**
      * {@link WorldOpenFlows#askForBackup}
+     * The 5-argument constructor delegates to this 6-argument one, so hooking it covers both.
      */
     @SuppressWarnings("JavadocReference")
     @Inject(
         method = "<init>(Ljava/lang/Runnable;Lnet/minecraft/client/gui/screens/BackupConfirmScreen$Listener;"
-            + "Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;Z)V",
+            + "Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;"
+            + "Lnet/minecraft/network/chat/Component;Z)V",
         at = @At("RETURN")
     )
     private void onInitEnd(
         Runnable runnable, BackupConfirmScreen.Listener listener,
-        Component component, Component component2, boolean bl, CallbackInfo ci
+        Component component, Component component2, Component component3, boolean bl, CallbackInfo ci
     ) {
         dimlib_isExperimentalWarning = Objects.equals(
             component,
