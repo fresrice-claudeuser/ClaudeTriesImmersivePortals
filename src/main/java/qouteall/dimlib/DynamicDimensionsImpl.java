@@ -99,7 +99,10 @@ public class DynamicDimensionsImpl {
             overworld.getRandomSequences()
         );
         
-        // 1.21.11: DelegateBorderChangeListener is gone; the overworld border is not mirrored into the new dimension here.
+        // 1.21.11: world borders are per dimension now (SavedData). Like vanilla createLevels, a new level only needs its
+        // absolute max size set and the packet-broadcasting listener registered; nothing is mirrored from the overworld.
+        newWorld.getWorldBorder().setAbsoluteMaxSize(server.getAbsoluteMaxWorldSize());
+        server.getPlayerList().addWorldborderListener(newWorld);
         
         ((IMinecraftServer) server).dimlib_addDimensionToWorldMap(dimensionResourceKey, newWorld);
         
@@ -161,6 +164,7 @@ public class DynamicDimensionsImpl {
             
             try {
                 while (world.getChunkSource().chunkMap.hasWork()) {
+                    world.getChunkSource().deactivateTicketsOnClosing();
                     world.getChunkSource().tick(() -> true, false);
                     world.getChunkSource().pollTask();
                     server.pollTask();
@@ -204,7 +208,6 @@ public class DynamicDimensionsImpl {
                 LOGGER.error("Error when closing world", e);
             }
             
-            resetWorldBorderListener(server);
             
             // force remove it from registry, so it will not be saved into level.dat
             Registry<LevelStem> levelStemRegistry = server.registryAccess()

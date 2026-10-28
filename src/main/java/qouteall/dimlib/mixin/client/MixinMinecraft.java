@@ -10,8 +10,8 @@ import qouteall.dimlib.ClientDimensionInfo;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
-    @Inject(method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;)V", at = @At("HEAD"))
-    private void onClientReset(ClientLevel level, CallbackInfo ci) {
+    @Inject(method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;Z)V", at = @At("HEAD"))
+    private void onClientReset(ClientLevel level, boolean clearSounds, CallbackInfo ci) {
         if (level == null) {
             ClientDimensionInfo.cleanup();
         }
