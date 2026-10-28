@@ -1,0 +1,113 @@
+name: server-boot
+
+# Boots a REAL Minecraft 1.21.11 dedicated server with this mod (Loom's runServer), waits for "Done (",
+# then stops it and reports whether any mixin or class failed to load. Compile errors cannot catch that:
+# a wrong mixin target only crashes at startup. Run it from the Actions tab: server-boot -> Run workflow.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read targets from gradle.properties
+        id: props
+        shell: bash
+        run: |
+          echo "java=$(grep -E '^java_version=' gradle.properties | cut -d= -f2 | tr -d '\r')" >> "$GITHUB_OUTPUT"
+          echo "gradle=$(grep -E '^gradle_version=' gradle.properties | cut -d= -f2 | tr -d '\r')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ steps.props.outputs.java }}
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ steps.props.outputs.gradle }}
+
+      - name: Boot the server
+        shell: bash
+        run: |
+          set +e
+          STEP="${STEP:-5}"             # seconds between checks
+          BOOT_CHECKS="${BOOT_CHECKS:-480}"   # 480 x 5 s = 40 minutes
+          STOP_CHECKS="${STOP_CHECKS:-24}"    # 24 x 5 s = 2 minutes for a clean stop
+
+          mkdir -p run
+          echo "eula=true" > run/eula.txt
+          printf 'online-mode=false\nview-distance=2\nsimulation-distance=2\nspawn-protection=0\nlevel-name=ci-world\n' > run/server.properties
+
+          rm -f /tmp/server-in
+          mkfifo /tmp/server-in
+          gradle runServer --console=plain < /tmp/server-in > server.log 2>&1 &
+          GRADLE_PID=$!
+          exec 3>/tmp/server-in          # keep the write end open so we can type "stop" later
+
+          for i in $(seq 1 "$BOOT_CHECKS"); do
+            if grep -q 'Done (' server.log; then break; fi
+            if ! kill -0 "$GRADLE_PID" 2>/dev/null; then break; fi
+            sleep "$STEP"
+          done
+
+          if grep -q 'Done (' server.log; then
+            sleep "$STEP"
+            echo stop >&3
+            for i in $(seq 1 "$STOP_CHECKS"); do
+              kill -0 "$GRADLE_PID" 2>/dev/null || break
+              sleep "$STEP"
+            done
+          fi
+
+          if kill -0 "$GRADLE_PID" 2>/dev/null; then
+            echo "Server still running (stdin may not reach it); stopping it forcefully." >> server.log
+            pkill -f 'launch.knot.[K]notServer'
+            kill "$GRADLE_PID"
+            sleep 3
+          fi
+          exec 3>&-
+          exit 0
+
+      - name: Report
+        if: always()
+        shell: bash
+        run: |
+          FATAL='Mixin apply failed|InvalidInjectionException|Critical injection failure|MixinTransformerError|MixinApplyError|InvalidMixinException|Mixin transformation of .* failed|was not applied|FAILED during APPLY|NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError|ClassNotFoundException|AbstractMethodError|IncompatibleClassChangeError|Exception in thread'
+          READY=no
+          grep -q 'Done (' server.log 2>/dev/null && READY=yes
+          {
+            echo "### Server boot report"
+            echo "- Reached \"Done\": **$READY**"
+            FATAL_COUNT="$(grep -cE "$FATAL" server.log 2>/dev/null || true)"
+            echo "- Fatal-looking lines: **${FATAL_COUNT:-0}**"
+            echo ""
+            echo "#### Our mod and compat lines"
+            echo '```'
+            grep -nE "DimLib|Claude Immersive|Compat targets" server.log 2>/dev/null | head -20
+            echo '```'
+            echo "#### Fatal-looking lines (first 40)"
+            echo '```'
+            grep -nE "$FATAL" server.log 2>/dev/null | head -40
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$READY" = yes ] && ! grep -qE "$FATAL" server.log; then
+            echo "PASS: the server booted with every mixin applied."
+          else
+            echo "FAIL: see the summary and the server-log artifact."
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: server-log
+          path: |
+            server.log
+            run/logs/latest.log
+          if-no-files-found: ignore
