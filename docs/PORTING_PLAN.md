@@ -62,6 +62,20 @@ Validation order inside every wave (each step catches what the previous cannot):
 boot, grepping the log for mixin APPLY failures -> real client boot (client mixins are invisible to a
 server boot) -> in-client play-through.
 
+## 4b. Known behaviour differences from upstream (Wave 1)
+
+Things dropped or changed to get DimLib compiling on 1.21.11. Each one needs checking against the real 1.21.11 source
+(`inspect-request.txt` already asks for it) before Wave 1 is called done.
+
+| Change | Why | Risk |
+|---|---|---|
+| Overworld world border is no longer mirrored into dynamic dimensions | `DelegateBorderChangeListener` and `ServerLevelData.getWorldBorder()` no longer exist; `WorldBorder` is `SavedData` now | A new dimension may get a default border instead of the overworld's |
+| `removeTicketsOnClosing()` call removed from the dimension-removal wait loop | The method no longer exists | Removal may wait longer, or save chunks later (`saveAllChunks` + `world.close()` still run) |
+| Spawn position read through `getRespawnData().pos()` | `getSharedSpawnPos()` no longer exists | `.pos()` is unverified until the next build |
+| DimLib's "don't warn again" experimental-settings choice lasts one session | MidnightConfig removed | Warning reappears next launch |
+| `/dims` commands need `LEVEL_GAMEMASTERS` | `hasPermission(int)` replaced by `Commands.hasPermission(PermissionCheck)` | None expected (same as level 2) |
+| `MixinMinecraft` hooks only the one-argument `updateLevelInEngines` | The method now has two overloads | Client cache may not clear if disconnect uses the other overload |
+
 ## 5. Known unknowns
 
 - Exact upstream layout and size (the inventory answers this).

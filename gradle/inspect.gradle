@@ -24,7 +24,8 @@ tasks.register('inspect') {
     } else {
         project.property('inspectClasses').toString().trim().split(/\s+/).each { if (it) { entries << it } }
     }
-    String defaultMembers = (project.findProperty('inspectMembers') ?: '').toString().trim()
+    // The workflow box carries a default filter; it must not leak into a request file (entries there say their own filter).
+    String defaultMembers = requestFile.exists() ? '' : (project.findProperty('inspectMembers') ?: '').toString().trim()
     if (entries.any { it.contains('@src:') }) {
         dependsOn 'genSources'
     }
@@ -65,12 +66,29 @@ tasks.register('inspect') {
         def extractMethods = { String text, String regex ->
             List<String> lines = text.readLines()
             def pattern = java.util.regex.Pattern.compile('\\b(' + regex + ')\\s*\\(')
+            def leading = { String s ->
+                int n = 0
+                while (n < s.length() && (s[n] == ' ' || s[n] == '\t')) {
+                    n++
+                }
+                return n
+            }
+            // class members sit at the smallest indent used anywhere in the file (3 spaces, 4 spaces, or one tab)
+            int memberLevel = 0
+            lines.each { String l ->
+                if (l.trim()) {
+                    int n = leading(l)
+                    if (n > 0 && (memberLevel == 0 || n < memberLevel)) {
+                        memberLevel = n
+                    }
+                }
+            }
             List<String> blocks = []
             int i = 0
             while (i < lines.size()) {
                 String line = lines[i]
                 String trimmed = line.trim()
-                boolean memberIndent = line.startsWith('    ') && !line.startsWith('     ')
+                boolean memberIndent = memberLevel > 0 && leading(line) == memberLevel
                 boolean isDeclaration = memberIndent && !trimmed.startsWith('//') && !trimmed.startsWith('*') &&
                         !trimmed.startsWith('@') && !trimmed.startsWith('return ') && pattern.matcher(line).find()
                 if (isDeclaration) {
