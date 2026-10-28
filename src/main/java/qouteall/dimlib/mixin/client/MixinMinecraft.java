@@ -10,10 +10,11 @@ import qouteall.dimlib.ClientDimensionInfo;
 
 @Mixin(Minecraft.class)
 public class MixinMinecraft {
-    @Inject(method = "updateLevelInEngines", at = @At("HEAD"))
+    @Inject(method = "updateLevelInEngines(Lnet/minecraft/client/multiplayer/ClientLevel;)V", at = @At("HEAD"))
     private void onClientReset(ClientLevel level, CallbackInfo ci) {
         if (level == null) {
             ClientDimensionInfo.cleanup();
         }
     }
 }
+// [tools/port_patches.py: patches applied]

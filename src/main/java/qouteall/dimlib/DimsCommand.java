@@ -35,7 +35,7 @@ public class DimsCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> builder = Commands
             .literal("dims")
-            .requires(source -> source.hasPermission(2));
+            .requires(net.minecraft.commands.Commands.hasPermission(net.minecraft.commands.Commands.LEVEL_GAMEMASTERS));
         
         builder.then(Commands
             .literal("clone_dimension")
@@ -241,3 +241,4 @@ public class DimsCommand {
     }
     
 }
+// [tools/port_patches.py: patches applied]

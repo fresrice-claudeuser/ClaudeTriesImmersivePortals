@@ -99,9 +99,7 @@ public class DynamicDimensionsImpl {
             overworld.getRandomSequences()
         );
         
-        worldBorder.addListener(
-            new BorderChangeListener.DelegateBorderChangeListener(newWorld.getWorldBorder())
-        );
+        // 1.21.11: DelegateBorderChangeListener is gone; the overworld border is not mirrored into the new dimension here.
         
         ((IMinecraftServer) server).dimlib_addDimensionToWorldMap(dimensionResourceKey, newWorld);
         
@@ -119,7 +117,6 @@ public class DynamicDimensionsImpl {
         );
         ((IMappedRegistry) levelStemRegistry).dimlib_setIsFrozen(true);
         
-        worldBorder.applySettings(serverLevelData.getWorldBorder());
         
         LOGGER.info("Added Dimension {}", dimensionId);
         
@@ -164,7 +161,6 @@ public class DynamicDimensionsImpl {
             
             try {
                 while (world.getChunkSource().chunkMap.hasWork()) {
-                    world.getChunkSource().removeTicketsOnClosing();
                     world.getChunkSource().tick(() -> true, false);
                     world.getChunkSource().pollTask();
                     server.pollTask();
@@ -236,13 +232,7 @@ public class DynamicDimensionsImpl {
         List<BorderChangeListener> borderChangeListeners =
             ((IEWorldBorder) worldBorder).ip_getListeners();
         borderChangeListeners.clear();
-        for (ServerLevel serverWorld : server.getAllLevels()) {
-            if (serverWorld != overworld) {
-                worldBorder.addListener(
-                    new BorderChangeListener.DelegateBorderChangeListener(serverWorld.getWorldBorder())
-                );
-            }
-        }
+        // 1.21.11: no per-dimension border listeners to rebuild (DelegateBorderChangeListener is gone).
         server.getPlayerList().addWorldborderListener(overworld);
     }
     
@@ -253,7 +243,7 @@ public class DynamicDimensionsImpl {
         
         List<ServerPlayer> players = world.getPlayers(p -> true);
         
-        BlockPos sharedSpawnPos = overworld.getSharedSpawnPos();
+        BlockPos sharedSpawnPos = overworld.getRespawnData().pos();
         
         for (ServerPlayer player : players) {
             player.teleportTo(
