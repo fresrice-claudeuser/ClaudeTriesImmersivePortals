@@ -1,0 +1,53 @@
+name: fix-layout
+
+# One-off repair: the Wave 1d upload put four files at the repo root instead of in their folders.
+# This moves them into place (overwriting the stale copies), then starts import-wave and inspect.
+# Safe to run twice: files that are no longer at the root are skipped.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Move files into their folders
+        shell: bash
+        run: |
+          set -euo pipefail
+          move() {
+            if [ ! -f "$1" ]; then echo "not at the root, skipping: $1"; return 0; fi
+            mkdir -p "$(dirname "$2")"
+            git mv -f "$1" "$2"
+            echo "moved $1 -> $2"
+          }
+          move port_patches.py tools/port_patches.py
+          move inspect.gradle gradle/inspect.gradle
+          move PORTING_PLAN.md docs/PORTING_PLAN.md
+          move MixinBackupConfirmScreen.java overlays/src/main/java/qouteall/dimlib/mixin/client/MixinBackupConfirmScreen.java
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --cached --quiet; then
+            echo "Nothing to move."
+            exit 0
+          fi
+          git commit -m "Move Wave 1d files into their folders"
+          git push
+
+      # Pushes made with the built-in token do not start other workflows, so start them explicitly.
+      - name: Start import-wave and inspect
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run import-wave.yml --ref "${{ github.ref_name }}"
+          gh workflow run inspect.yml --ref "${{ github.ref_name }}"
