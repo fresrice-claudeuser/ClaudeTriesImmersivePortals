@@ -1,8 +1,10 @@
 name: server-boot
 
-# Boots a REAL Minecraft 1.21.11 dedicated server with this mod (Loom's runServer), waits for "Done (",
-# then stops it and reports whether any mixin or class failed to load. Compile errors cannot catch that:
-# a wrong mixin target only crashes at startup. Run it from the Actions tab: server-boot -> Run workflow.
+# Boots a REAL Minecraft 1.21.11 dedicated server with this mod (Loom's runServer) and checks two things:
+#   1. it reaches "Done (" with no mixin/class failure (a wrong mixin target only crashes at startup);
+#   2. DimLib can add a dynamic dimension, list it, remove it and list again, and the removal is quick
+#      (a removal near 15 s means the chunk-ticket shutdown is stuck).
+# Run it from the Actions tab: server-boot -> Run workflow.
 on:
   workflow_dispatch:
 
@@ -58,6 +60,26 @@ jobs:
 
           if grep -q 'Done (' server.log; then
             sleep "$STEP"
+            # --- dynamic dimension smoke test, driven through the server console ---
+            send() { echo "$1" >&3; }
+            send "say ==MARK-list-before=="
+            send "dims list"
+            send "say ==MARK-add=="
+            send "dims add_dimension ci_test:void_a void"
+            sleep "$STEP"; sleep "$STEP"
+            send "say ==MARK-list-after-add=="
+            send "dims list"
+            send "say ==MARK-remove=="
+            send "dims remove_dimension ci_test:void_a"
+            sleep "$STEP"; sleep "$STEP"
+            send "say ==MARK-list-after-remove=="
+            send "dims list"
+            send "say ==MARK-end=="
+            for i in $(seq 1 "$STOP_CHECKS"); do
+              grep -q 'MARK-end' server.log && break
+              sleep "$STEP"
+            done
+            sleep "$STEP"
             echo stop >&3
             for i in $(seq 1 "$STOP_CHECKS"); do
               kill -0 "$GRADLE_PID" 2>/dev/null || break
@@ -78,26 +100,46 @@ jobs:
         if: always()
         shell: bash
         run: |
-          FATAL='Mixin apply failed|InvalidInjectionException|Critical injection failure|MixinTransformerError|MixinApplyError|InvalidMixinException|Mixin transformation of .* failed|was not applied|FAILED during APPLY|NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError|ClassNotFoundException|AbstractMethodError|IncompatibleClassChangeError|Exception in thread'
-          READY=no
-          grep -q 'Done (' server.log 2>/dev/null && READY=yes
+          THRESH="${THRESH:-14}"   # seconds; vanilla-style chunk shutdown waits at most 15 s
+          FATAL='Mixin apply failed|InvalidInjectionException|Critical injection failure|MixinTransformerError|MixinApplyError|InvalidMixinException|Mixin transformation of .* failed|was not applied|FAILED during APPLY|NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError|ClassNotFoundException|AbstractMethodError|IncompatibleClassChangeError|Exception in thread|Server thread/ERROR|Caused by:'
+          seg() { awk -v a="$1" -v b="$2" '$0 ~ a {on=1; next} $0 ~ b {on=0} on' server.log; }
+          secs() { local h m s; IFS=: read -r h m s <<< "$1"; echo $((10#$h*3600 + 10#$m*60 + 10#$s)); }
+          stamp() { grep -m1 "$1" server.log | sed -E 's/^\[([0-9:]+)\].*/\1/'; }
+
+          READY=no; grep -q 'Done (' server.log 2>/dev/null && READY=yes
+          FATAL_COUNT="$(grep -cE "$FATAL" server.log 2>/dev/null || true)"; FATAL_COUNT="${FATAL_COUNT:-0}"
+
+          ADDED=no;   seg 'MARK-list-after-add' 'MARK-remove' | grep -q 'ci_test:void_a' && ADDED=yes
+          GONE=no;    [ -n "$(seg 'MARK-list-after-remove' 'MARK-end')" ] && ! seg 'MARK-list-after-remove' 'MARK-end' | grep -q 'ci_test:void_a' && GONE=yes
+          BEFORE_OK=no; seg 'MARK-list-before' 'MARK-add' | grep -q 'minecraft:overworld' && BEFORE_OK=yes
+
+          REMOVE_SECS=""
+          T1="$(stamp 'MARK-remove==')"; T2="$(stamp 'MARK-list-after-remove')"
+          if [ -n "$T1" ] && [ -n "$T2" ]; then REMOVE_SECS=$(( $(secs "$T2") - $(secs "$T1") )); fi
+          FAST=no; [ -n "$REMOVE_SECS" ] && [ "$REMOVE_SECS" -lt "$THRESH" ] && FAST=yes
+
           {
             echo "### Server boot report"
             echo "- Reached \"Done\": **$READY**"
-            FATAL_COUNT="$(grep -cE "$FATAL" server.log 2>/dev/null || true)"
-            echo "- Fatal-looking lines: **${FATAL_COUNT:-0}**"
+            echo "- Fatal-looking lines: **$FATAL_COUNT**"
+            echo "### Dynamic dimension test"
+            echo "- \`dims list\` worked before: **$BEFORE_OK**"
+            echo "- New dimension appeared in the list: **$ADDED**"
+            echo "- Dimension gone after removal: **$GONE**"
+            echo "- Removal took: **${REMOVE_SECS:-unknown} s** (fast = under $THRESH s: **$FAST**)"
             echo ""
             echo "#### Our mod and compat lines"
             echo '```'
-            grep -nE "DimLib|Claude Immersive|Compat targets" server.log 2>/dev/null | head -20
+            grep -nE "DimLib|Claude Immersive|Compat targets|Added Dimension|Removed Dimension|Dimension" server.log 2>/dev/null | head -30
             echo '```'
             echo "#### Fatal-looking lines (first 40)"
             echo '```'
             grep -nE "$FATAL" server.log 2>/dev/null | head -40
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          if [ "$READY" = yes ] && ! grep -qE "$FATAL" server.log; then
-            echo "PASS: the server booted with every mixin applied."
+
+          if [ "$READY" = yes ] && [ "$FATAL_COUNT" = 0 ] && [ "$BEFORE_OK" = yes ] && [ "$ADDED" = yes ] && [ "$GONE" = yes ] && [ "$FAST" = yes ]; then
+            echo "PASS: booted with every mixin applied; a dimension was added, listed, removed and gone in ${REMOVE_SECS}s."
           else
             echo "FAIL: see the summary and the server-log artifact."
             exit 1
