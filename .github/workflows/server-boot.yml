@@ -70,7 +70,7 @@ jobs:
             send "say ==MARK-list-after-add=="
             send "dims list"
             send "say ==MARK-remove=="
-            send 'dims remove_dimension "ci_test:void_a" void'
+            send 'dims remove_dimension ci_test:void_a'
             sleep "$STEP"; sleep "$STEP"
             send "say ==MARK-list-after-remove=="
             send "dims list"
