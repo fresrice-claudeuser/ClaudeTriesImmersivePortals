@@ -65,12 +65,12 @@ jobs:
             send "say ==MARK-list-before=="
             send "dims list"
             send "say ==MARK-add=="
-            send "dims add_dimension ci_test:void_a void"
+            send 'dims add_dimension "ci_test:void_a" void'
             sleep "$STEP"; sleep "$STEP"
             send "say ==MARK-list-after-add=="
             send "dims list"
             send "say ==MARK-remove=="
-            send "dims remove_dimension ci_test:void_a"
+            send 'dims remove_dimension "ci_test:void_a" void'
             sleep "$STEP"; sleep "$STEP"
             send "say ==MARK-list-after-remove=="
             send "dims list"
