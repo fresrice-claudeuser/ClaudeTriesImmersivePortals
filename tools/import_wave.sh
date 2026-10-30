@@ -7,7 +7,8 @@
 #   DELETE="src/main/java/qouteall/dimlib/config/DimLibModmenuIntegration.java" \
 #   bash tools/import_wave.sh
 #
-# Order: copy PATHS -> delete DELETE -> copy overlays/ on top -> tools/port_codemods.py -> tools/port_patches.py.
+# Order: copy PATHS -> delete DELETE -> copy overlays/ on top -> tools/port_codemods.py -> tools/port_sites.py
+#        -> tools/port_patches.py.
 # overlays/ holds our hand-made fixes (same layout as the repo root); because they are re-applied on every
 # import, re-importing upstream never wipes them out.
 set -euo pipefail
@@ -53,6 +54,10 @@ fi
 
 if [ -f tools/port_codemods.py ]; then
   python3 tools/port_codemods.py src
+fi
+
+if [ -f tools/port_sites.py ]; then
+  python3 tools/port_sites.py .
 fi
 
 if [ -f tools/port_patches.py ]; then

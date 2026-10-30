@@ -1,0 +1,2488 @@
+{
+ "generated_from": "build_1.log",
+ "files": {
+  "qouteall/imm_ptl/core/ClientWorldLoader.java": {
+   "hunks": [
+    {
+     "line": 400,
+     "old": [
+      "        CLIENT.getProfiler().push(\"create_world\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"create_world\");"
+     ]
+    },
+    {
+     "line": 481,
+     "old": [
+      "            CLIENT.getProfiler().pop();"
+     ],
+     "new": [
+      "            Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/McHelper.java": {
+   "hunks": [
+    {
+     "line": 242,
+     "old": [
+      "        assert player.getServer() != null;",
+      "        int loadDistanceOnServer = getLoadDistanceOnServer(player.getServer());"
+     ],
+     "new": [
+      "        assert player.level().getServer() != null;",
+      "        int loadDistanceOnServer = getLoadDistanceOnServer(player.level().getServer());"
+     ]
+    },
+    {
+     "line": 437,
+     "old": [
+      "        MinecraftServer server = commandSender.getServer();"
+     ],
+     "new": [
+      "        MinecraftServer server = McCompat.getServer(commandSender);"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/api/PortalAPI.java": {
+   "hunks": [
+    {
+     "line": 57,
+     "old": [
+      "        portal.setAxisW(Vec3.atLowerCornerOf(directions.getA().getNormal()));",
+      "        portal.setAxisH(Vec3.atLowerCornerOf(directions.getB().getNormal()));"
+     ],
+     "new": [
+      "        portal.setAxisW(Vec3.atLowerCornerOf(directions.getA().getUnitVec3i()));",
+      "        portal.setAxisH(Vec3.atLowerCornerOf(directions.getB().getUnitVec3i()));"
+     ]
+    },
+    {
+     "line": 186,
+     "old": [
+      "                entity.getServer(),"
+     ],
+     "new": [
+      "                McCompat.getServer(entity),"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/block_manipulation/BlockManipulationServer.java": {
+   "hunks": [
+    {
+     "line": 105,
+     "old": [
+      "        Vec3 sideVec = Vec3.atLowerCornerOf(side.getNormal());"
+     ],
+     "new": [
+      "        Vec3 sideVec = Vec3.atLowerCornerOf(side.getUnitVec3i());"
+     ]
+    },
+    {
+     "line": 149,
+     "old": [
+      "            ServerLevel world = player.server.getLevel(dimension);"
+     ],
+     "new": [
+      "            ServerLevel world = player.level().getServer().getLevel(dimension);"
+     ]
+    },
+    {
+     "line": 172,
+     "old": [
+      "            ServerLevel world = player.server.getLevel(dimension);"
+     ],
+     "new": [
+      "            ServerLevel world = player.level().getServer().getLevel(dimension);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/chunk_loading/EntitySync.java": {
+   "hunks": [
+    {
+     "line": 24,
+     "old": [
+      "        server.getProfiler().push(\"ip_entity_tracking_update\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"ip_entity_tracking_update\");"
+     ]
+    },
+    {
+     "line": 43,
+     "old": [
+      "        server.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 47,
+     "old": [
+      "        server.getProfiler().push(\"ip_entity_tracking_tick\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"ip_entity_tracking_tick\");"
+     ]
+    },
+    {
+     "line": 72,
+     "old": [
+      "        server.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/chunk_loading/ImmPtlChunkTracking.java": {
+   "hunks": [
+    {
+     "line": 59,
+     "old": [
+      "        for (ServerLevel world : oldPlayer.server.getAllLevels()) {"
+     ],
+     "new": [
+      "        for (ServerLevel world : oldPlayer.level().getServer().getAllLevels()) {"
+     ]
+    },
+    {
+     "line": 157,
+     "old": [
+      "        EntitySync.update(player.server);"
+     ],
+     "new": [
+      "        EntitySync.update(player.level().getServer());"
+     ]
+    },
+    {
+     "line": 175,
+     "old": [
+      "        MinecraftServer server = player.server;"
+     ],
+     "new": [
+      "        MinecraftServer server = player.level().getServer();"
+     ]
+    },
+    {
+     "line": 265,
+     "old": [
+      "                                    player.getServer(),"
+     ],
+     "new": [
+      "                                    player.level().getServer(),"
+     ]
+    },
+    {
+     "line": 363,
+     "old": [
+      "        server.getProfiler().push(\"portal_chunk_tracking\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"portal_chunk_tracking\");"
+     ]
+    },
+    {
+     "line": 392,
+     "old": [
+      "        server.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/chunk_loading/PlayerChunkLoading.java": {
+   "hunks": [
+    {
+     "line": 113,
+     "old": [
+      "        MinecraftServer server = serverPlayer.server;"
+     ],
+     "new": [
+      "        MinecraftServer server = serverPlayer.level().getServer();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/chunk_loading/WorldInfoSender.java": {
+   "hunks": [
+    {
+     "line": 20,
+     "old": [
+      "            server.getProfiler().push(\"portal_send_world_info\");"
+     ],
+     "new": [
+      "            Profiler.get().push(\"portal_send_world_info\");"
+     ]
+    },
+    {
+     "line": 42,
+     "old": [
+      "            server.getProfiler().pop();"
+     ],
+     "new": [
+      "            Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/collision/CollisionHelper.java": {
+   "hunks": [
+    {
+     "line": 404,
+     "old": [
+      "        world.getProfiler().push(\"update_colliding_portal\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"update_colliding_portal\");"
+     ]
+    },
+    {
+     "line": 428,
+     "old": [
+      "        world.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/collision/PortalCollisionHandler.java": {
+   "hunks": [
+    {
+     "line": 79,
+     "old": [
+      "        entity.level().getProfiler().push(\"cross_portal_collision\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"cross_portal_collision\");"
+     ]
+    },
+    {
+     "line": 87,
+     "old": [
+      "        entity.level().getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/commands/ClientDebugCommand.java": {
+   "hunks": [
+    {
+     "line": 891,
+     "old": [
+      "        player.server.execute(() -> {"
+     ],
+     "new": [
+      "        player.level().getServer().execute(() -> {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/commands/PortalCommand.java": {
+   "hunks": [
+    {
+     "line": 615,
+     "old": [
+      "                            Vec3 offset = Vec3.atLowerCornerOf(facing.getNormal()).scale(distance);"
+     ],
+     "new": [
+      "                            Vec3 offset = Vec3.atLowerCornerOf(facing.getUnitVec3i()).scale(distance);"
+     ]
+    },
+    {
+     "line": 646,
+     "old": [
+      "                            Vec3 offset = Vec3.atLowerCornerOf(facing.getNormal()).scale(distance);"
+     ],
+     "new": [
+      "                            Vec3 offset = Vec3.atLowerCornerOf(facing.getUnitVec3i()).scale(distance);"
+     ]
+    },
+    {
+     "line": 1103,
+     "old": [
+      "            IntBox outerSurface = boxArea.getSurfaceLayer(direction).getMoved(direction.getNormal());"
+     ],
+     "new": [
+      "            IntBox outerSurface = boxArea.getSurfaceLayer(direction).getMoved(direction.getUnitVec3i());"
+     ]
+    },
+    {
+     "line": 1786,
+     "old": [
+      "                                Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE).getNormal()"
+     ],
+     "new": [
+      "                                Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE).getUnitVec3i()"
+     ]
+    },
+    {
+     "line": 1862,
+     "old": [
+      "            Vec3 facingVec = Vec3.atLowerCornerOf(face.getNormal());"
+     ],
+     "new": [
+      "            Vec3 facingVec = Vec3.atLowerCornerOf(face.getUnitVec3i());"
+     ]
+    },
+    {
+     "line": 1864,
+     "old": [
+      "                Vec3 sideDirectionVec = Vec3.atLowerCornerOf(sideDirection.getNormal());"
+     ],
+     "new": [
+      "                Vec3 sideDirectionVec = Vec3.atLowerCornerOf(sideDirection.getUnitVec3i());"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mc_utils/MyNbtTextFormatter.java": {
+   "hunks": [
+    {
+     "line": 76,
+     "old": [
+      "        String string = StringTag.quoteAndEscape(element.getAsString());"
+     ],
+     "new": [
+      "        String string = StringTag.quoteAndEscape(element.value());"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mixin/client/render/MixinGameRenderer.java": {
+   "hunks": [
+    {
+     "line": 74,
+     "old": [
+      "        minecraft.getProfiler().push(\"ip_pre_total_render\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"ip_pre_total_render\");"
+     ]
+    },
+    {
+     "line": 76,
+     "old": [
+      "        minecraft.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 83,
+     "old": [
+      "        minecraft.getProfiler().push(\"ip_pre_render\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"ip_pre_render\");"
+     ]
+    },
+    {
+     "line": 96,
+     "old": [
+      "        minecraft.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 136,
+     "old": [
+      "            minecraft.getProfiler().push(\"ip_late_update_light\");"
+     ],
+     "new": [
+      "            Profiler.get().push(\"ip_late_update_light\");"
+     ]
+    },
+    {
+     "line": 138,
+     "old": [
+      "            minecraft.getProfiler().pop();"
+     ],
+     "new": [
+      "            Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/mixin/client/render/MixinLevelRenderer.java": {
+   "hunks": [
+    {
+     "line": 266,
+     "old": [
+      "                level.getProfiler().push(\"ip_terrain_setup\");"
+     ],
+     "new": [
+      "                Profiler.get().push(\"ip_terrain_setup\");"
+     ]
+    },
+    {
+     "line": 273,
+     "old": [
+      "                level.getProfiler().pop();"
+     ],
+     "new": [
+      "                Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 299,
+     "old": [
+      "                    level.getProfiler().push(\"ip_terrain_setup\");"
+     ],
+     "new": [
+      "                    Profiler.get().push(\"ip_terrain_setup\");"
+     ]
+    },
+    {
+     "line": 306,
+     "old": [
+      "                    level.getProfiler().pop();"
+     ],
+     "new": [
+      "                    Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 310,
+     "old": [
+      "                    level.getProfiler().push(\"ip_terrain_setup_debug\");"
+     ],
+     "new": [
+      "                    Profiler.get().push(\"ip_terrain_setup_debug\");"
+     ]
+    },
+    {
+     "line": 317,
+     "old": [
+      "                    level.getProfiler().pop();"
+     ],
+     "new": [
+      "                    Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/mixin/common/entity_sync/MixinChunkMap_E.java": {
+   "hunks": [
+    {
+     "line": 65,
+     "old": [
+      "        if (ServerTeleportationManager.of(entity.getServer()).isTeleporting(entity)) {"
+     ],
+     "new": [
+      "        if (ServerTeleportationManager.of(McCompat.getServer(entity)).isTeleporting(entity)) {"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/mixin/common/entity_sync/MixinTrackedEntity.java": {
+   "hunks": [
+    {
+     "line": 254,
+     "old": [
+      "            entity.getServer(),"
+     ],
+     "new": [
+      "            McCompat.getServer(entity),"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/mixin/common/other_sync/MixinPlayerList.java": {
+   "hunks": [
+    {
+     "line": 47,
+     "old": [
+      "        if (!ServerTeleportationManager.of(player.server).isFiringMyChangeDimensionEvent) {"
+     ],
+     "new": [
+      "        if (!ServerTeleportationManager.of(player.level().getServer()).isFiringMyChangeDimensionEvent) {"
+     ]
+    },
+    {
+     "line": 129,
+     "old": [
+      "                            rec.player.getServer(),"
+     ],
+     "new": [
+      "                            rec.player.level().getServer(),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mixin/common/portal_generation/MixinItemEntity_P.java": {
+   "hunks": [
+    {
+     "line": 42,
+     "old": [
+      "        this_.level().getProfiler().push(\"imm_ptl_item_tick\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"imm_ptl_item_tick\");"
+     ]
+    },
+    {
+     "line": 45,
+     "old": [
+      "            IPPerServerInfo.of(this_.getServer()).customPortalGenManager;"
+     ],
+     "new": [
+      "            IPPerServerInfo.of(McCompat.getServer(this_)).customPortalGenManager;"
+     ]
+    },
+    {
+     "line": 50,
+     "old": [
+      "        this_.level().getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat",
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/mixin/common/position_sync/MixinServerGamePacketListenerImpl.java": {
+   "hunks": [
+    {
+     "line": 135,
+     "old": [
+      "            ServerTaskList.of(player.server).addTask(() -> {"
+     ],
+     "new": [
+      "            ServerTaskList.of(player.level().getServer()).addTask(() -> {"
+     ]
+    },
+    {
+     "line": 162,
+     "old": [
+      "                ServerTeleportationManager.of(player.server).forceTeleportPlayer("
+     ],
+     "new": [
+      "                ServerTeleportationManager.of(player.level().getServer()).forceTeleportPlayer("
+     ]
+    },
+    {
+     "line": 305,
+     "old": [
+      "            ServerLevel destWorld = player.server.getLevel(ip_dimOfAwaitingPosition);"
+     ],
+     "new": [
+      "            ServerLevel destWorld = player.level().getServer().getLevel(ip_dimOfAwaitingPosition);"
+     ]
+    },
+    {
+     "line": 315,
+     "old": [
+      "            ServerTeleportationManager.of(player.server)"
+     ],
+     "new": [
+      "            ServerTeleportationManager.of(player.level().getServer())"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/network/ImmPtlNetworking.java": {
+   "hunks": [
+    {
+     "line": 78,
+     "old": [
+      "                player.server, dimensionId"
+     ],
+     "new": [
+      "                player.level().getServer(), dimensionId"
+     ]
+    },
+    {
+     "line": 81,
+     "old": [
+      "            ServerTeleportationManager.of(player.server).onPlayerTeleportedInClient("
+     ],
+     "new": [
+      "            ServerTeleportationManager.of(player.level().getServer()).onPlayerTeleportedInClient("
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/network/PacketRedirection.java": {
+   "hunks": [
+    {
+     "line": 122,
+     "old": [
+      "                    serverPlayNetworkHandler.player.server,"
+     ],
+     "new": [
+      "                    serverPlayNetworkHandler.player.level().getServer(),"
+     ]
+    },
+    {
+     "line": 181,
+     "old": [
+      "        player.connection.send(createRedirectedMessage(player.server, dimension, packet));"
+     ],
+     "new": [
+      "        player.connection.send(createRedirectedMessage(player.level().getServer(), dimension, packet));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/platform_specific/RequiemCompat.java": {
+   "hunks": [
+    {
+     "line": 91,
+     "old": [
+      "                ServerTeleportationManager.of(player.server).changeEntityDimension("
+     ],
+     "new": [
+      "                ServerTeleportationManager.of(player.level().getServer()).changeEntityDimension("
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/platform_specific/mixin/common/MixinServerPlayerEntity_MA.java": {
+   "hunks": [
+    {
+     "line": 47,
+     "old": [
+      "            IPPerServerInfo.of(player.server).customPortalGenManager;"
+     ],
+     "new": [
+      "            IPPerServerInfo.of(player.level().getServer()).customPortalGenManager;"
+     ]
+    },
+    {
+     "line": 53,
+     "old": [
+      "            ServerTaskList.of(player.server).addTask(() -> {"
+     ],
+     "new": [
+      "            ServerTaskList.of(player.level().getServer()).addTask(() -> {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/BreakableMirror.java": {
+   "hunks": [
+    {
+     "line": 49,
+     "old": [
+      "                    tag.getInt(\"boxXL\"),"
+     ],
+     "new": [
+      "                    tag.getIntOr(\"boxXL\", 0),"
+     ]
+    },
+    {
+     "line": 54,
+     "old": [
+      "                    tag.getInt(\"boxXH\"),"
+     ],
+     "new": [
+      "                    tag.getIntOr(\"boxXH\", 0),"
+     ]
+    },
+    {
+     "line": 64,
+     "old": [
+      "            blockPortalShape = BlockPortalShape.fromTag(tag.getCompound(\"blockPortalShape\"));"
+     ],
+     "new": [
+      "            blockPortalShape = BlockPortalShape.fromTag(tag.getCompoundOrEmpty(\"blockPortalShape\"));"
+     ]
+    },
+    {
+     "line": 70,
+     "old": [
+      "            unbreakable = tag.getBoolean(\"unbreakable\");"
+     ],
+     "new": [
+      "            unbreakable = tag.getBooleanOr(\"unbreakable\", false);"
+     ]
+    },
+    {
+     "line": 190,
+     "old": [
+      "                    Vec3.atLowerCornerOf(facing.getNormal()).scale(distanceToCenter)"
+     ],
+     "new": [
+      "                    Vec3.atLowerCornerOf(facing.getUnitVec3i()).scale(distanceToCenter)"
+     ]
+    },
+    {
+     "line": 204,
+     "old": [
+      "        breakableMirror.setAxisW(Vec3.atLowerCornerOf(wDirection.getNormal()));",
+      "        breakableMirror.setAxisH(Vec3.atLowerCornerOf(hDirection.getNormal()));"
+     ],
+     "new": [
+      "        breakableMirror.setAxisW(Vec3.atLowerCornerOf(wDirection.getUnitVec3i()));",
+      "        breakableMirror.setAxisH(Vec3.atLowerCornerOf(hDirection.getUnitVec3i()));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/EndPortalEntity.java": {
+   "hunks": [
+    {
+     "line": 266,
+     "old": [
+      "        MinecraftServer server = getServer();"
+     ],
+     "new": [
+      "        MinecraftServer server = McCompat.getServer(this);"
+     ]
+    },
+    {
+     "line": 345,
+     "old": [
+      "                    MinecraftServer server = getServer();"
+     ],
+     "new": [
+      "                    MinecraftServer server = McCompat.getServer(this);"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/GeometryPortalShape.java": {
+   "hunks": [
+    {
+     "line": 29,
+     "old": [
+      "                tag.getDouble(i * 6 + 0),"
+     ],
+     "new": [
+      "                tag.getDoubleOr(i * 6 + 0, 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/Portal.java": {
+   "hunks": [
+    {
+     "line": 234,
+     "old": [
+      "        width = compoundTag.getDouble(\"width\");",
+      "        height = compoundTag.getDouble(\"height\");",
+      "        thickness = compoundTag.getDouble(\"thickness\");"
+     ],
+     "new": [
+      "        width = compoundTag.getDoubleOr(\"width\", 0.0);",
+      "        height = compoundTag.getDoubleOr(\"height\", 0.0);",
+      "        thickness = compoundTag.getDoubleOr(\"thickness\", 0.0);"
+     ]
+    },
+    {
+     "line": 244,
+     "old": [
+      "            CompoundTag portalShapeTag = compoundTag.getCompound(\"portalShape\");"
+     ],
+     "new": [
+      "            CompoundTag portalShapeTag = compoundTag.getCompoundOrEmpty(\"portalShape\");"
+     ]
+    },
+    {
+     "line": 260,
+     "old": [
+      "                boolean shapeNormalized = compoundTag.getBoolean(\"shapeNormalized\");"
+     ],
+     "new": [
+      "                boolean shapeNormalized = compoundTag.getBooleanOr(\"shapeNormalized\", false);"
+     ]
+    },
+    {
+     "line": 264,
+     "old": [
+      "                        compoundTag.getList(\"specialShape\", 6)"
+     ],
+     "new": [
+      "                        compoundTag.getListOrEmpty(\"specialShape\")"
+     ]
+    },
+    {
+     "line": 269,
+     "old": [
+      "                        compoundTag.getList(\"specialShape\", 6),"
+     ],
+     "new": [
+      "                        compoundTag.getListOrEmpty(\"specialShape\"),"
+     ]
+    },
+    {
+     "line": 287,
+     "old": [
+      "            teleportable = compoundTag.getBoolean(\"teleportable\");"
+     ],
+     "new": [
+      "            teleportable = compoundTag.getBooleanOr(\"teleportable\", false);"
+     ]
+    },
+    {
+     "line": 292,
+     "old": [
+      "                compoundTag.getFloat(\"rotationB\"),"
+     ],
+     "new": [
+      "                compoundTag.getFloatOr(\"rotationB\", 0.0f),"
+     ]
+    },
+    {
+     "line": 303,
+     "old": [
+      "            interactable = compoundTag.getBoolean(\"interactable\");"
+     ],
+     "new": [
+      "            interactable = compoundTag.getBooleanOr(\"interactable\", false);"
+     ]
+    },
+    {
+     "line": 307,
+     "old": [
+      "            scaling = compoundTag.getDouble(\"scale\");"
+     ],
+     "new": [
+      "            scaling = compoundTag.getDoubleOr(\"scale\", 0.0);"
+     ]
+    },
+    {
+     "line": 310,
+     "old": [
+      "            teleportChangesScale = compoundTag.getBoolean(\"teleportChangesScale\");"
+     ],
+     "new": [
+      "            teleportChangesScale = compoundTag.getBooleanOr(\"teleportChangesScale\", false);"
+     ]
+    },
+    {
+     "line": 313,
+     "old": [
+      "            teleportChangesGravity = compoundTag.getBoolean(\"teleportChangesGravity\");"
+     ],
+     "new": [
+      "            teleportChangesGravity = compoundTag.getBooleanOr(\"teleportChangesGravity\", false);"
+     ]
+    },
+    {
+     "line": 320,
+     "old": [
+      "            portalTag = compoundTag.getString(\"portalTag\");"
+     ],
+     "new": [
+      "            portalTag = compoundTag.getStringOr(\"portalTag\", \"\");"
+     ]
+    },
+    {
+     "line": 324,
+     "old": [
+      "            fuseView = compoundTag.getBoolean(\"fuseView\");"
+     ],
+     "new": [
+      "            fuseView = compoundTag.getBooleanOr(\"fuseView\", false);"
+     ]
+    },
+    {
+     "line": 328,
+     "old": [
+      "            renderingMergable = compoundTag.getBoolean(\"renderingMergable\");"
+     ],
+     "new": [
+      "            renderingMergable = compoundTag.getBooleanOr(\"renderingMergable\", false);"
+     ]
+    },
+    {
+     "line": 332,
+     "old": [
+      "            crossPortalCollisionEnabled = compoundTag.getBoolean(\"hasCrossPortalCollision\");"
+     ],
+     "new": [
+      "            crossPortalCollisionEnabled = compoundTag.getBooleanOr(\"hasCrossPortalCollision\", false);"
+     ]
+    },
+    {
+     "line": 336,
+     "old": [
+      "            ListTag list = compoundTag.getList(\"commandsOnTeleported\", 8);"
+     ],
+     "new": [
+      "            ListTag list = compoundTag.getListOrEmpty(\"commandsOnTeleported\");"
+     ]
+    },
+    {
+     "line": 338,
+     "old": [
+      "                .map(t -> ((StringTag) t).getAsString()).collect(Collectors.toList());"
+     ],
+     "new": [
+      "                .map(t -> ((StringTag) t).value()).collect(Collectors.toList());"
+     ]
+    },
+    {
+     "line": 345,
+     "old": [
+      "            doRenderPlayer = compoundTag.getBoolean(\"doRenderPlayer\");"
+     ],
+     "new": [
+      "            doRenderPlayer = compoundTag.getBooleanOr(\"doRenderPlayer\", false);"
+     ]
+    },
+    {
+     "line": 352,
+     "old": [
+      "            visible = compoundTag.getBoolean(\"isVisible\");"
+     ],
+     "new": [
+      "            visible = compoundTag.getBooleanOr(\"isVisible\", false);"
+     ]
+    },
+    {
+     "line": 542,
+     "old": [
+      "        ServerTaskList.of(getServer()).addTask(MyTaskList.withDelay(tickDelay, () -> {"
+     ],
+     "new": [
+      "        ServerTaskList.of(McCompat.getServer(this)).addTask(MyTaskList.withDelay(tickDelay, () -> {"
+     ]
+    },
+    {
+     "line": 915,
+     "old": [
+      "                PortalAPI.serverDimKeyToInt(getServer(), getOriginDim()),"
+     ],
+     "new": [
+      "                PortalAPI.serverDimKeyToInt(McCompat.getServer(this), getOriginDim()),"
+     ]
+    },
+    {
+     "line": 1311,
+     "old": [
+      "            MinecraftServer server = getServer();"
+     ],
+     "new": [
+      "            MinecraftServer server = McCompat.getServer(this);"
+     ]
+    },
+    {
+     "line": 1656,
+     "old": [
+      "        Vec3 oldGravityVec = Vec3.atLowerCornerOf(oldGravityDir.getNormal());"
+     ],
+     "new": [
+      "        Vec3 oldGravityVec = Vec3.atLowerCornerOf(oldGravityDir.getUnitVec3i());"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/PortalExtension.java": {
+   "hunks": [
+    {
+     "line": 84,
+     "old": [
+      "            motionAffinity = compoundTag.getDouble(\"motionAffinity\");"
+     ],
+     "new": [
+      "            motionAffinity = compoundTag.getDoubleOr(\"motionAffinity\", 0.0);"
+     ]
+    },
+    {
+     "line": 90,
+     "old": [
+      "            adjustPositionAfterTeleport = compoundTag.getBoolean(\"adjustPositionAfterTeleport\");"
+     ],
+     "new": [
+      "            adjustPositionAfterTeleport = compoundTag.getBooleanOr(\"adjustPositionAfterTeleport\", false);"
+     ]
+    },
+    {
+     "line": 97,
+     "old": [
+      "            bindCluster = compoundTag.getBoolean(\"bindCluster\");"
+     ],
+     "new": [
+      "            bindCluster = compoundTag.getBooleanOr(\"bindCluster\", false);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/PortalManipulation.java": {
+   "hunks": [
+    {
+     "line": 380,
+     "old": [
+      "        Vec3 axisH = Vec3.atLowerCornerOf(hitResult.getDirection().getNormal());",
+      "        Vec3 axisW = axisH.cross(Vec3.atLowerCornerOf(lookingDirection.getOpposite().getNormal()));"
+     ],
+     "new": [
+      "        Vec3 axisH = Vec3.atLowerCornerOf(hitResult.getDirection().getUnitVec3i());",
+      "        Vec3 axisW = axisH.cross(Vec3.atLowerCornerOf(lookingDirection.getOpposite().getUnitVec3i()));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/PortalPlaceholderBlock.java": {
+   "hunks": [
+    {
+     "line": 105,
+     "old": [
+      "                world.getProfiler().push(\"portal_placeholder\");"
+     ],
+     "new": [
+      "                Profiler.get().push(\"portal_placeholder\");"
+     ]
+    },
+    {
+     "line": 122,
+     "old": [
+      "                world.getProfiler().pop();"
+     ],
+     "new": [
+      "                Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/PortalRenderInfo.java": {
+   "hunks": [
+    {
+     "line": 213,
+     "old": [
+      "        ProfilerFiller profiler = Minecraft.getInstance().getProfiler();"
+     ],
+     "new": [
+      "        ProfilerFiller profiler = Profiler.get();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/PortalState.java": {
+   "hunks": [
+    {
+     "line": 108,
+     "old": [
+      "        double scaling = tag.getDouble(\"scaling\");",
+      "        double width = tag.getDouble(\"width\");",
+      "        double height = tag.getDouble(\"height\");",
+      "        double thickness = tag.getDouble(\"thickness\");",
+      "        DQuaternion rotation = DQuaternion.fromTag(tag.getCompound(\"rotation\"));",
+      "        DQuaternion orientation = DQuaternion.fromTag(tag.getCompound(\"orientation\"));",
+      "        boolean isMirror = tag.getBoolean(\"isMirror\");"
+     ],
+     "new": [
+      "        double scaling = tag.getDoubleOr(\"scaling\", 0.0);",
+      "        double width = tag.getDoubleOr(\"width\", 0.0);",
+      "        double height = tag.getDoubleOr(\"height\", 0.0);",
+      "        double thickness = tag.getDoubleOr(\"thickness\", 0.0);",
+      "        DQuaternion rotation = DQuaternion.fromTag(tag.getCompoundOrEmpty(\"rotation\"));",
+      "        DQuaternion orientation = DQuaternion.fromTag(tag.getCompoundOrEmpty(\"orientation\"));",
+      "        boolean isMirror = tag.getBooleanOr(\"isMirror\", false);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/DefaultPortalAnimation.java": {
+   "hunks": [
+    {
+     "line": 36,
+     "old": [
+      "        String c = nbt.getString(\"curve\");"
+     ],
+     "new": [
+      "        String c = nbt.getStringOr(\"curve\", \"\");"
+     ]
+    },
+    {
+     "line": 38,
+     "old": [
+      "        int durationTicks = nbt.getInt(\"durationTicks\");",
+      "        boolean inverseScale = nbt.getBoolean(\"inverseScale\");",
+      "        long disableUntil = nbt.getLong(\"disableUntil\");"
+     ],
+     "new": [
+      "        int durationTicks = nbt.getIntOr(\"durationTicks\", 0);",
+      "        boolean inverseScale = nbt.getBooleanOr(\"inverseScale\", false);",
+      "        long disableUntil = nbt.getLongOr(\"disableUntil\", 0L);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/DeltaUnilateralPortalState.java": {
+   "hunks": [
+    {
+     "line": 54,
+     "old": [
+      "            tag.contains(\"rotation\") ? DQuaternion.fromTag(tag.getCompound(\"rotation\")) : null,"
+     ],
+     "new": [
+      "            tag.contains(\"rotation\") ? DQuaternion.fromTag(tag.getCompoundOrEmpty(\"rotation\")) : null,"
+     ]
+    },
+    {
+     "line": 56,
+     "old": [
+      "                tag.getDouble(\"sizeScalingX\"),"
+     ],
+     "new": [
+      "                tag.getDoubleOr(\"sizeScalingX\", 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/NormalAnimation.java": {
+   "hunks": [
+    {
+     "line": 35,
+     "old": [
+      "            long durationTicks = tag.getLong(\"durationTicks\");",
+      "            DeltaUnilateralPortalState delta = DeltaUnilateralPortalState.fromTag(tag.getCompound(\"delta\"));",
+      "            TimingFunction timingFunction = TimingFunction.fromString(tag.getString(\"timingFunction\"));"
+     ],
+     "new": [
+      "            long durationTicks = tag.getLongOr(\"durationTicks\", 0L);",
+      "            DeltaUnilateralPortalState delta = DeltaUnilateralPortalState.fromTag(tag.getCompoundOrEmpty(\"delta\"));",
+      "            TimingFunction timingFunction = TimingFunction.fromString(tag.getStringOr(\"timingFunction\", \"\"));"
+     ]
+    },
+    {
+     "line": 116,
+     "old": [
+      "        UnilateralPortalState initialState = UnilateralPortalState.fromTag(compoundTag.getCompound(\"initialState\"));"
+     ],
+     "new": [
+      "        UnilateralPortalState initialState = UnilateralPortalState.fromTag(compoundTag.getCompoundOrEmpty(\"initialState\"));"
+     ]
+    },
+    {
+     "line": 123,
+     "old": [
+      "        long startingGameTime = compoundTag.getLong(\"startingGameTime\");"
+     ],
+     "new": [
+      "        long startingGameTime = compoundTag.getLongOr(\"startingGameTime\", 0L);"
+     ]
+    },
+    {
+     "line": 125,
+     "old": [
+      "        int loopCount = compoundTag.getInt(\"loopCount\");"
+     ],
+     "new": [
+      "        int loopCount = compoundTag.getIntOr(\"loopCount\", 0);"
+     ]
+    },
+    {
+     "line": 127,
+     "old": [
+      "        boolean isBuilding = compoundTag.getBoolean(\"isBuilding\");"
+     ],
+     "new": [
+      "        boolean isBuilding = compoundTag.getBooleanOr(\"isBuilding\", false);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/OscillationAnimation.java": {
+   "hunks": [
+    {
+     "line": 38,
+     "old": [
+      "        double frequency = tag.getDouble(\"frequency\");",
+      "        long startGameTime = tag.getLong(\"startGameTime\");",
+      "        long cycleCount = tag.getLong(\"cycleCount\");"
+     ],
+     "new": [
+      "        double frequency = tag.getDoubleOr(\"frequency\", 0.0);",
+      "        long startGameTime = tag.getLongOr(\"startGameTime\", 0L);",
+      "        long cycleCount = tag.getLongOr(\"cycleCount\", 0L);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/PortalAnimation.java": {
+   "hunks": [
+    {
+     "line": 68,
+     "old": [
+      "            defaultAnimation = DefaultPortalAnimation.fromNbt(tag.getCompound(\"animation\"));"
+     ],
+     "new": [
+      "            defaultAnimation = DefaultPortalAnimation.fromNbt(tag.getCompoundOrEmpty(\"animation\"));"
+     ]
+    },
+    {
+     "line": 71,
+     "old": [
+      "            defaultAnimation = DefaultPortalAnimation.fromNbt(tag.getCompound(\"defaultAnimation\"));"
+     ],
+     "new": [
+      "            defaultAnimation = DefaultPortalAnimation.fromNbt(tag.getCompoundOrEmpty(\"defaultAnimation\"));"
+     ]
+    },
+    {
+     "line": 78,
+     "old": [
+      "            ListTag listTag = tag.getList(\"thisSideAnimations\", 10);"
+     ],
+     "new": [
+      "            ListTag listTag = tag.getListOrEmpty(\"thisSideAnimations\");"
+     ]
+    },
+    {
+     "line": 86,
+     "old": [
+      "            ListTag listTag = tag.getList(\"otherSideAnimations\", 10);"
+     ],
+     "new": [
+      "            ListTag listTag = tag.getListOrEmpty(\"otherSideAnimations\");"
+     ]
+    },
+    {
+     "line": 94,
+     "old": [
+      "            pauseTime = tag.getLong(\"pauseTime\");"
+     ],
+     "new": [
+      "            pauseTime = tag.getLongOr(\"pauseTime\", 0L);"
+     ]
+    },
+    {
+     "line": 101,
+     "old": [
+      "            timeOffset = tag.getLong(\"timeOffset\");"
+     ],
+     "new": [
+      "            timeOffset = tag.getLongOr(\"timeOffset\", 0L);"
+     ]
+    },
+    {
+     "line": 108,
+     "old": [
+      "            thisSideReferenceState = UnilateralPortalState.fromTag(tag.getCompound(\"thisSideReferenceState\"));"
+     ],
+     "new": [
+      "            thisSideReferenceState = UnilateralPortalState.fromTag(tag.getCompoundOrEmpty(\"thisSideReferenceState\"));"
+     ]
+    },
+    {
+     "line": 115,
+     "old": [
+      "            otherSideReferenceState = UnilateralPortalState.fromTag(tag.getCompound(\"otherSideReferenceState\"));"
+     ],
+     "new": [
+      "            otherSideReferenceState = UnilateralPortalState.fromTag(tag.getCompoundOrEmpty(\"otherSideReferenceState\"));"
+     ]
+    },
+    {
+     "line": 122,
+     "old": [
+      "            pausedThisSideState = UnilateralPortalState.fromTag(tag.getCompound(\"pausedThisSideState\"));"
+     ],
+     "new": [
+      "            pausedThisSideState = UnilateralPortalState.fromTag(tag.getCompoundOrEmpty(\"pausedThisSideState\"));"
+     ]
+    },
+    {
+     "line": 129,
+     "old": [
+      "            pausedOtherSideState = UnilateralPortalState.fromTag(tag.getCompound(\"pausedOtherSideState\"));"
+     ],
+     "new": [
+      "            pausedOtherSideState = UnilateralPortalState.fromTag(tag.getCompoundOrEmpty(\"pausedOtherSideState\"));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/PortalAnimationDriver.java": {
+   "hunks": [
+    {
+     "line": 28,
+     "old": [
+      "        String type = tag.getString(\"type\");"
+     ],
+     "new": [
+      "        String type = tag.getStringOr(\"type\", \"\");"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/RotationAnimation.java": {
+   "hunks": [
+    {
+     "line": 65,
+     "old": [
+      "        double degreesPerTick = tag.getDouble(\"degreesPerTick\");",
+      "        long startGameTime = tag.getLong(\"startGameTime\");",
+      "        long endGameTime = tag.getLong(\"endGameTime\");"
+     ],
+     "new": [
+      "        double degreesPerTick = tag.getDoubleOr(\"degreesPerTick\", 0.0);",
+      "        long startGameTime = tag.getLongOr(\"startGameTime\", 0L);",
+      "        long endGameTime = tag.getLongOr(\"endGameTime\", 0L);"
+     ]
+    },
+    {
+     "line": 69,
+     "old": [
+      "            TimingFunction.fromString(tag.getString(\"timingFunction\")) : null;"
+     ],
+     "new": [
+      "            TimingFunction.fromString(tag.getStringOr(\"timingFunction\", \"\")) : null;"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/UnilateralPortalState.java": {
+   "hunks": [
+    {
+     "line": 154,
+     "old": [
+      "        DQuaternion orientation = DQuaternion.fromTag(tag.getCompound(\"orientation\"));",
+      "        double width = tag.getDouble(\"width\");",
+      "        double height = tag.getDouble(\"height\");",
+      "        double thickness = tag.getDouble(\"thickness\");"
+     ],
+     "new": [
+      "        DQuaternion orientation = DQuaternion.fromTag(tag.getCompoundOrEmpty(\"orientation\"));",
+      "        double width = tag.getDoubleOr(\"width\", 0.0);",
+      "        double height = tag.getDoubleOr(\"height\", 0.0);",
+      "        double thickness = tag.getDoubleOr(\"thickness\", 0.0);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/custom_portal_gen/CustomPortalGenManager.java": {
+   "hunks": [
+    {
+     "line": 207,
+     "old": [
+      "        ServerTaskList.of(entity.getServer()).addTask(() -> {"
+     ],
+     "new": [
+      "        ServerTaskList.of(McCompat.getServer(entity)).addTask(() -> {"
+     ]
+    },
+    {
+     "line": 238,
+     "old": [
+      "            ServerLevel startWorld = player.server.getLevel(startCoord.dimension());"
+     ],
+     "new": [
+      "            ServerLevel startWorld = player.level().getServer().getLevel(startCoord.dimension());"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/custom_portal_gen/CustomPortalGeneration.java": {
+   "hunks": [
+    {
+     "line": 265,
+     "old": [
+      "        world.getProfiler().push(\"custom_portal_gen_perform\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"custom_portal_gen_perform\");"
+     ]
+    },
+    {
+     "line": 267,
+     "old": [
+      "        world.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/custom_portal_gen/form/DiligentMatcher.java": {
+   "hunks": [
+    {
+     "line": 156,
+     "old": [
+      "        Vec3i v1 = Direction.fromAxisAndDirection(axs.getA(), Direction.AxisDirection.POSITIVE).getNormal();",
+      "        Vec3i v2 = Direction.fromAxisAndDirection(axs.getB(), Direction.AxisDirection.POSITIVE).getNormal();"
+     ],
+     "new": [
+      "        Vec3i v1 = Direction.fromAxisAndDirection(axs.getA(), Direction.AxisDirection.POSITIVE).getUnitVec3i();",
+      "        Vec3i v2 = Direction.fromAxisAndDirection(axs.getB(), Direction.AxisDirection.POSITIVE).getUnitVec3i();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/custom_portal_gen/form/FlippingFloorSquareForm.java": {
+   "hunks": [
+    {
+     "line": 172,
+     "old": [
+      "                .getMoved(Direction.DOWN.getNormal())"
+     ],
+     "new": [
+      "                .getMoved(Direction.DOWN.getUnitVec3i())"
+     ]
+    },
+    {
+     "line": 182,
+     "old": [
+      "            .getMoved(Direction.DOWN.getNormal());"
+     ],
+     "new": [
+      "            .getMoved(Direction.DOWN.getUnitVec3i());"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/global_portals/GlobalPortalStorage.java": {
+   "hunks": [
+    {
+     "line": 211,
+     "old": [
+      "            version = tag.getInt(\"version\");"
+     ],
+     "new": [
+      "            version = tag.getIntOr(\"version\", 0);"
+     ]
+    },
+    {
+     "line": 217,
+     "old": [
+      "                tag.getCompound(\"bedrockReplacement\")"
+     ],
+     "new": [
+      "                tag.getCompoundOrEmpty(\"bedrockReplacement\")"
+     ]
+    },
+    {
+     "line": 232,
+     "old": [
+      "        ListTag listTag = tag.getList(\"data\", 10);"
+     ],
+     "new": [
+      "        ListTag listTag = tag.getListOrEmpty(\"data\");"
+     ]
+    },
+    {
+     "line": 237,
+     "old": [
+      "            CompoundTag compoundTag = listTag.getCompound(i);"
+     ],
+     "new": [
+      "            CompoundTag compoundTag = listTag.getCompoundOrEmpty(i);"
+     ]
+    },
+    {
+     "line": 250,
+     "old": [
+      "        Identifier entityId = McHelper.newResourceLocation(compoundTag.getString(\"entity_type\"));"
+     ],
+     "new": [
+      "        Identifier entityId = McHelper.newResourceLocation(compoundTag.getStringOr(\"entity_type\", \"\"));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/global_portals/WorldWrappingPortal.java": {
+   "hunks": [
+    {
+     "line": 40,
+     "old": [
+      "            isInward = compoundTag.getBoolean(\"isInward\");"
+     ],
+     "new": [
+      "            isInward = compoundTag.getBooleanOr(\"isInward\", false);"
+     ]
+    },
+    {
+     "line": 43,
+     "old": [
+      "            zoneId = compoundTag.getInt(\"zoneId\");"
+     ],
+     "new": [
+      "            zoneId = compoundTag.getIntOr(\"zoneId\", 0);"
+     ]
+    },
+    {
+     "line": 90,
+     "old": [
+      "        portal.setAxisW(Vec3.atLowerCornerOf(axises.getA().getNormal()));",
+      "        portal.setAxisH(Vec3.atLowerCornerOf(axises.getB().getNormal()));"
+     ],
+     "new": [
+      "        portal.setAxisW(Vec3.atLowerCornerOf(axises.getA().getUnitVec3i()));",
+      "        portal.setAxisH(Vec3.atLowerCornerOf(axises.getB().getUnitVec3i()));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape.java": {
+   "hunks": [
+    {
+     "line": 59,
+     "old": [
+      "            readArea(tag.getList(\"poses\", 3)),",
+      "            Direction.Axis.values()[tag.getInt(\"axis\")]"
+     ],
+     "new": [
+      "            readArea(tag.getListOrEmpty(\"poses\")),",
+      "            Direction.Axis.values()[tag.getIntOr(\"axis\", 0)]"
+     ]
+    },
+    {
+     "line": 72,
+     "old": [
+      "                list.getInt(i * 3 + 0),"
+     ],
+     "new": [
+      "                list.getIntOr(i * 3 + 0, 0),"
+     ]
+    },
+    {
+     "line": 133,
+     "old": [
+      "                blockPos.offset(directions[0].getNormal()),",
+      "                blockPos.offset(directions[1].getNormal()),",
+      "                blockPos.offset(directions[2].getNormal()),",
+      "                blockPos.offset(directions[3].getNormal())"
+     ],
+     "new": [
+      "                blockPos.offset(directions[0].getUnitVec3i()),",
+      "                blockPos.offset(directions[1].getUnitVec3i()),",
+      "                blockPos.offset(directions[2].getUnitVec3i()),",
+      "                blockPos.offset(directions[3].getUnitVec3i())"
+     ]
+    },
+    {
+     "line": 143,
+     "old": [
+      "            new BlockPos(directions[0].getNormal()).offset(directions[1].getNormal()),",
+      "            new BlockPos(directions[1].getNormal()).offset(directions[2].getNormal()),",
+      "            new BlockPos(directions[2].getNormal()).offset(directions[3].getNormal()),",
+      "            new BlockPos(directions[3].getNormal()).offset(directions[0].getNormal())"
+     ],
+     "new": [
+      "            new BlockPos(directions[0].getUnitVec3i()).offset(directions[1].getUnitVec3i()),",
+      "            new BlockPos(directions[1].getUnitVec3i()).offset(directions[2].getUnitVec3i()),",
+      "            new BlockPos(directions[2].getUnitVec3i()).offset(directions[3].getUnitVec3i()),",
+      "            new BlockPos(directions[3].getUnitVec3i()).offset(directions[0].getUnitVec3i())"
+     ]
+    },
+    {
+     "line": 374,
+     "old": [
+      "        portal.setAxisW(Vec3.atLowerCornerOf(wDirection.getNormal()));",
+      "        portal.setAxisH(Vec3.atLowerCornerOf(hDirection.getNormal()));"
+     ],
+     "new": [
+      "        portal.setAxisW(Vec3.atLowerCornerOf(wDirection.getUnitVec3i()));",
+      "        portal.setAxisH(Vec3.atLowerCornerOf(hDirection.getUnitVec3i()));"
+     ]
+    },
+    {
+     "line": 381,
+     "old": [
+      "                .getNormal()"
+     ],
+     "new": [
+      "                .getUnitVec3i()"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/nether_portal/BreakablePortalEntity.java": {
+   "hunks": [
+    {
+     "line": 73,
+     "old": [
+      "            blockPortalShape = new BlockPortalShape(compoundTag.getCompound(\"netherPortalShape\"));"
+     ],
+     "new": [
+      "            blockPortalShape = new BlockPortalShape(compoundTag.getCompoundOrEmpty(\"netherPortalShape\"));"
+     ]
+    },
+    {
+     "line": 82,
+     "old": [
+      "        unbreakable = compoundTag.getBoolean(\"unbreakable\");"
+     ],
+     "new": [
+      "        unbreakable = compoundTag.getBooleanOr(\"unbreakable\", false);"
+     ]
+    },
+    {
+     "line": 87,
+     "old": [
+      "                compoundTag.getCompound(\"overlayBlockState\")"
+     ],
+     "new": [
+      "                compoundTag.getCompoundOrEmpty(\"overlayBlockState\")"
+     ]
+    },
+    {
+     "line": 93,
+     "old": [
+      "                double overlayOpacity = compoundTag.getDouble(\"overlayOpacity\");"
+     ],
+     "new": [
+      "                double overlayOpacity = compoundTag.getDoubleOr(\"overlayOpacity\", 0.0);"
+     ]
+    },
+    {
+     "line": 97,
+     "old": [
+      "                double overlayOffset = compoundTag.getDouble(\"overlayOffset\");"
+     ],
+     "new": [
+      "                double overlayOffset = compoundTag.getDoubleOr(\"overlayOffset\", 0.0);"
+     ]
+    },
+    {
+     "line": 148,
+     "old": [
+      "        ServerLevel world = getServer().getLevel(getDestDim());"
+     ],
+     "new": [
+      "        ServerLevel world = McCompat.getServer(this).getLevel(getDestDim());"
+     ]
+    },
+    {
+     "line": 246,
+     "old": [
+      "            ServerTaskList.of(getServer()).addTask(MyTaskList.withRetryNumberLimit("
+     ],
+     "new": [
+      "            ServerTaskList.of(McCompat.getServer(this)).addTask(MyTaskList.withRetryNumberLimit("
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/nether_portal/FastBlockPortalShape.java": {
+   "hunks": [
+    {
+     "line": 241,
+     "old": [
+      "        int axisInt = tag.getInt(\"axis\");"
+     ],
+     "new": [
+      "        int axisInt = tag.getIntOr(\"axis\", 0);"
+     ]
+    },
+    {
+     "line": 249,
+     "old": [
+      "        ListTag positions = tag.getList(\"poses\", Tag.TAG_INT);"
+     ],
+     "new": [
+      "        ListTag positions = tag.getListOrEmpty(\"poses\");"
+     ]
+    },
+    {
+     "line": 260,
+     "old": [
+      "        int firstPointX = positions.getInt(0);",
+      "        int firstPointY = positions.getInt(1);",
+      "        int firstPointZ = positions.getInt(2);"
+     ],
+     "new": [
+      "        int firstPointX = positions.getIntOr(0, 0);",
+      "        int firstPointY = positions.getIntOr(1, 0);",
+      "        int firstPointZ = positions.getIntOr(2, 0);"
+     ]
+    },
+    {
+     "line": 271,
+     "old": [
+      "            int x = positions.getInt(i * 3);",
+      "            int y = positions.getInt(i * 3 + 1);",
+      "            int z = positions.getInt(i * 3 + 2);"
+     ],
+     "new": [
+      "            int x = positions.getIntOr(i * 3, 0);",
+      "            int y = positions.getIntOr(i * 3 + 1, 0);",
+      "            int z = positions.getIntOr(i * 3 + 2, 0);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/shape/BoxPortalShape.java": {
+   "hunks": [
+    {
+     "line": 43,
+     "old": [
+      "        boolean facingOutwards1 = tag.getBoolean(\"facingOutwards\");"
+     ],
+     "new": [
+      "        boolean facingOutwards1 = tag.getBooleanOr(\"facingOutwards\", false);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/shape/PortalShapeSerialization.java": {
+   "hunks": [
+    {
+     "line": 34,
+     "old": [
+      "        String typeName = tag.getString(\"type\");"
+     ],
+     "new": [
+      "        String typeName = tag.getStringOr(\"type\", \"\");"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/shape/SpecialFlatPortalShape.java": {
+   "hunks": [
+    {
+     "line": 48,
+     "old": [
+      "        Mesh2D m = Mesh2D.fromTag(tag.getCompound(\"shape\"));"
+     ],
+     "new": [
+      "        Mesh2D m = Mesh2D.fromTag(tag.getCompoundOrEmpty(\"shape\"));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/teleportation/ClientTeleportationManager.java": {
+   "hunks": [
+    {
+     "line": 142,
+     "old": [
+      "        client.getProfiler().push(\"ip_teleport\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"ip_teleport\");"
+     ]
+    },
+    {
+     "line": 202,
+     "old": [
+      "        client.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 294,
+     "old": [
+      "            client.getProfiler().push(\"portal_teleport\");"
+     ],
+     "new": [
+      "            Profiler.get().push(\"portal_teleport\");"
+     ]
+    },
+    {
+     "line": 296,
+     "old": [
+      "            client.getProfiler().pop();"
+     ],
+     "new": [
+      "            Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 637,
+     "old": [
+      "        Vec3 levitationVec = Vec3.atLowerCornerOf(levitationDir.getNormal());"
+     ],
+     "new": [
+      "        Vec3 levitationVec = Vec3.atLowerCornerOf(levitationDir.getUnitVec3i());"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/teleportation/CrossPortalSound.java": {
+   "hunks": [
+    {
+     "line": 46,
+     "old": [
+      "        soundWorld.getProfiler().push(\"cross_portal_sound\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"cross_portal_sound\");"
+     ]
+    },
+    {
+     "line": 89,
+     "old": [
+      "        soundWorld.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/core/teleportation/ServerTeleportationManager.java": {
+   "hunks": [
+    {
+     "line": 72,
+     "old": [
+      "                ServerTeleportationManager serverTeleportationManager = of(portal.getServer());"
+     ],
+     "new": [
+      "                ServerTeleportationManager serverTeleportationManager = of(McCompat.getServer(portal));"
+     ]
+    },
+    {
+     "line": 137,
+     "old": [
+      "        ServerTaskList.of(portal.getServer()).addTask(() -> {"
+     ],
+     "new": [
+      "        ServerTaskList.of(McCompat.getServer(portal)).addTask(() -> {"
+     ]
+    },
+    {
+     "line": 171,
+     "old": [
+      "        Portal portal = findPortal(player.server, dimensionBefore, portalId);"
+     ],
+     "new": [
+      "        Portal portal = findPortal(player.level().getServer(), dimensionBefore, portalId);"
+     ]
+    },
+    {
+     "line": 334,
+     "old": [
+      "        MinecraftServer server = player.server;",
+      "        server.getProfiler().push(\"portal_teleport\");"
+     ],
+     "new": [
+      "        MinecraftServer server = player.level().getServer();",
+      "        Profiler.get().push(\"portal_teleport\");"
+     ]
+    },
+    {
+     "line": 357,
+     "old": [
+      "        server.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    },
+    {
+     "line": 380,
+     "old": [
+      "        ServerLevel toWorld = player.server.getLevel(dimensionTo);"
+     ],
+     "new": [
+      "        ServerLevel toWorld = player.level().getServer().getLevel(dimensionTo);"
+     ]
+    },
+    {
+     "line": 626,
+     "old": [
+      "        MinecraftServer server = entity.getServer();"
+     ],
+     "new": [
+      "        MinecraftServer server = McCompat.getServer(entity);"
+     ]
+    },
+    {
+     "line": 729,
+     "old": [
+      "            of(serverPlayer.server).forceTeleportPlayer("
+     ],
+     "new": [
+      "            of(serverPlayer.level().getServer()).forceTeleportPlayer("
+     ]
+    },
+    {
+     "line": 755,
+     "old": [
+      "        return (E) of(entity.getServer()).changeEntityDimension("
+     ],
+     "new": [
+      "        return (E) of(McCompat.getServer(entity)).changeEntityDimension("
+     ]
+    },
+    {
+     "line": 793,
+     "old": [
+      "        ServerTaskList.of(player.server).addTask(MyTaskList.withRetryNumberLimit("
+     ],
+     "new": [
+      "        ServerTaskList.of(player.level().getServer()).addTask(MyTaskList.withRetryNumberLimit("
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat",
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/imm_ptl/peripheral/CommandStickItem.java": {
+   "hunks": [
+    {
+     "line": 78,
+     "old": [
+      "                tag.getList(",
+      "                        \"descriptionTranslationKeys\",",
+      "                        StringTag.valueOf(\"\").getId()",
+      "                    )"
+     ],
+     "new": [
+      "                tag.getListOrEmpty(\"descriptionTranslationKeys\")"
+     ]
+    },
+    {
+     "line": 83,
+     "old": [
+      "                    .map(tag1 -> ((StringTag) tag1).getAsString())"
+     ],
+     "new": [
+      "                    .map(tag1 -> ((StringTag) tag1).value())"
+     ]
+    },
+    {
+     "line": 130,
+     "old": [
+      "            MinecraftServer server = player.getServer();"
+     ],
+     "new": [
+      "            MinecraftServer server = McCompat.getServer(player);"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/peripheral/dim_stack/DimStackManagement.java": {
+   "hunks": [
+    {
+     "line": 181,
+     "old": [
+      "        List<String> dimIdList = collectDimStackCandidateWhenServerRunning(player.server)"
+     ],
+     "new": [
+      "        List<String> dimIdList = collectDimStackCandidateWhenServerRunning(player.level().getServer())"
+     ]
+    },
+    {
+     "line": 236,
+     "old": [
+      "            MinecraftServer server = player.getServer();"
+     ],
+     "new": [
+      "            MinecraftServer server = player.level().getServer();"
+     ]
+    },
+    {
+     "line": 254,
+     "old": [
+      "            MinecraftServer server = player.getServer();"
+     ],
+     "new": [
+      "            MinecraftServer server = player.level().getServer();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/wand/PortalWandInteraction.java": {
+   "hunks": [
+    {
+     "line": 414,
+     "old": [
+      "        DraggingSession session = of(player.server).draggingSessionMap.remove(player);"
+     ],
+     "new": [
+      "        DraggingSession session = of(player.level().getServer()).draggingSessionMap.remove(player);"
+     ]
+    },
+    {
+     "line": 428,
+     "old": [
+      "        PortalWandInteraction portalWandInteraction = of(player.server);"
+     ],
+     "new": [
+      "        PortalWandInteraction portalWandInteraction = of(player.level().getServer());"
+     ]
+    },
+    {
+     "line": 453,
+     "old": [
+      "        PortalWandInteraction portalWandInteraction = of(player.server);"
+     ],
+     "new": [
+      "        PortalWandInteraction portalWandInteraction = of(player.level().getServer());"
+     ]
+    },
+    {
+     "line": 547,
+     "old": [
+      "        return of(player.server).draggingSessionMap.containsKey(player);"
+     ],
+     "new": [
+      "        return of(player.level().getServer()).draggingSessionMap.containsKey(player);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/wand/PortalWandItem.java": {
+   "hunks": [
+    {
+     "line": 101,
+     "old": [
+      "            String mode = tag.getString(\"mode\");"
+     ],
+     "new": [
+      "            String mode = tag.getStringOr(\"mode\", \"\");"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/CustomTextOverlay.java": {
+   "hunks": [
+    {
+     "line": 110,
+     "old": [
+      "        minecraft.getProfiler().push(\"imm_ptl_custom_overlay\");"
+     ],
+     "new": [
+      "        Profiler.get().push(\"imm_ptl_custom_overlay\");"
+     ]
+    },
+    {
+     "line": 131,
+     "old": [
+      "        minecraft.getProfiler().pop();"
+     ],
+     "new": [
+      "        Profiler.get().pop();"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.util.profiling.Profiler"
+   ]
+  },
+  "qouteall/q_misc_util/Helper.java": {
+   "hunks": [
+    {
+     "line": 222,
+     "old": [
+      "        ).getNormal();"
+     ],
+     "new": [
+      "        ).getUnitVec3i();"
+     ]
+    },
+    {
+     "line": 409,
+     "old": [
+      "        Vec3 shrinkVec = Vec3.atLowerCornerOf(direction.getNormal()).scale(size);"
+     ],
+     "new": [
+      "        Vec3 shrinkVec = Vec3.atLowerCornerOf(direction.getUnitVec3i()).scale(size);"
+     ]
+    },
+    {
+     "line": 520,
+     "old": [
+      "            String id = ((StringTag) term).getAsString();"
+     ],
+     "new": [
+      "            String id = ((StringTag) term).value();"
+     ]
+    },
+    {
+     "line": 634,
+     "old": [
+      "            compoundTag.getDouble(name + \"X\"),"
+     ],
+     "new": [
+      "            compoundTag.getDoubleOr(name + \"X\", 0.0),"
+     ]
+    },
+    {
+     "line": 658,
+     "old": [
+      "            compoundTag.getInt(name + \"X\"),"
+     ],
+     "new": [
+      "            compoundTag.getIntOr(name + \"X\", 0),"
+     ]
+    },
+    {
+     "line": 677,
+     "old": [
+      "                compoundTag.getDouble(name + \"X\"),"
+     ],
+     "new": [
+      "                compoundTag.getDoubleOr(name + \"X\", 0.0),"
+     ]
+    },
+    {
+     "line": 689,
+     "old": [
+      "        return tag.getList(name, 10);"
+     ],
+     "new": [
+      "        return tag.getListOrEmpty(name);"
+     ]
+    },
+    {
+     "line": 930,
+     "old": [
+      "        return new UUID(tag.getLong(key1), tag.getLong(key + \"Least\"));"
+     ],
+     "new": [
+      "        return new UUID(tag.getLongOr(key1, 0L), tag.getLong(key + \"Least\"));"
+     ]
+    },
+    {
+     "line": 1469,
+     "old": [
+      "                    listTag.getDouble(0),"
+     ],
+     "new": [
+      "                    listTag.getDoubleOr(0, 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/MiscNetworking.java": {
+   "hunks": [
+    {
+     "line": 112,
+     "old": [
+      "                String dimTypeId = dimTypeTag.getString(key);"
+     ],
+     "new": [
+      "                String dimTypeId = dimTypeTag.getStringOr(key, \"\");"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/dimension/DimIntIdMap.java": {
+   "hunks": [
+    {
+     "line": 113,
+     "old": [
+      "        CompoundTag intids = tag.getCompound(\"intids\");"
+     ],
+     "new": [
+      "        CompoundTag intids = tag.getCompoundOrEmpty(\"intids\");"
+     ]
+    },
+    {
+     "line": 120,
+     "old": [
+      "                int intid = intids.getInt(dim);"
+     ],
+     "new": [
+      "                int intid = intids.getIntOr(dim, 0);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/mixin/dimension/MixinPlayerList_Misc.java": {
+   "hunks": [
+    {
+     "line": 29,
+     "old": [
+      "            MiscNetworking.DimIdSyncPacket.createPacket(player.server)"
+     ],
+     "new": [
+      "            MiscNetworking.DimIdSyncPacket.createPacket(player.level().getServer())"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/my_util/AARotation.java": {
+   "hunks": [
+    {
+     "line": 67,
+     "old": [
+      "            this.transformedX.getNormal(),",
+      "            this.transformedY.getNormal(),",
+      "            this.transformedZ.getNormal()"
+     ],
+     "new": [
+      "            this.transformedX.getUnitVec3i(),",
+      "            this.transformedY.getUnitVec3i(),",
+      "            this.transformedZ.getUnitVec3i()"
+     ]
+    },
+    {
+     "line": 79,
+     "old": [
+      "        BlockPos transformedVec = transform(direction.getNormal());",
+      "        return Direction.fromDelta("
+     ],
+     "new": [
+      "        BlockPos transformedVec = transform(direction.getUnitVec3i());",
+      "        return McCompat.fromDelta("
+     ]
+    },
+    {
+     "line": 90,
+     "old": [
+      "        Direction result = Direction.fromDelta("
+     ],
+     "new": [
+      "        Direction result = McCompat.fromDelta("
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/q_misc_util/my_util/DQuaternion.java": {
+   "hunks": [
+    {
+     "line": 453,
+     "old": [
+      "            compoundTag.getDouble(\"x\"),"
+     ],
+     "new": [
+      "            compoundTag.getDoubleOr(\"x\", 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/my_util/IntBox.java": {
+   "hunks": [
+    {
+     "line": 57,
+     "old": [
+      "                ).getNormal(),"
+     ],
+     "new": [
+      "                ).getUnitVec3i(),"
+     ]
+    },
+    {
+     "line": 67,
+     "old": [
+      "                h.offset(Helper.scale(direction.getNormal(), n))"
+     ],
+     "new": [
+      "                h.offset(Helper.scale(direction.getUnitVec3i(), n))"
+     ]
+    },
+    {
+     "line": 72,
+     "old": [
+      "                l.offset(Helper.scale(direction.getNormal(), n)),"
+     ],
+     "new": [
+      "                l.offset(Helper.scale(direction.getUnitVec3i(), n)),"
+     ]
+    },
+    {
+     "line": 506,
+     "old": [
+      "                tag.getInt(\"lX\"),"
+     ],
+     "new": [
+      "                tag.getIntOr(\"lX\", 0),"
+     ]
+    },
+    {
+     "line": 511,
+     "old": [
+      "                tag.getInt(\"hX\"),"
+     ],
+     "new": [
+      "                tag.getIntOr(\"hX\", 0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/my_util/IntMatrix3.java": {
+   "hunks": [
+    {
+     "line": 35,
+     "old": [
+      "        x = d1.getNormal();",
+      "        y = d2.getNormal();",
+      "        z = d3.getNormal();"
+     ],
+     "new": [
+      "        x = d1.getUnitVec3i();",
+      "        y = d2.getUnitVec3i();",
+      "        z = d3.getUnitVec3i();"
+     ]
+    },
+    {
+     "line": 57,
+     "old": [
+      "        BlockPos vec = transform(direction.getNormal());",
+      "        return Direction.fromDelta(vec.getX(), vec.getY(), vec.getZ());"
+     ],
+     "new": [
+      "        BlockPos vec = transform(direction.getUnitVec3i());",
+      "        return McCompat.fromDelta(vec.getX(), vec.getY(), vec.getZ());"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/q_misc_util/my_util/Mesh2D.java": {
+   "hunks": [
+    {
+     "line": 1697,
+     "old": [
+      "        ListTag pointCoords = tag.getList(\"pointCoords\", Tag.TAG_DOUBLE);",
+      "        ListTag triangles = tag.getList(\"triangles\", Tag.TAG_INT);"
+     ],
+     "new": [
+      "        ListTag pointCoords = tag.getListOrEmpty(\"pointCoords\");",
+      "        ListTag triangles = tag.getListOrEmpty(\"triangles\");"
+     ]
+    },
+    {
+     "line": 1713,
+     "old": [
+      "            int p0Index = triangles.getInt(i * 3);",
+      "            int p1Index = triangles.getInt(i * 3 + 1);",
+      "            int p2Index = triangles.getInt(i * 3 + 2);"
+     ],
+     "new": [
+      "            int p0Index = triangles.getIntOr(i * 3, 0);",
+      "            int p1Index = triangles.getIntOr(i * 3 + 1, 0);",
+      "            int p2Index = triangles.getIntOr(i * 3 + 2, 0);"
+     ]
+    },
+    {
+     "line": 1718,
+     "old": [
+      "                pointCoords.getDouble(p0Index * 2),"
+     ],
+     "new": [
+      "                pointCoords.getDoubleOr(p0Index * 2, 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  }
+ }
+}
