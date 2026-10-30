@@ -100,6 +100,7 @@ jobs:
         if: always()
         shell: bash
         run: |
+          set +e
           THRESH="${THRESH:-14}"   # seconds; vanilla-style chunk shutdown waits at most 15 s
           FATAL='Mixin apply failed|InvalidInjectionException|Critical injection failure|MixinTransformerError|MixinApplyError|InvalidMixinException|Mixin transformation of .* failed|was not applied|FAILED during APPLY|NoSuchMethodError|NoSuchFieldError|NoClassDefFoundError|ClassNotFoundException|AbstractMethodError|IncompatibleClassChangeError|Exception in thread|Server thread/ERROR|Caused by:'
           seg() { awk -v a="$1" -v b="$2" '$0 ~ a {on=1; next} $0 ~ b {on=0} on' server.log; }
