@@ -31,7 +31,7 @@ public class PortalShapeSerialization {
     }
     
     public static @Nullable PortalShape deserialize(CompoundTag tag) {
-        String typeName = tag.getString("type");
+        String typeName = tag.getStringOr("type", "");
         Serializer<? extends PortalShape> serializer = FROM_TYPE_NAME.get(typeName);
         if (serializer == null) {
             LOGGER.warn("unknown portal shape type {} {}", typeName, tag);
@@ -56,3 +56,4 @@ public class PortalShapeSerialization {
         return tag;
     }
 }
+// [tools/port_sites.py: applied]

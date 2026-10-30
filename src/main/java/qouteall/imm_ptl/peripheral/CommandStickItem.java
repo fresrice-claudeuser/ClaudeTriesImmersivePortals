@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.peripheral;
+import dev.claudeportals.McCompat;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -75,12 +76,9 @@ public class CommandStickItem extends Item {
             return new Data(
                 tag.getString("command"),
                 tag.getString("nameTranslationKey"),
-                tag.getList(
-                        "descriptionTranslationKeys",
-                        StringTag.valueOf("").getId()
-                    )
+                tag.getListOrEmpty("descriptionTranslationKeys")
                     .stream()
-                    .map(tag1 -> ((StringTag) tag1).getAsString())
+                    .map(tag1 -> ((StringTag) tag1).value())
                     .collect(Collectors.toList())
             );
         }
@@ -127,7 +125,7 @@ public class CommandStickItem extends Item {
             
             CommandSourceStack commandSource = player.createCommandSourceStack().withPermission(2);
             
-            MinecraftServer server = player.getServer();
+            MinecraftServer server = McCompat.getServer(player);
             assert server != null;
             Commands commandManager = server.getCommands();
             
@@ -368,3 +366,4 @@ public class CommandStickItem extends Item {
     }
     
 }
+// [tools/port_sites.py: applied]

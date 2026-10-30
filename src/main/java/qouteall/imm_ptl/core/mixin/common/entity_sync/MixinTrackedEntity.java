@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.mixin.common.entity_sync;
+import dev.claudeportals.McCompat;
 
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.Connection;
@@ -251,7 +252,7 @@ public abstract class MixinTrackedEntity implements IETrackedEntity {
         
         Packet spawnPacket = entity.getAddEntityPacket(serverEntity);
         Packet<ClientGamePacketListener> redirected = PacketRedirection.createRedirectedMessage(
-            entity.getServer(),
+            McCompat.getServer(entity),
             entity.level().dimension(), spawnPacket
         );
         seenBy.forEach(handler -> {
@@ -280,3 +281,4 @@ public abstract class MixinTrackedEntity implements IETrackedEntity {
     }
     
 }
+// [tools/port_sites.py: applied]

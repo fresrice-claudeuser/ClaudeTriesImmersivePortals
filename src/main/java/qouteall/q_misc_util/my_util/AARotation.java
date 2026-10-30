@@ -1,4 +1,5 @@
 package qouteall.q_misc_util.my_util;
+import dev.claudeportals.McCompat;
 
 
 import com.google.common.collect.ImmutableList;
@@ -64,9 +65,9 @@ public enum AARotation {
         this.transformedX = transformedX;
         this.transformedY = dirCrossProduct(transformedZ, transformedX);
         matrix = new IntMatrix3(
-            this.transformedX.getNormal(),
-            this.transformedY.getNormal(),
-            this.transformedZ.getNormal()
+            this.transformedX.getUnitVec3i(),
+            this.transformedY.getUnitVec3i(),
+            this.transformedZ.getUnitVec3i()
         );
         quaternion = matrix.toQuaternion();
     }
@@ -76,8 +77,8 @@ public enum AARotation {
     }
     
     public Direction transformDirection(Direction direction) {
-        BlockPos transformedVec = transform(direction.getNormal());
-        return Direction.fromDelta(
+        BlockPos transformedVec = transform(direction.getUnitVec3i());
+        return McCompat.fromDelta(
             transformedVec.getX(),
             transformedVec.getY(),
             transformedVec.getZ()
@@ -87,7 +88,7 @@ public enum AARotation {
     @NotNull
     public static Direction dirCrossProduct(Direction a, Direction b) {
         Validate.isTrue(a.getAxis() != b.getAxis());
-        Direction result = Direction.fromDelta(
+        Direction result = McCompat.fromDelta(
             a.getStepY() * b.getStepZ() - a.getStepZ() * b.getStepY(),
             a.getStepZ() * b.getStepX() - a.getStepX() * b.getStepZ(),
             a.getStepX() * b.getStepY() - a.getStepY() * b.getStepX()
@@ -211,4 +212,4 @@ public enum AARotation {
         rotationsSortedByAngle = ImmutableList.copyOf(array);
     }
 }
-
+// [tools/port_sites.py: applied]

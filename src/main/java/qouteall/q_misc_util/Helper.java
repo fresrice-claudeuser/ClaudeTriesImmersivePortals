@@ -219,7 +219,7 @@ public class Helper {
         return Direction.get(
             Direction.AxisDirection.POSITIVE,
             axis
-        ).getNormal();
+        ).getUnitVec3i();
     }
     
     public static int getCoordinate(Vec3i v, Direction.Axis axis) {
@@ -406,7 +406,7 @@ public class Helper {
     
     public static AABB getBoxSurfaceInversed(AABB box, Direction direction) {
         double size = getCoordinate(getBoxSize(box), direction.getAxis());
-        Vec3 shrinkVec = Vec3.atLowerCornerOf(direction.getNormal()).scale(size);
+        Vec3 shrinkVec = Vec3.atLowerCornerOf(direction.getUnitVec3i()).scale(size);
         return box.contract(shrinkVec.x, shrinkVec.y, shrinkVec.z);
     }
     
@@ -517,7 +517,7 @@ public class Helper {
         Tag term = tag.get(tagName);
         
         if (term instanceof StringTag) {
-            String id = ((StringTag) term).getAsString();
+            String id = ((StringTag) term).value();
             return dimIdToKey(id);
         }
         
@@ -631,7 +631,7 @@ public class Helper {
     
     public static Vec3 getVec3d(CompoundTag compoundTag, String name) {
         return new Vec3(
-            compoundTag.getDouble(name + "X"),
+            compoundTag.getDoubleOr(name + "X", 0.0),
             compoundTag.getDouble(name + "Y"),
             compoundTag.getDouble(name + "Z")
         );
@@ -655,7 +655,7 @@ public class Helper {
     
     public static BlockPos getVec3i(CompoundTag compoundTag, String name) {
         return new BlockPos(
-            compoundTag.getInt(name + "X"),
+            compoundTag.getIntOr(name + "X", 0),
             compoundTag.getInt(name + "Y"),
             compoundTag.getInt(name + "Z")
         );
@@ -674,7 +674,7 @@ public class Helper {
     public static DQuaternion getQuaternion(CompoundTag compoundTag, String name) {
         if (compoundTag.contains(name + "X")) {
             return new DQuaternion(
-                compoundTag.getDouble(name + "X"),
+                compoundTag.getDoubleOr(name + "X", 0.0),
                 compoundTag.getDouble(name + "Y"),
                 compoundTag.getDouble(name + "Z"),
                 compoundTag.getDouble(name + "W")
@@ -686,7 +686,7 @@ public class Helper {
     }
     
     public static ListTag getCompoundList(CompoundTag tag, String name) {
-        return tag.getList(name, 10);
+        return tag.getListOrEmpty(name);
     }
     
     /**
@@ -927,7 +927,7 @@ public class Helper {
             return null;
         }
         
-        return new UUID(tag.getLong(key1), tag.getLong(key + "Least"));
+        return new UUID(tag.getLongOr(key1, 0L), tag.getLong(key + "Least"));
     }
     
     public static Vec3 getFlippedVec(Vec3 vec, Vec3 flippingAxis) {
@@ -1466,7 +1466,7 @@ public class Helper {
         if (tag instanceof ListTag listTag) {
             if (listTag.getElementType() == Tag.TAG_DOUBLE && listTag.size() == 3) {
                 return new Vec3(
-                    listTag.getDouble(0),
+                    listTag.getDoubleOr(0, 0.0),
                     listTag.getDouble(1),
                     listTag.getDouble(2)
                 );
@@ -1499,3 +1499,4 @@ public class Helper {
         return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }
 }
+// [tools/port_sites.py: applied]

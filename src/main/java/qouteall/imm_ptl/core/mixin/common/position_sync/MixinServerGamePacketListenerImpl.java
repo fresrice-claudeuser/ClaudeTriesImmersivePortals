@@ -132,7 +132,7 @@ public abstract class MixinServerGamePacketListenerImpl implements IEServerPlayN
             // this actually never happens, because the vanilla client will disconnect immediately
             // when receiving the position sync packet that has the extra dimension field
             LOGGER.error("Player move packet is missing dimension info. Maybe the player client doesn't install iPortal");
-            ServerTaskList.of(player.server).addTask(() -> {
+            ServerTaskList.of(player.level().getServer()).addTask(() -> {
                 player.connection.disconnect(Component.literal(
                     "The client does not have Immersive Portals mod"
                 ));
@@ -159,7 +159,7 @@ public abstract class MixinServerGamePacketListenerImpl implements IEServerPlayN
                     "[ImmPtl] Force move player {} {} {}",
                     player, player.level().dimension().identifier(), player.position()
                 );
-                ServerTeleportationManager.of(player.server).forceTeleportPlayer(
+                ServerTeleportationManager.of(player.level().getServer()).forceTeleportPlayer(
                     player, player.level().dimension(), player.position()
                 );
                 ip_wrongMovePacketCount = 0;
@@ -302,7 +302,7 @@ public abstract class MixinServerGamePacketListenerImpl implements IEServerPlayN
                 ip_dimOfAwaitingPosition, awaitingPositionFromClient
             );
             
-            ServerLevel destWorld = player.server.getLevel(ip_dimOfAwaitingPosition);
+            ServerLevel destWorld = player.level().getServer().getLevel(ip_dimOfAwaitingPosition);
             
             if (destWorld == null) {
                 LOGGER.error(
@@ -312,7 +312,7 @@ public abstract class MixinServerGamePacketListenerImpl implements IEServerPlayN
                 return;
             }
             
-            ServerTeleportationManager.of(player.server)
+            ServerTeleportationManager.of(player.level().getServer())
                 .forceTeleportPlayer(
                     player, ip_dimOfAwaitingPosition,
                     awaitingPositionFromClient, false
@@ -340,3 +340,4 @@ public abstract class MixinServerGamePacketListenerImpl implements IEServerPlayN
         return awaitingPositionFromClient != null;
     }
 }
+// [tools/port_sites.py: applied]

@@ -45,7 +45,7 @@ public final class SpecialFlatPortalShape implements PortalShape {
     }
     
     private static @Nullable SpecialFlatPortalShape deserialize(CompoundTag tag) {
-        Mesh2D m = Mesh2D.fromTag(tag.getCompound("shape"));
+        Mesh2D m = Mesh2D.fromTag(tag.getCompoundOrEmpty("shape"));
         if (m == null) {
             return null;
         }
@@ -285,3 +285,4 @@ public final class SpecialFlatPortalShape implements PortalShape {
         return RectangularPortalShape.INSTANCE.transformEntityActiveCollisionBox(portal, box, entity);
     }
 }
+// [tools/port_sites.py: applied]

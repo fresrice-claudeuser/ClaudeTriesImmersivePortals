@@ -98,7 +98,7 @@ public class PortalWandItem extends Item {
         public static final Mode FALLBACK = CREATE_PORTAL;
         
         public static Mode fromTag(CompoundTag tag) {
-            String mode = tag.getString("mode");
+            String mode = tag.getStringOr("mode", "");
             
             return fromStr(mode);
         }
@@ -315,3 +315,4 @@ public class PortalWandItem extends Item {
     }
     
 }
+// [tools/port_sites.py: applied]

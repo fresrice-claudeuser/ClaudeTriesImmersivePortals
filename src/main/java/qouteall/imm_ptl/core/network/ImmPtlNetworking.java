@@ -75,10 +75,10 @@ public class ImmPtlNetworking {
         
         public void handle(ServerPlayer player) {
             ResourceKey<Level> dim = PortalAPI.serverIntToDimKey(
-                player.server, dimensionId
+                player.level().getServer(), dimensionId
             );
             
-            ServerTeleportationManager.of(player.server).onPlayerTeleportedInClient(
+            ServerTeleportationManager.of(player.level().getServer()).onPlayerTeleportedInClient(
                 player, dim, eyePosBeforeTeleportation, portalId
             );
         }
@@ -267,3 +267,4 @@ public class ImmPtlNetworking {
     }
     
 }
+// [tools/port_sites.py: applied]

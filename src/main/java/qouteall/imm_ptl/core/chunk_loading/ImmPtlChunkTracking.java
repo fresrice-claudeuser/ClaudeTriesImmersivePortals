@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.chunk_loading;
+import net.minecraft.util.profiling.Profiler;
 
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -56,7 +57,7 @@ public class ImmPtlChunkTracking {
     
     // if the player object is recreated, pass in the old player object
     public static void removePlayerFromChunkTrackersAndEntityTrackers(ServerPlayer oldPlayer) {
-        for (ServerLevel world : oldPlayer.server.getAllLevels()) {
+        for (ServerLevel world : oldPlayer.level().getServer().getAllLevels()) {
             ServerChunkCache chunkManager = world.getChunkSource();
             IEChunkMap storage =
                 (IEChunkMap) chunkManager.chunkMap;
@@ -154,7 +155,7 @@ public class ImmPtlChunkTracking {
         // (not sending chunk packet disallows entity tracking)
         // we need to send add entity packet early,
         // otherwise player will fall when standing on cross-portal-collision when logging in
-        EntitySync.update(player.server);
+        EntitySync.update(player.level().getServer());
     }
     
     public static void updateForPlayer(ServerPlayer player) {
@@ -172,7 +173,7 @@ public class ImmPtlChunkTracking {
         
         chunkLoaders.addAll(playerInfo.additionalChunkLoaders);
         
-        MinecraftServer server = player.server;
+        MinecraftServer server = player.level().getServer();
         
         for (ChunkLoader chunkLoader : chunkLoaders) {
             ResourceKey<Level> dimension = chunkLoader.dimension();
@@ -262,7 +263,7 @@ public class ImmPtlChunkTracking {
                         if (record.isLoadedToPlayer) {
                             player.connection.send(
                                 PacketRedirection.createRedirectedMessage(
-                                    player.getServer(),
+                                    player.level().getServer(),
                                     record.dimension,
                                     new ClientboundForgetLevelChunkPacket(
                                         new ChunkPos(record.chunkPos)
@@ -360,7 +361,7 @@ public class ImmPtlChunkTracking {
     }
     
     private static void tick(MinecraftServer server) {
-        server.getProfiler().push("portal_chunk_tracking");
+        Profiler.get().push("portal_chunk_tracking");
         
         boolean updates = false;
         long gameTime = server.overworld().getGameTime();
@@ -389,7 +390,7 @@ public class ImmPtlChunkTracking {
             dimTicketManager.tick(world);
         }
         
-        server.getProfiler().pop();
+        Profiler.get().pop();
         
         if (updates) {
             EntitySync.update(server);
@@ -667,3 +668,4 @@ public class ImmPtlChunkTracking {
         }
     }
 }
+// [tools/port_sites.py: applied]

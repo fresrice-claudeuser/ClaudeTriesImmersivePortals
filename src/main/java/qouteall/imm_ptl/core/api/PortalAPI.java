@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.api;
+import dev.claudeportals.McCompat;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -54,8 +55,8 @@ public class PortalAPI {
         Vec3 center = boxSurface.getCenter();
         portal.setPos(center.x, center.y, center.z);
         
-        portal.setAxisW(Vec3.atLowerCornerOf(directions.getA().getNormal()));
-        portal.setAxisH(Vec3.atLowerCornerOf(directions.getB().getNormal()));
+        portal.setAxisW(Vec3.atLowerCornerOf(directions.getA().getUnitVec3i()));
+        portal.setAxisH(Vec3.atLowerCornerOf(directions.getB().getUnitVec3i()));
         portal.setWidth(Helper.getCoordinate(areaSize, directions.getA().getAxis()));
         portal.setHeight(Helper.getCoordinate(areaSize, directions.getB().getAxis()));
     }
@@ -183,10 +184,11 @@ public class PortalAPI {
         McHelper.sendToTrackers(
             entity,
             PacketRedirection.createRedirectedMessage(
-                entity.getServer(),
+                McCompat.getServer(entity),
                 entity.level().dimension(),
                 packet
             )
         );
     }
 }
+// [tools/port_sites.py: applied]

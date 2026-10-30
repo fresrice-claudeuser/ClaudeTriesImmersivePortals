@@ -26,7 +26,8 @@ public class MixinPlayerList_Misc {
         CallbackInfo ci
     ) {
         player.connection.send(
-            MiscNetworking.DimIdSyncPacket.createPacket(player.server)
+            MiscNetworking.DimIdSyncPacket.createPacket(player.level().getServer())
         );
     }
 }
+// [tools/port_sites.py: applied]

@@ -54,7 +54,7 @@ public class IntBox {
             Helper.scale(
                 Direction.get(
                     Direction.AxisDirection.POSITIVE, axis
-                ).getNormal(),
+                ).getUnitVec3i(),
                 n
             )
         );
@@ -64,12 +64,12 @@ public class IntBox {
         if (direction.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
             return new IntBox(
                 l,
-                h.offset(Helper.scale(direction.getNormal(), n))
+                h.offset(Helper.scale(direction.getUnitVec3i(), n))
             );
         }
         else {
             return new IntBox(
-                l.offset(Helper.scale(direction.getNormal(), n)),
+                l.offset(Helper.scale(direction.getUnitVec3i(), n)),
                 h
             );
         }
@@ -503,12 +503,12 @@ public class IntBox {
     public static IntBox fromTag(CompoundTag tag) {
         return new IntBox(
             new BlockPos(
-                tag.getInt("lX"),
+                tag.getIntOr("lX", 0),
                 tag.getInt("lY"),
                 tag.getInt("lZ")
             ),
             new BlockPos(
-                tag.getInt("hX"),
+                tag.getIntOr("hX", 0),
                 tag.getInt("hY"),
                 tag.getInt("hZ")
             )
@@ -538,3 +538,4 @@ public class IntBox {
         return Objects.hash(l, h);
     }
 }
+// [tools/port_sites.py: applied]

@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core;
+import dev.claudeportals.McCompat;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -239,8 +240,8 @@ public class McHelper {
     @SuppressWarnings("JavadocReference")
     @IPVanillaCopy
     public static int getPlayerLoadDistance(ServerPlayer player) {
-        assert player.getServer() != null;
-        int loadDistanceOnServer = getLoadDistanceOnServer(player.getServer());
+        assert player.level().getServer() != null;
+        int loadDistanceOnServer = getLoadDistanceOnServer(player.level().getServer());
         return Mth.clamp(player.requestedViewDistance(), 2, loadDistanceOnServer);
     }
     
@@ -434,7 +435,7 @@ public class McHelper {
     
     public static void invokeCommandAs(Entity commandSender, List<String> commandList) {
         CommandSourceStack commandSource = commandSender.createCommandSourceStack().withPermission(2).withSuppressedOutput();
-        MinecraftServer server = commandSender.getServer();
+        MinecraftServer server = McCompat.getServer(commandSender);
         assert server != null;
         Commands commandManager = server.getCommands();
         
@@ -963,3 +964,4 @@ public class McHelper {
         return component;
     }
 }
+// [tools/port_sites.py: applied]

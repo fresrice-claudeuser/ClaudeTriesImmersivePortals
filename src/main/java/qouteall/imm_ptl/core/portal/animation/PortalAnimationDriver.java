@@ -25,7 +25,7 @@ public interface PortalAnimationDriver {
     
     @Nullable
     public static PortalAnimationDriver fromTag(CompoundTag tag) {
-        String type = tag.getString("type");
+        String type = tag.getStringOr("type", "");
         Function<CompoundTag, PortalAnimationDriver> deserializer = deserializerRegistry.get(
             McHelper.newResourceLocation(type)
         );
@@ -83,3 +83,4 @@ public interface PortalAnimationDriver {
         return Component.literal("Unknown Animation");
     }
 }
+// [tools/port_sites.py: applied]

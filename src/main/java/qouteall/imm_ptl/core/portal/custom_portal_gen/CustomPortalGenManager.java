@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.portal.custom_portal_gen;
+import dev.claudeportals.McCompat;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -67,9 +68,9 @@ public class CustomPortalGenManager {
         CustomPortalGenManager manager = new CustomPortalGenManager();
         
         Registry<CustomPortalGeneration> registry = server.registryAccess()
-            .registryOrThrow(CustomPortalGeneration.REGISTRY_KEY);
+            .lookupOrThrow(CustomPortalGeneration.REGISTRY_KEY);
         Registry<CustomPortalGeneration> legacyRegistry = server.registryAccess()
-            .registryOrThrow(CustomPortalGeneration.LEGACY_REGISTRY_KEY);
+            .lookupOrThrow(CustomPortalGeneration.LEGACY_REGISTRY_KEY);
         
         for (var entry : registry.entrySet()) {
             manager.addEntry(server, entry.getKey(), entry.getValue());
@@ -204,7 +205,7 @@ public class CustomPortalGenManager {
             return;
         }
         
-        ServerTaskList.of(entity.getServer()).addTask(() -> {
+        ServerTaskList.of(McCompat.getServer(entity)).addTask(() -> {
             for (CustomPortalGeneration gen : gens) {
                 boolean result = gen.perform(
                     ((ServerLevel) entity.level()),
@@ -235,7 +236,7 @@ public class CustomPortalGenManager {
         if (playerPosBeforeTravel.containsKey(uuid)) {
             WithDim<Vec3> startCoord = playerPosBeforeTravel.get(uuid);
             
-            ServerLevel startWorld = player.server.getLevel(startCoord.dimension());
+            ServerLevel startWorld = player.level().getServer().getLevel(startCoord.dimension());
             if (startWorld == null) {
                 LOGGER.error("Cannot find world {}", startCoord.dimension());
                 return;
@@ -255,3 +256,4 @@ public class CustomPortalGenManager {
         playerPosBeforeTravel.remove(uuid);
     }
 }
+// [tools/port_sites.py: applied]

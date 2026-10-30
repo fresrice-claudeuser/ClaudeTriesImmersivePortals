@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.portal.nether_portal;
+import dev.claudeportals.McCompat;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.EnvType;
@@ -70,7 +71,7 @@ public abstract class BreakablePortalEntity extends Portal {
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         if (compoundTag.contains("netherPortalShape")) {
-            blockPortalShape = new BlockPortalShape(compoundTag.getCompound("netherPortalShape"));
+            blockPortalShape = new BlockPortalShape(compoundTag.getCompoundOrEmpty("netherPortalShape"));
         }
         
         reversePortalId = Helper.getUuid(compoundTag, "reversePortalId");
@@ -79,22 +80,22 @@ public abstract class BreakablePortalEntity extends Portal {
             reversePortalId = Util.NIL_UUID;
         }
         
-        unbreakable = compoundTag.getBoolean("unbreakable");
+        unbreakable = compoundTag.getBooleanOr("unbreakable", false);
         
         if (compoundTag.contains("overlayBlockState")) {
             BlockState overlayBlockState = NbtUtils.readBlockState(
                 level().holderLookup(Registries.BLOCK),
-                compoundTag.getCompound("overlayBlockState")
+                compoundTag.getCompoundOrEmpty("overlayBlockState")
             );
             if (overlayBlockState.isAir()) {
                 overlayInfo = null;
             }
             else {
-                double overlayOpacity = compoundTag.getDouble("overlayOpacity");
+                double overlayOpacity = compoundTag.getDoubleOr("overlayOpacity", 0.0);
                 if (overlayOpacity == 0) {
                     overlayOpacity = 0.5;
                 }
-                double overlayOffset = compoundTag.getDouble("overlayOffset");
+                double overlayOffset = compoundTag.getDoubleOr("overlayOffset", 0.0);
                 DQuaternion rotation = Helper.getQuaternion(compoundTag, "overlayRotation");
                 
                 overlayInfo = new OverlayInfo(
@@ -145,7 +146,7 @@ public abstract class BreakablePortalEntity extends Portal {
     
     private BreakablePortalEntity getReversePortal() {
         
-        ServerLevel world = getServer().getLevel(getDestDim());
+        ServerLevel world = McCompat.getServer(this).getLevel(getDestDim());
         Entity entity = world.getEntity(reversePortalId);
         if (entity instanceof BreakablePortalEntity) {
             return (BreakablePortalEntity) entity;
@@ -243,7 +244,7 @@ public abstract class BreakablePortalEntity extends Portal {
             reversePortal.shouldBreakPortal = true;
         }
         else {
-            ServerTaskList.of(getServer()).addTask(MyTaskList.withRetryNumberLimit(
+            ServerTaskList.of(McCompat.getServer(this)).addTask(MyTaskList.withRetryNumberLimit(
                 30,
                 () -> {
                     if (this.isRemoved()) {
@@ -292,3 +293,4 @@ public abstract class BreakablePortalEntity extends Portal {
         return overlayInfo;
     }
 }
+// [tools/port_sites.py: applied]

@@ -1,4 +1,5 @@
 package qouteall.q_misc_util;
+import net.minecraft.util.profiling.Profiler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -107,7 +108,7 @@ public class CustomTextOverlay {
         
         Font font = minecraft.gui.getFont();
         
-        minecraft.getProfiler().push("imm_ptl_custom_overlay");
+        Profiler.get().push("imm_ptl_custom_overlay");
         if (renderAtBottomCenter) {
             // Note: the parchment names are incorrect
             multiLineLabelCache.renderCentered(
@@ -128,6 +129,7 @@ public class CustomTextOverlay {
         
         guiGraphics.pose().popPose();
         
-        minecraft.getProfiler().pop();
+        Profiler.get().pop();
     }
 }
+// [tools/port_sites.py: applied]

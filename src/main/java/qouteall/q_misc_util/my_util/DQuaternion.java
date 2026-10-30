@@ -450,7 +450,7 @@ public class DQuaternion {
             return DQuaternion.identity;
         }
         return new DQuaternion(
-            compoundTag.getDouble("x"),
+            compoundTag.getDoubleOr("x", 0.0),
             compoundTag.getDouble("y"),
             compoundTag.getDouble("z"),
             compoundTag.getDouble("w")
@@ -543,3 +543,4 @@ public class DQuaternion {
         return Math.abs(this.dotProduct(this)) > 0.9;
     }
 }
+// [tools/port_sites.py: applied]

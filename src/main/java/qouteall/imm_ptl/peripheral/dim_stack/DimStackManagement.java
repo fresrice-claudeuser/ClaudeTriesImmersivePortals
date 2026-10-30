@@ -178,7 +178,7 @@ public class DimStackManagement {
     public static void onDimensionStackCommandExecute(
         ServerPlayer player
     ) {
-        List<String> dimIdList = collectDimStackCandidateWhenServerRunning(player.server)
+        List<String> dimIdList = collectDimStackCandidateWhenServerRunning(player.level().getServer())
             .stream().map(k -> k.identifier().toString()).toList();
         
         McRemoteProcedureCall.tellClientToInvoke(
@@ -233,7 +233,7 @@ public class DimStackManagement {
                 return;
             }
             
-            MinecraftServer server = player.getServer();
+            MinecraftServer server = player.level().getServer();
             
             updateDimStack(server, dimStackInfo);
             
@@ -251,7 +251,7 @@ public class DimStackManagement {
                 return;
             }
             
-            MinecraftServer server = player.getServer();
+            MinecraftServer server = player.level().getServer();
             
             clearDimStackPortals(server);
             
@@ -331,3 +331,4 @@ public class DimStackManagement {
         config.saveConfigFile();
     }
 }
+// [tools/port_sites.py: applied]

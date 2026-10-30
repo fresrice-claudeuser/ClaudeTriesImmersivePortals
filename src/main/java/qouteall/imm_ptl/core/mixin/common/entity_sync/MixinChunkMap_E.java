@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.mixin.common.entity_sync;
+import dev.claudeportals.McCompat;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.server.level.ChunkHolder;
@@ -62,7 +63,7 @@ public abstract class MixinChunkMap_E implements IEChunkMap {
     )
     private void onUnloadEntity(Entity entity, CallbackInfo ci) {
         // when the player leave this dimension, do not stop tracking entities
-        if (ServerTeleportationManager.of(entity.getServer()).isTeleporting(entity)) {
+        if (ServerTeleportationManager.of(McCompat.getServer(entity)).isTeleporting(entity)) {
             if (entity instanceof ServerPlayer player) {
                 Object tracker = entityMap.remove(entity.getId());
                 ((IETrackedEntity) tracker).ip_stopTrackingToAllPlayers();
@@ -115,3 +116,4 @@ public abstract class MixinChunkMap_E implements IEChunkMap {
         return getUpdatingChunkIfPresent(chunkPos);
     }
 }
+// [tools/port_sites.py: applied]

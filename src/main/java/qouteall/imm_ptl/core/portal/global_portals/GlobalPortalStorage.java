@@ -208,13 +208,13 @@ public class GlobalPortalStorage extends SavedData {
         data = newData;
         
         if (tag.contains("version")) {
-            version = tag.getInt("version");
+            version = tag.getIntOr("version", 0);
         }
         
         if (tag.contains("bedrockReplacement")) {
             bedrockReplacement = NbtUtils.readBlockState(
                 currWorld.holderLookup(Registries.BLOCK),
-                tag.getCompound("bedrockReplacement")
+                tag.getCompoundOrEmpty("bedrockReplacement")
             );
         }
         else {
@@ -229,12 +229,12 @@ public class GlobalPortalStorage extends SavedData {
         Level currWorld
     ) {
         /**{@link CompoundTag#getType()}*/
-        ListTag listTag = tag.getList("data", 10);
+        ListTag listTag = tag.getListOrEmpty("data");
         
         List<Portal> newData = new ArrayList<>();
         
         for (int i = 0; i < listTag.size(); i++) {
-            CompoundTag compoundTag = listTag.getCompound(i);
+            CompoundTag compoundTag = listTag.getCompoundOrEmpty(i);
             Portal e = readPortalFromTag(currWorld, compoundTag);
             if (e != null) {
                 newData.add(e);
@@ -247,7 +247,7 @@ public class GlobalPortalStorage extends SavedData {
     }
     
     private static Portal readPortalFromTag(Level currWorld, CompoundTag compoundTag) {
-        Identifier entityId = McHelper.newResourceLocation(compoundTag.getString("entity_type"));
+        Identifier entityId = McHelper.newResourceLocation(compoundTag.getStringOr("entity_type", ""));
         EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(entityId);
         
         Entity e = entityType.create(currWorld);
@@ -394,3 +394,4 @@ public class GlobalPortalStorage extends SavedData {
         return result != null ? result : Collections.emptyList();
     }
 }
+// [tools/port_sites.py: applied]

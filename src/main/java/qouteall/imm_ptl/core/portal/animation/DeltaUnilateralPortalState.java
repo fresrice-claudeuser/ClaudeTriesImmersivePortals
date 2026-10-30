@@ -51,9 +51,9 @@ public record DeltaUnilateralPortalState(
     public static DeltaUnilateralPortalState fromTag(CompoundTag tag) {
         return new DeltaUnilateralPortalState(
             Helper.getVec3dOptional(tag, "offset"),
-            tag.contains("rotation") ? DQuaternion.fromTag(tag.getCompound("rotation")) : null,
+            tag.contains("rotation") ? DQuaternion.fromTag(tag.getCompoundOrEmpty("rotation")) : null,
             tag.contains("sizeScalingX") ? new Vec3(
-                tag.getDouble("sizeScalingX"),
+                tag.getDoubleOr("sizeScalingX", 0.0),
                 tag.getDouble("sizeScalingY"),
                 tag.contains("sizeScalingZ") ? tag.getDouble("sizeScalingZ") : 1
             ) : null
@@ -215,3 +215,4 @@ public record DeltaUnilateralPortalState(
         }
     }
 }
+// [tools/port_sites.py: applied]

@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.portal;
+import dev.claudeportals.McCompat;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -263,7 +264,7 @@ public class EndPortalEntity extends Portal {
             );
         }
         
-        MinecraftServer server = getServer();
+        MinecraftServer server = McCompat.getServer(this);
         assert server != null;
         ServerLevel endWorld = server.getLevel(Level.END);
         if (endWorld != null) {
@@ -342,7 +343,7 @@ public class EndPortalEntity extends Portal {
         if (!level().isClientSide()) {
             if (entity instanceof ServerPlayer) {
                 if (IPGlobal.endPortalMode == IPGlobal.EndPortalMode.toObsidianPlatform) {
-                    MinecraftServer server = getServer();
+                    MinecraftServer server = McCompat.getServer(this);
                     assert server != null;
                     ServerLevel endWorld = server.getLevel(Level.END);
                     if (endWorld != null) {
@@ -362,3 +363,4 @@ public class EndPortalEntity extends Portal {
     }
     
 }
+// [tools/port_sites.py: applied]
