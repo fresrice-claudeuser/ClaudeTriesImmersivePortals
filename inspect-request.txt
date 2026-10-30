@@ -1,22 +1,21 @@
-# Requests for the `inspect` workflow (Actions -> inspect -> Run workflow). One per line; '#' = comment.
+# Requests for the `inspect` workflow (Actions -> inspect -> Run workflow). One per line; '#' = comment. On WAVE 2 NOW
 # Forms:  Name | Name:memberRegex | ~textInClassName | Name@src:methodRegex (decompiled source)
 # This file overrides the workflow's "classes" box, so you never have to type anything.
 
-# ---- Wave 1 follow-up: how 1.21.11 really handles the things I had to drop or guess ----
-# World border: is each dimension's border separate now, and how are players notified?
-WorldBorder
-net.minecraft.server.MinecraftServer@src:createLevels|stopServer
-net.minecraft.server.level.ServerLevel@src:getWorldBorder|close
-net.minecraft.world.level.Level@src:getWorldBorder
-net.minecraft.server.players.PlayerList@src:addWorldborderListener
-# Spawn position: confirm RespawnData accessors
-net.minecraft.world.level.storage.LevelData$RespawnData
-# Chunk shutdown (removeTicketsOnClosing is gone)
-ServerChunkCache
-net.minecraft.server.level.ServerChunkCache@src:close
-net.minecraft.server.level.ChunkMap@src:hasWork
-# Mixin targets that cannot be checked at compile time
-MappedRegistry:byId|toId|byKey|byValue|frozen|registrationInfos|key;|holders|unregistered
-net.minecraft.world.level.levelgen.WorldDimensions@src:bake|checkStability
-net.minecraft.client.Minecraft@src:updateLevelInEngines
-net.minecraft.client.gui.screens.BackupConfirmScreen@src:BackupConfirmScreen|init
+net.minecraft.core.Direction:Delta|Normal|Unit|Step|Vec3i
+net.minecraft.nbt.CompoundTag:(getInt|getDouble|getLong|getFloat|getBoolean|getByte|getShort|getString|getCompound|getList|getUUID|getIntArray|getLongArray|contains|hasUUID)
+net.minecraft.nbt.ListTag:(getElementType|getDouble|getInt|getCompound|getFloat|getString|getList|getLong|size)
+net.minecraft.nbt.StringTag:(getAsString|value|asString)
+net.minecraft.nbt.Tag:(getAsString|asString|getId|getType)
+net.minecraft.network.FriendlyByteBuf:(Identifier|ResourceLocation|ResourceKey)
+net.minecraft.resources.Identifier:(parse|fromNamespaceAndPath|tryParse|withDefaultNamespace)
+net.minecraft.core.RegistryAccess:(registry|lookup)
+net.minecraft.client.Minecraft:(getProfiler|profiler)
+net.minecraft.util.profiling.Profiler
+net.minecraft.client.gui.components.MultiLineLabel
+com.mojang.blaze3d.vertex.PoseStack:(push|pop)
+net.minecraft.server.level.ServerPlayer:(server|getServer)
+net.minecraft.world.entity.Entity:(getServer|level)
+~LevelLoadListener
+net.minecraft.server.MinecraftServer:(createLevels|prepareLevels|loadLevel|initServer)
+ 
