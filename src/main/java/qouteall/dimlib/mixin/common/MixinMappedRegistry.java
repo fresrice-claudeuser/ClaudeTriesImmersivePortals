@@ -90,7 +90,18 @@ public abstract class MixinMappedRegistry<T> implements IMappedRegistry {
         }
         else {
             toId.removeInt(value);
-            byId.set(intId, null);
+            // 1.21.11: do NOT leave a null hole in byId (upstream did byId.set(intId, null)).
+            // WorldDimensions streams byId when level.dat is saved, so a null element threw an NPE on every
+            // save/stop after a dimension removal. Compact the list and re-number the entries after it instead.
+            if (intId < byId.size()) {
+                byId.remove(intId);
+                for (int i = intId; i < byId.size(); i++) {
+                    Holder.Reference<T> shifted = byId.get(i);
+                    if (shifted != null) {
+                        toId.put(shifted.value(), i);
+                    }
+                }
+            }
         }
         
         byKey.remove(eleKey);
