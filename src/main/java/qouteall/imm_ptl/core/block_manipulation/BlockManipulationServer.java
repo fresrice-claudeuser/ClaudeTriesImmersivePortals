@@ -218,7 +218,7 @@ public class BlockManipulationServer {
         if (isAttackingAction(action)) {
             player.gameMode.handleBlockBreakAction(
                 blockPos, action, packet.getDirection(),
-                world.getMaxBuildHeight(), packet.getSequence()
+                (world.getMaxY() + 1), packet.getSequence()
             );
             player.connection.ackBlockChangesUpTo(packet.getSequence());
         }
@@ -276,7 +276,7 @@ public class BlockManipulationServer {
         );
         
         BlockPos offseted = blockPos.relative(direction);
-        if (offseted.getY() >= world.getMinBuildHeight() && offseted.getY() < world.getMaxBuildHeight()) {
+        if (offseted.getY() >= world.getMinY() && offseted.getY() < (world.getMaxY() + 1)) {
             PacketRedirection.sendRedirectedMessage(
                 player,
                 dimension,
@@ -302,3 +302,4 @@ public class BlockManipulationServer {
     
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

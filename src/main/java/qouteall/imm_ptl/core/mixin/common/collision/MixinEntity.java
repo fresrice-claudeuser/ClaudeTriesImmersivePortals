@@ -272,7 +272,7 @@ public abstract class MixinEntity implements IEEntity, ImmPtlEntityExtension {
             ip_portalCollisionHandler.update(this_);
         }
         
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             IPMcHelper.onClientEntityTick(this_);
         }
     }
@@ -385,3 +385,4 @@ public abstract class MixinEntity implements IEEntity, ImmPtlEntityExtension {
         return tickCount;
     }
 }
+// [tools/port_wave2.py: sites applied]

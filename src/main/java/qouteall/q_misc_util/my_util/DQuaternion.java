@@ -451,7 +451,7 @@ public class DQuaternion {
         }
         return new DQuaternion(
             compoundTag.getDoubleOr("x", 0.0),
-            compoundTag.getDouble("y"),
+            compoundTag.getDoubleOr("y", 0.0),
             compoundTag.getDouble("z"),
             compoundTag.getDouble("w")
         );
@@ -544,3 +544,4 @@ public class DQuaternion {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

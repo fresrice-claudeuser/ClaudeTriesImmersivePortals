@@ -1,7 +1,6 @@
 package qouteall.imm_ptl.core;
 
 import com.google.gson.Gson;
-import me.shedaniel.autoconfig.ConfigHolder;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.minecraft.server.MinecraftServer;
@@ -14,7 +13,6 @@ import java.util.function.Consumer;
 
 public class IPGlobal {
     
-    public static ConfigHolder<IPConfig> configHolder;
     
     public static int maxNormalPortalRadius = 32;
     

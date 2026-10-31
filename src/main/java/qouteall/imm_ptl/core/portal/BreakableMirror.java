@@ -47,12 +47,12 @@ public class BreakableMirror extends Mirror {
             wallArea = new IntBox(
                 new BlockPos(
                     tag.getIntOr("boxXL", 0),
-                    tag.getInt("boxYL"),
+                    tag.getIntOr("boxYL", 0),
                     tag.getInt("boxZL")
                 ),
                 new BlockPos(
                     tag.getIntOr("boxXH", 0),
-                    tag.getInt("boxYH"),
+                    tag.getIntOr("boxYH", 0),
                     tag.getInt("boxZH")
                 )
             );
@@ -93,7 +93,7 @@ public class BreakableMirror extends Mirror {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (!unbreakable) {
                 if (level().getGameTime() % 10 == getId() % 10) {
                     checkWallIntegrity();
@@ -282,3 +282,4 @@ public class BreakableMirror extends Mirror {
     
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

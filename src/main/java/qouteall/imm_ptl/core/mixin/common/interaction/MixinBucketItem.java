@@ -52,9 +52,10 @@ public class MixinBucketItem {
             Vec3 dest = eyePos.add(viewVector.scale(distance));
             return BlockHitResult.miss(
                 dest,
-                Direction.getNearest(viewVector.x, viewVector.y, viewVector.z),
+                Direction.getApproximateNearest(viewVector.x, viewVector.y, viewVector.z),
                 BlockPos.containing(dest)
             );
         }
     }
 }
+// [tools/port_wave2.py: sites applied]

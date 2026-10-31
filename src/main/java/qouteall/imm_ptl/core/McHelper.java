@@ -8,7 +8,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -863,11 +863,11 @@ public class McHelper {
     }
     
     public static int getMinY(LevelAccessor world) {
-        return world.getMinBuildHeight();
+        return world.getMinY();
     }
     
     public static int getMaxYExclusive(LevelAccessor world) {
-        return world.getMaxBuildHeight();
+        return (world.getMaxY() + 1);
     }
     
     public static int getMaxContentYExclusive(LevelAccessor world) {
@@ -875,11 +875,11 @@ public class McHelper {
     }
     
     public static int getMinSectionY(LevelAccessor world) {
-        return world.getMinSection();
+        return world.getMinSectionY();
     }
     
     public static int getMaxSectionYExclusive(LevelAccessor world) {
-        return world.getMaxSection();
+        return (world.getMaxSectionY() + 1);
     }
     
     public static int getYSectionNumber(LevelAccessor world) {
@@ -965,3 +965,4 @@ public class McHelper {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

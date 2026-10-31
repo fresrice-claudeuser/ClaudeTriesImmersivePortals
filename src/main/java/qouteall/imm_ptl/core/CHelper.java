@@ -3,7 +3,7 @@ package qouteall.imm_ptl.core;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -44,7 +44,7 @@ public class CHelper {
     
     public static PlayerInfo getClientPlayerListEntry() {
         return Minecraft.getInstance().getConnection().getPlayerInfo(
-            Minecraft.getInstance().player.getGameProfile().getId()
+            Minecraft.getInstance().player.getGameProfile().id()
         );
     }
     
@@ -116,7 +116,7 @@ public class CHelper {
     }
     
     public static Vec3 getCurrentCameraPos() {
-        return Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        return Minecraft.getInstance().gameRenderer.getMainCamera().position();
     }
     
     public static Iterable<Entity> getWorldEntityList(Level world) {
@@ -191,3 +191,4 @@ public class CHelper {
     }
     
 }
+// [tools/port_wave2.py: sites applied]

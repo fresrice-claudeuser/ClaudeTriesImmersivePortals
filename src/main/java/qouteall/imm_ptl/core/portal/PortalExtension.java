@@ -1,4 +1,5 @@
 package qouteall.imm_ptl.core.portal;
+import dev.claudeportals.McCompat;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -100,20 +101,20 @@ public class PortalExtension {
             bindCluster = true;
         }
         
-        if (compoundTag.hasUUID("reversePortalId")) {
-            reversePortalId = compoundTag.getUUID("reversePortalId");
+        if (McCompat.hasUUID(compoundTag, "reversePortalId")) {
+            reversePortalId = McCompat.getUUID(compoundTag, "reversePortalId");
         }
         else {
             reversePortalId = null;
         }
-        if (compoundTag.hasUUID("flippedPortalId")) {
-            flippedPortalId = compoundTag.getUUID("flippedPortalId");
+        if (McCompat.hasUUID(compoundTag, "flippedPortalId")) {
+            flippedPortalId = McCompat.getUUID(compoundTag, "flippedPortalId");
         }
         else {
             flippedPortalId = null;
         }
-        if (compoundTag.hasUUID("parallelPortalId")) {
-            parallelPortalId = compoundTag.getUUID("parallelPortalId");
+        if (McCompat.hasUUID(compoundTag, "parallelPortalId")) {
+            parallelPortalId = McCompat.getUUID(compoundTag, "parallelPortalId");
         }
         else {
             parallelPortalId = null;
@@ -127,13 +128,13 @@ public class PortalExtension {
         compoundTag.putBoolean("adjustPositionAfterTeleport", adjustPositionAfterTeleport);
         compoundTag.putBoolean("bindCluster", bindCluster);
         if (reversePortalId != null) {
-            compoundTag.putUUID("reversePortalId", reversePortalId);
+            McCompat.putUUID(compoundTag, "reversePortalId", reversePortalId);
         }
         if (flippedPortalId != null) {
-            compoundTag.putUUID("flippedPortalId", flippedPortalId);
+            McCompat.putUUID(compoundTag, "flippedPortalId", flippedPortalId);
         }
         if (parallelPortalId != null) {
-            compoundTag.putUUID("parallelPortalId", parallelPortalId);
+            McCompat.putUUID(compoundTag, "parallelPortalId", parallelPortalId);
         }
     }
     
@@ -517,3 +518,4 @@ public class PortalExtension {
     
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

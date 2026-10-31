@@ -4,7 +4,7 @@ import dev.claudeportals.McCompat;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -61,7 +61,7 @@ public abstract class BreakablePortalEntity extends Portal {
     
     @Override
     public boolean isPortalValid() {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             return super.isPortalValid();
         }
         return super.isPortalValid() && blockPortalShape != null && reversePortalId != null;
@@ -178,7 +178,7 @@ public abstract class BreakablePortalEntity extends Portal {
     }
     
     private void checkPortalIntegrity() {
-        Validate.isTrue(!level().isClientSide);
+        Validate.isTrue(!level().isClientSide());
         
         if (!isPortalValid()) {
             remove(RemovalReason.KILLED);
@@ -294,3 +294,4 @@ public abstract class BreakablePortalEntity extends Portal {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

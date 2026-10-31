@@ -1,4 +1,6 @@
 package qouteall.imm_ptl.peripheral;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import dev.claudeportals.McCompat;
 
 import com.google.common.base.Splitter;
@@ -74,7 +76,7 @@ public class CommandStickItem extends Item {
         
         public static Data deserialize(CompoundTag tag) {
             return new Data(
-                tag.getString("command"),
+                tag.getStringOr("command", ""),
                 tag.getString("nameTranslationKey"),
                 tag.getListOrEmpty("descriptionTranslationKeys")
                     .stream()
@@ -155,9 +157,9 @@ public class CommandStickItem extends Item {
     @Override
     public void appendHoverText(
         ItemStack stack, Item.TooltipContext tooltipContext,
-        List<Component> tooltip, TooltipFlag tooltipFlag
+        TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag tooltipFlag
     ) {
-        super.appendHoverText(stack, tooltipContext, tooltip, tooltipFlag);
+        super.appendHoverText(stack, tooltipContext, display, tooltip, tooltipFlag);
         
         Data data = stack.get(COMPONENT_TYPE);
         
@@ -168,14 +170,14 @@ public class CommandStickItem extends Item {
         Iterable<String> splitCommand = Splitter.fixedLength(40).split(data.command);
         
         for (String commandPortion : splitCommand) {
-            tooltip.add(Component.literal(commandPortion).withStyle(ChatFormatting.GOLD));
+            tooltip.accept(Component.literal(commandPortion).withStyle(ChatFormatting.GOLD));
         }
         
         for (String descriptionTranslationKey : data.descriptionTranslationKeys) {
-            tooltip.add(Component.translatable(descriptionTranslationKey).withStyle(ChatFormatting.AQUA));
+            tooltip.accept(Component.translatable(descriptionTranslationKey).withStyle(ChatFormatting.AQUA));
         }
         
-        tooltip.add(Component.translatable("imm_ptl.command_stick").withStyle(ChatFormatting.GRAY));
+        tooltip.accept(Component.translatable("imm_ptl.command_stick").withStyle(ChatFormatting.GRAY));
     }
     
     @Override
@@ -367,3 +369,4 @@ public class CommandStickItem extends Item {
     
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

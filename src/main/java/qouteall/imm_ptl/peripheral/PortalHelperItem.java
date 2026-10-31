@@ -1,5 +1,7 @@
 package qouteall.imm_ptl.peripheral;
 
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -25,13 +27,13 @@ public class PortalHelperItem extends BlockItem {
             if (context.getPlayer() != null) {
                 if (!deprecationInformed) {
                     deprecationInformed = true;
-                    context.getPlayer().sendSystemMessage(
+                    context.getPlayer().displayClientMessage(
                         Component.translatable(
                             "imm_ptl.portal_helper_deprecated",
                             Component.literal("/portal shape sculpt")
                                 .withStyle(ChatFormatting.GOLD)
                         )
-                    );
+                    , false);
                 }
             }
         }
@@ -42,10 +44,11 @@ public class PortalHelperItem extends BlockItem {
     @Override
     public void appendHoverText(
         ItemStack itemStack, Item.TooltipContext tooltipContext,
-        List<Component> list, TooltipFlag tooltipFlag
+        TooltipDisplay display, Consumer<Component> list, TooltipFlag tooltipFlag
     ) {
-        super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
+        super.appendHoverText(itemStack, tooltipContext, display, list, tooltipFlag);
         
-        list.add(Component.translatable("imm_ptl.portal_helper_tooltip"));
+        list.accept(Component.translatable("imm_ptl.portal_helper_tooltip"));
     }
 }
+// [tools/port_wave2.py: sites applied]

@@ -504,12 +504,12 @@ public class IntBox {
         return new IntBox(
             new BlockPos(
                 tag.getIntOr("lX", 0),
-                tag.getInt("lY"),
+                tag.getIntOr("lY", 0),
                 tag.getInt("lZ")
             ),
             new BlockPos(
                 tag.getIntOr("hX", 0),
-                tag.getInt("hY"),
+                tag.getIntOr("hY", 0),
                 tag.getInt("hZ")
             )
         );
@@ -539,3 +539,4 @@ public class IntBox {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

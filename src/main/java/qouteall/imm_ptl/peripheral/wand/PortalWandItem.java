@@ -1,5 +1,7 @@
 package qouteall.imm_ptl.peripheral.wand;
 
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import net.fabricmc.api.EnvType;
@@ -221,16 +223,16 @@ public class PortalWandItem extends Item {
     @Override
     public void appendHoverText(
         ItemStack stack, Item.TooltipContext tooltipContext,
-        List<Component> tooltip, TooltipFlag tooltipFlag
+        TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag tooltipFlag
     ) {
-        super.appendHoverText(stack, tooltipContext, tooltip, tooltipFlag);
+        super.appendHoverText(stack, tooltipContext, display, tooltip, tooltipFlag);
         
-        tooltip.add(Component.translatable(
+        tooltip.accept(Component.translatable(
             "imm_ptl.wand.item_desc_1",
             Minecraft.getInstance().options.keyShift.getTranslatedKeyMessage(),
             Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage()
         ));
-        tooltip.add(Component.translatable(
+        tooltip.accept(Component.translatable(
             "imm_ptl.wand.item_desc_2",
             Minecraft.getInstance().options.keyShift.getTranslatedKeyMessage(),
             Minecraft.getInstance().options.keyAttack.getTranslatedKeyMessage()
@@ -249,8 +251,8 @@ public class PortalWandItem extends Item {
     }
     
     public static void showSettings(Player player) {
-        player.sendSystemMessage(Component.translatable("imm_ptl.wand.settings_1"));
-        player.sendSystemMessage(Component.translatable("imm_ptl.wand.settings_alignment"));
+        player.displayClientMessage(Component.translatable("imm_ptl.wand.settings_1"), false);
+        player.displayClientMessage(Component.translatable("imm_ptl.wand.settings_alignment"), false);
         
         int[] alignments = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 32, 64};
         
@@ -268,13 +270,13 @@ public class PortalWandItem extends Item {
             "/imm_ptl_client_debug wand set_cursor_alignment 0"
         ));
         
-        player.sendSystemMessage(
+        player.displayClientMessage(
             alignmentSettingTexts.stream().reduce(Component.literal(""), (a, b) -> a.append(" ").append(b))
-        );
+        , false);
         
-        player.sendSystemMessage(Component.translatable(
+        player.displayClientMessage(Component.translatable(
             "imm_ptl.wand.settings_2", Minecraft.getInstance().options.keyChat.getTranslatedKeyMessage()
-        ));
+        ), false);
     }
     
     private static boolean instructionInformed = false;
@@ -316,3 +318,4 @@ public class PortalWandItem extends Item {
     
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

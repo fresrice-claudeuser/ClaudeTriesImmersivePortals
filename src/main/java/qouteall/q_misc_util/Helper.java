@@ -632,7 +632,7 @@ public class Helper {
     public static Vec3 getVec3d(CompoundTag compoundTag, String name) {
         return new Vec3(
             compoundTag.getDoubleOr(name + "X", 0.0),
-            compoundTag.getDouble(name + "Y"),
+            compoundTag.getDoubleOr(name + "Y", 0.0),
             compoundTag.getDouble(name + "Z")
         );
     }
@@ -656,7 +656,7 @@ public class Helper {
     public static BlockPos getVec3i(CompoundTag compoundTag, String name) {
         return new BlockPos(
             compoundTag.getIntOr(name + "X", 0),
-            compoundTag.getInt(name + "Y"),
+            compoundTag.getIntOr(name + "Y", 0),
             compoundTag.getInt(name + "Z")
         );
     }
@@ -675,7 +675,7 @@ public class Helper {
         if (compoundTag.contains(name + "X")) {
             return new DQuaternion(
                 compoundTag.getDoubleOr(name + "X", 0.0),
-                compoundTag.getDouble(name + "Y"),
+                compoundTag.getDoubleOr(name + "Y", 0.0),
                 compoundTag.getDouble(name + "Z"),
                 compoundTag.getDouble(name + "W")
             );
@@ -927,7 +927,7 @@ public class Helper {
             return null;
         }
         
-        return new UUID(tag.getLongOr(key1, 0L), tag.getLong(key + "Least"));
+        return new UUID(tag.getLongOr(key1, 0L), tag.getLongOr(key + "Least", 0L));
     }
     
     public static Vec3 getFlippedVec(Vec3 vec, Vec3 flippingAxis) {
@@ -1467,7 +1467,7 @@ public class Helper {
             if (listTag.getElementType() == Tag.TAG_DOUBLE && listTag.size() == 3) {
                 return new Vec3(
                     listTag.getDoubleOr(0, 0.0),
-                    listTag.getDouble(1),
+                    listTag.getDoubleOr(1, 0.0),
                     listTag.getDouble(2)
                 );
             }
@@ -1500,3 +1500,4 @@ public class Helper {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

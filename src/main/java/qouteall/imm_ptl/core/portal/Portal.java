@@ -7,7 +7,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +28,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -291,7 +291,7 @@ public class Portal extends Entity implements
         if (compoundTag.contains("rotationA")) {
             setRotationTransformationD(new DQuaternion(
                 compoundTag.getFloatOr("rotationB", 0.0f),
-                compoundTag.getFloat("rotationC"),
+                compoundTag.getFloatOr("rotationC", 0.0f),
                 compoundTag.getFloat("rotationD"),
                 compoundTag.getFloat("rotationA")
             ));
@@ -1055,7 +1055,7 @@ public class Portal extends Entity implements
     }
     
     public Direction getApproximateFacingDirection() {
-        return Direction.getNearest(
+        return Direction.getApproximateNearest(
             getNormal().x, getNormal().y, getNormal().z
         );
     }
@@ -1658,7 +1658,7 @@ public class Portal extends Entity implements
         
         Vec3 newGravityVec = transformLocalVecNonScale(oldGravityVec);
         
-        return Direction.getNearest(
+        return Direction.getApproximateNearest(
             newGravityVec.x, newGravityVec.y, newGravityVec.z
         );
     }
@@ -1963,3 +1963,4 @@ public class Portal extends Entity implements
     
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

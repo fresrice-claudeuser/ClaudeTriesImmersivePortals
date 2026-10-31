@@ -187,7 +187,7 @@ public class ClientWorldLoader {
             Vec3 center = portal.transformPoint(playerPos);
             
             Camera camera = CLIENT.gameRenderer.getMainCamera();
-            Vec3 oldCameraPos = camera.getPosition();
+            Vec3 oldCameraPos = camera.position();
             
             ((IECamera) camera).portal_setPos(center);
             
@@ -634,3 +634,4 @@ public class ClientWorldLoader {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

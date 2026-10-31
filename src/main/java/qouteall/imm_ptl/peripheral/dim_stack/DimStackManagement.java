@@ -143,7 +143,7 @@ public class DimStackManagement {
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    for (int y = chunk.getMinBuildHeight(); y < chunk.getMaxBuildHeight(); y++) {
+                    for (int y = chunk.getMinY(); y < (chunk.getMaxY() + 1); y++) {
                         mutable.set(x, y, z);
                         BlockState blockState = chunk.getBlockState(mutable);
                         if (blockState.getBlock() == Blocks.BEDROCK) {
@@ -332,3 +332,4 @@ public class DimStackManagement {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

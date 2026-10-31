@@ -1716,7 +1716,7 @@ public class Mesh2D {
             
             mesh.addTriangle(
                 pointCoords.getDoubleOr(p0Index * 2, 0.0),
-                pointCoords.getDouble(p0Index * 2 + 1),
+                pointCoords.getDoubleOr(p0Index * 2 + 1, 0.0),
                 pointCoords.getDouble(p1Index * 2),
                 pointCoords.getDouble(p1Index * 2 + 1),
                 pointCoords.getDouble(p2Index * 2),
@@ -1752,3 +1752,4 @@ public class Mesh2D {
     }
 }
 // [tools/port_sites.py: applied]
+// [tools/port_wave2.py: sites applied]

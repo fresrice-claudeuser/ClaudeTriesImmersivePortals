@@ -102,7 +102,7 @@ public class ImplRemoteProcedureCall {
             .build();
         
         deserializerMap = ImmutableMap.<Type, Function<RegistryFriendlyByteBuf, Object>>builder()
-            .put(Identifier.class, FriendlyByteBuf::readResourceLocation)
+            .put(Identifier.class, FriendlyByteBuf::readIdentifier)
             .put(
                 new TypeToken<ResourceKey<Level>>() {}.getType(),
                 buf -> ResourceKey.create(

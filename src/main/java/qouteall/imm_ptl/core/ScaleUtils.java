@@ -151,16 +151,16 @@ public class ScaleUtils {
         double oldScale = ScaleUtils.getIPortalScaling(entity);
         double newScale = transformScale(portal, oldScale);
         
-        if (!entity.level().isClientSide && isScaleIllegal(newScale)) {
+        if (!entity.level().isClientSide() && isScaleIllegal(newScale)) {
             newScale = 1;
-            entity.sendSystemMessage(
+            entity.displayClientMessage(
                 Component.literal("Scale out of range")
-            );
+            , false);
         }
         
         ScaleUtils.setIPortalScaling(entity, newScale);
         
-        if (!entity.level().isClientSide) {
+        if (!entity.level().isClientSide()) {
             McHelper.setEyePos(entity, eyePos, lastTickEyePos);
             McHelper.updateBoundingBox(entity);
         }
@@ -186,3 +186,4 @@ public class ScaleUtils {
     }
     
 }
+// [tools/port_wave2.py: sites applied]

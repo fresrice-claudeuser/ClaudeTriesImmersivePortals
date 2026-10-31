@@ -1,8 +1,6 @@
 package qouteall.imm_ptl.core;
 
 import com.mojang.logging.LogUtils;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionResult;
@@ -143,11 +141,6 @@ public class IPModMain {
         }
         
         Helper.log("Loading Immersive Portals config");
-        IPGlobal.configHolder = AutoConfig.register(IPConfig.class, GsonConfigSerializer::new);
-        IPGlobal.configHolder.registerSaveListener((configHolder, ipConfig) -> {
-            ipConfig.onConfigChanged();
-            return InteractionResult.SUCCESS;
-        });
         IPConfig ipConfig = IPConfig.getConfig();
         ipConfig.onConfigChanged();
     }

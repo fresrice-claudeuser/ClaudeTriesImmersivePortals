@@ -164,7 +164,7 @@ public class ImmPtlNetworkConfig {
             
             LOGGER.info(
                 "Server received ImmPtl config packet. Mod version: {} Player: {} {}",
-                versionFromClient, gameProfile.getName(), gameProfile.getId()
+                versionFromClient, gameProfile.name(), gameProfile.id()
             );
             
             if (versionFromClient.isNormalVersion() && immPtlVersion.isNormalVersion()) {
@@ -236,7 +236,7 @@ public class ImmPtlNetworkConfig {
                         
                         LOGGER.warn(
                             "Fabric API's sendable channel sync detected that client does not install ImmPtl. {} {}",
-                            gameProfile.getName(), gameProfile.getId()
+                            gameProfile.name(), gameProfile.id()
                         );
                     }
                 }
@@ -316,3 +316,4 @@ public class ImmPtlNetworkConfig {
         });
     }
 }
+// [tools/port_wave2.py: sites applied]
