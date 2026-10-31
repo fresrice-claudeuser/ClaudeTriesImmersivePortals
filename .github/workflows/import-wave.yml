@@ -9,19 +9,19 @@ on:
       repo:
         description: Source repo (owner/name)
         required: true
-        default: iPortalTeam/DimLib
+        default: iPortalTeam/ImmersivePortalsMod
       ref:
         description: Branch or tag to copy from
         required: true
-        default: '1.21.3'
+        default: '1.21'
       paths:
         description: Space-separated paths to copy (the same path is used in this repo)
         required: true
-        default: src/main/java/qouteall/dimlib src/main/resources/dimlib.mixins.json
+        default: src/main/java/qouteall/imm_ptl src/main/java/qouteall/q_misc_util src/main/resources/imm_ptl.accesswidener src/main/resources/imm_ptl.mixins.json src/main/resources/imm_ptl_peripheral.mixins.json src/main/resources/imm_ptl_fabric.mixins.json
       delete:
         description: Space-separated paths to delete afterwards (optional)
         required: false
-        default: src/main/java/qouteall/dimlib/config/DimLibModmenuIntegration.java
+        default: src/main/java/qouteall/imm_ptl/core/compat
 
 permissions:
   contents: write
