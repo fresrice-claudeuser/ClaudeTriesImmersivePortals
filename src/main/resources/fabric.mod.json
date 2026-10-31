@@ -21,6 +21,7 @@
     ],
     "modmenu": ["dev.claudeportals.client.ClaudePortalsModMenu"]
   },
+  "accessWidener": "imm_ptl.accesswidener",
   "mixins": [
     "dimlib.mixins.json"
   ],

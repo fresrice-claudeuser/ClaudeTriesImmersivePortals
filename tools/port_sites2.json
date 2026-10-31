@@ -1,0 +1,1188 @@
+{
+ "files": {
+  "qouteall/imm_ptl/core/CHelper.java": {
+   "hunks": [
+    {
+     "line": 47,
+     "old": [
+      "            Minecraft.getInstance().player.getGameProfile().getId()"
+     ],
+     "new": [
+      "            Minecraft.getInstance().player.getGameProfile().id()"
+     ]
+    },
+    {
+     "line": 119,
+     "old": [
+      "        return Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();"
+     ],
+     "new": [
+      "        return Minecraft.getInstance().gameRenderer.getMainCamera().position();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/ClientWorldLoader.java": {
+   "hunks": [
+    {
+     "line": 190,
+     "old": [
+      "            Vec3 oldCameraPos = camera.getPosition();"
+     ],
+     "new": [
+      "            Vec3 oldCameraPos = camera.position();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/IPMcHelper.java": {
+   "hunks": [
+    {
+     "line": 180,
+     "old": [
+      "        if (world.isClientSide) {"
+     ],
+     "new": [
+      "        if (world.isClientSide()) {"
+     ]
+    },
+    {
+     "line": 208,
+     "old": [
+      "                    Direction.getNearest(diff.x, diff.y, diff.z),"
+     ],
+     "new": [
+      "                    Direction.getApproximateNearest(diff.x, diff.y, diff.z),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/McHelper.java": {
+   "hunks": [
+    {
+     "line": 866,
+     "old": [
+      "        return world.getMinBuildHeight();"
+     ],
+     "new": [
+      "        return world.getMinY();"
+     ]
+    },
+    {
+     "line": 870,
+     "old": [
+      "        return world.getMaxBuildHeight();"
+     ],
+     "new": [
+      "        return (world.getMaxY() + 1);"
+     ]
+    },
+    {
+     "line": 878,
+     "old": [
+      "        return world.getMinSection();"
+     ],
+     "new": [
+      "        return world.getMinSectionY();"
+     ]
+    },
+    {
+     "line": 882,
+     "old": [
+      "        return world.getMaxSection();"
+     ],
+     "new": [
+      "        return (world.getMaxSectionY() + 1);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/ScaleUtils.java": {
+   "hunks": [
+    {
+     "line": 154,
+     "old": [
+      "        if (!entity.level().isClientSide && isScaleIllegal(newScale)) {"
+     ],
+     "new": [
+      "        if (!entity.level().isClientSide() && isScaleIllegal(newScale)) {"
+     ]
+    },
+    {
+     "line": 156,
+     "old": [
+      "            entity.sendSystemMessage("
+     ],
+     "new": [
+      "            entity.displayClientMessage("
+     ]
+    },
+    {
+     "line": 158,
+     "old": [
+      "            );"
+     ],
+     "new": [
+      "            , false);"
+     ]
+    },
+    {
+     "line": 163,
+     "old": [
+      "        if (!entity.level().isClientSide) {"
+     ],
+     "new": [
+      "        if (!entity.level().isClientSide()) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/block_manipulation/BlockManipulationClient.java": {
+   "hunks": [
+    {
+     "line": 49,
+     "old": [
+      "        return BlockHitResult.miss(to, Direction.getNearest(dir.x, dir.y, dir.z), BlockPos.containing(to));"
+     ],
+     "new": [
+      "        return BlockHitResult.miss(to, Direction.getApproximateNearest(dir.x, dir.y, dir.z), BlockPos.containing(to));"
+     ]
+    },
+    {
+     "line": 68,
+     "old": [
+      "        Vec3 cameraPos = client.gameRenderer.getMainCamera().getPosition();"
+     ],
+     "new": [
+      "        Vec3 cameraPos = client.gameRenderer.getMainCamera().position();"
+     ]
+    },
+    {
+     "line": 92,
+     "old": [
+      "        Vec3 cameraPos = client.gameRenderer.getMainCamera().getPosition();"
+     ],
+     "new": [
+      "        Vec3 cameraPos = client.gameRenderer.getMainCamera().position();"
+     ]
+    },
+    {
+     "line": 170,
+     "old": [
+      "                    Direction.getNearest(vec3d.x, vec3d.y, vec3d.z),"
+     ],
+     "new": [
+      "                    Direction.getApproximateNearest(vec3d.x, vec3d.y, vec3d.z),"
+     ]
+    },
+    {
+     "line": 176,
+     "old": [
+      "        if (remoteHitResult.getLocation().y < world.getMinBuildHeight() + 0.1) {"
+     ],
+     "new": [
+      "        if (remoteHitResult.getLocation().y < world.getMinY() + 0.1) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/block_manipulation/BlockManipulationServer.java": {
+   "hunks": [
+    {
+     "line": 221,
+     "old": [
+      "                world.getMaxBuildHeight(), packet.getSequence()"
+     ],
+     "new": [
+      "                (world.getMaxY() + 1), packet.getSequence()"
+     ]
+    },
+    {
+     "line": 279,
+     "old": [
+      "        if (offseted.getY() >= world.getMinBuildHeight() && offseted.getY() < world.getMaxBuildHeight()) {"
+     ],
+     "new": [
+      "        if (offseted.getY() >= world.getMinY() && offseted.getY() < (world.getMaxY() + 1)) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/commands/PortalCommand.java": {
+   "hunks": [
+    {
+     "line": 129,
+     "old": [
+      "                .requires(commandSource -> commandSource.hasPermission(2));"
+     ],
+     "new": [
+      "                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));"
+     ]
+    },
+    {
+     "line": 612,
+     "old": [
+      "                            Direction facing = Direction.getNearest("
+     ],
+     "new": [
+      "                            Direction facing = Direction.getApproximateNearest("
+     ]
+    },
+    {
+     "line": 643,
+     "old": [
+      "                            Direction facing = Direction.getNearest("
+     ],
+     "new": [
+      "                            Direction facing = Direction.getApproximateNearest("
+     ]
+    },
+    {
+     "line": 902,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 917,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 941,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 967,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 1092,
+     "old": [
+      "            Direction.getNearest(portal.getNormal().x, portal.getNormal().y, portal.getNormal().z);"
+     ],
+     "new": [
+      "            Direction.getApproximateNearest(portal.getNormal().x, portal.getNormal().y, portal.getNormal().z);"
+     ]
+    },
+    {
+     "line": 1343,
+     "old": [
+      "            .requires(commandSource -> commandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 1823,
+     "old": [
+      "            .requires(commandSource -> commandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 1845,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 2458,
+     "old": [
+      "            .requires(s -> s.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 2528,
+     "old": [
+      "            .requires(s -> s.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.commands.Commands"
+   ]
+  },
+  "qouteall/imm_ptl/core/commands/PortalDebugCommands.java": {
+   "hunks": [
+    {
+     "line": 159,
+     "old": [
+      "                .requires(serverCommandSource -> serverCommandSource.hasPermission(4))"
+     ],
+     "new": [
+      "                .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))"
+     ]
+    },
+    {
+     "line": 170,
+     "old": [
+      "                .requires(serverCommandSource -> serverCommandSource.hasPermission(4))"
+     ],
+     "new": [
+      "                .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))"
+     ]
+    },
+    {
+     "line": 193,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 249,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(3))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))"
+     ]
+    },
+    {
+     "line": 287,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(3))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))"
+     ]
+    },
+    {
+     "line": 304,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(3))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))"
+     ]
+    },
+    {
+     "line": 320,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(3))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))"
+     ]
+    },
+    {
+     "line": 341,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 361,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 403,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(3))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))"
+     ]
+    },
+    {
+     "line": 433,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 456,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 487,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 500,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 510,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(2))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))"
+     ]
+    },
+    {
+     "line": 578,
+     "old": [
+      "            .requires(serverCommandSource -> serverCommandSource.hasPermission(3))"
+     ],
+     "new": [
+      "            .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))"
+     ]
+    }
+   ],
+   "imports": [
+    "net.minecraft.commands.Commands"
+   ]
+  },
+  "qouteall/imm_ptl/core/mc_utils/MyNbtTextFormatter.java": {
+   "hunks": [
+    {
+     "line": 84,
+     "old": [
+      "        if (element.getAsByte() == 0) {"
+     ],
+     "new": [
+      "        if (element.byteValue() == 0) {"
+     ]
+    },
+    {
+     "line": 88,
+     "old": [
+      "        else if (element.getAsByte() == 1) {"
+     ],
+     "new": [
+      "        else if (element.byteValue() == 1) {"
+     ]
+    },
+    {
+     "line": 94,
+     "old": [
+      "        this.result = Component.literal(String.valueOf(element.getAsNumber())).append(text).withStyle(NUMBER_COLOR);"
+     ],
+     "new": [
+      "        this.result = Component.literal(String.valueOf(element.box())).append(text).withStyle(NUMBER_COLOR);"
+     ]
+    },
+    {
+     "line": 100,
+     "old": [
+      "        this.result = Component.literal(String.valueOf(element.getAsNumber())).append(text).withStyle(NUMBER_COLOR);"
+     ],
+     "new": [
+      "        this.result = Component.literal(String.valueOf(element.box())).append(text).withStyle(NUMBER_COLOR);"
+     ]
+    },
+    {
+     "line": 105,
+     "old": [
+      "        this.result = Component.literal(String.valueOf(element.getAsNumber())).withStyle(NUMBER_COLOR);"
+     ],
+     "new": [
+      "        this.result = Component.literal(String.valueOf(element.box())).withStyle(NUMBER_COLOR);"
+     ]
+    },
+    {
+     "line": 111,
+     "old": [
+      "        this.result = Component.literal(String.valueOf(element.getAsNumber())).append(text).withStyle(NUMBER_COLOR);"
+     ],
+     "new": [
+      "        this.result = Component.literal(String.valueOf(element.box())).append(text).withStyle(NUMBER_COLOR);"
+     ]
+    },
+    {
+     "line": 117,
+     "old": [
+      "        this.result = Component.literal(String.valueOf(element.getAsFloat())).append(text).withStyle(NUMBER_COLOR);"
+     ],
+     "new": [
+      "        this.result = Component.literal(String.valueOf(element.floatValue())).append(text).withStyle(NUMBER_COLOR);"
+     ]
+    },
+    {
+     "line": 123,
+     "old": [
+      "        this.result = Component.literal(String.valueOf(element.getAsDouble())).append(text).withStyle(NUMBER_COLOR);"
+     ],
+     "new": [
+      "        this.result = Component.literal(String.valueOf(element.doubleValue())).append(text).withStyle(NUMBER_COLOR);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mixin/client/render/MixinLevelRenderer.java": {
+   "hunks": [
+    {
+     "line": 261,
+     "old": [
+      "                sectionRenderDispatcher.setCamera(camera.getPosition());"
+     ],
+     "new": [
+      "                sectionRenderDispatcher.setCamera(camera.position());"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mixin/client/sound/MixinClientLevel_Sound.java": {
+   "hunks": [
+    {
+     "line": 68,
+     "old": [
+      "        double d = minecraft.gameRenderer.getMainCamera().getPosition().distanceToSqr(sound.getX(), sound.getY(), sound.getZ());"
+     ],
+     "new": [
+      "        double d = minecraft.gameRenderer.getMainCamera().position().distanceToSqr(sound.getX(), sound.getY(), sound.getZ());"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mixin/common/collision/MixinEntity.java": {
+   "hunks": [
+    {
+     "line": 275,
+     "old": [
+      "        if (level.isClientSide) {"
+     ],
+     "new": [
+      "        if (level.isClientSide()) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/mixin/common/interaction/MixinBucketItem.java": {
+   "hunks": [
+    {
+     "line": 55,
+     "old": [
+      "                Direction.getNearest(viewVector.x, viewVector.y, viewVector.z),"
+     ],
+     "new": [
+      "                Direction.getApproximateNearest(viewVector.x, viewVector.y, viewVector.z),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/network/ImmPtlNetworkConfig.java": {
+   "hunks": [
+    {
+     "line": 167,
+     "old": [
+      "                versionFromClient, gameProfile.getName(), gameProfile.getId()"
+     ],
+     "new": [
+      "                versionFromClient, gameProfile.name(), gameProfile.id()"
+     ]
+    },
+    {
+     "line": 239,
+     "old": [
+      "                            gameProfile.getName(), gameProfile.getId()"
+     ],
+     "new": [
+      "                            gameProfile.name(), gameProfile.id()"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/platform_specific/O_O.java": {
+   "hunks": [
+    {
+     "line": 98,
+     "old": [
+      "        String gameVersion = SharedConstants.getCurrentVersion().getName();"
+     ],
+     "new": [
+      "        String gameVersion = SharedConstants.getCurrentVersion().name();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/BreakableMirror.java": {
+   "hunks": [
+    {
+     "line": 50,
+     "old": [
+      "                    tag.getInt(\"boxYL\"),"
+     ],
+     "new": [
+      "                    tag.getIntOr(\"boxYL\", 0),"
+     ]
+    },
+    {
+     "line": 55,
+     "old": [
+      "                    tag.getInt(\"boxYH\"),"
+     ],
+     "new": [
+      "                    tag.getIntOr(\"boxYH\", 0),"
+     ]
+    },
+    {
+     "line": 96,
+     "old": [
+      "        if (!level().isClientSide) {"
+     ],
+     "new": [
+      "        if (!level().isClientSide()) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/GeometryPortalShape.java": {
+   "hunks": [
+    {
+     "line": 30,
+     "old": [
+      "                tag.getDouble(i * 6 + 1),"
+     ],
+     "new": [
+      "                tag.getDoubleOr(i * 6 + 1, 0.0),"
+     ]
+    },
+    {
+     "line": 61,
+     "old": [
+      "                tag.getDouble(i * 6 + 0) / halfWidth,",
+      "                tag.getDouble(i * 6 + 1) / halfHeight,",
+      "                tag.getDouble(i * 6 + 2) / halfWidth,",
+      "                tag.getDouble(i * 6 + 3) / halfHeight,",
+      "                tag.getDouble(i * 6 + 4) / halfWidth,",
+      "                tag.getDouble(i * 6 + 5) / halfHeight"
+     ],
+     "new": [
+      "                tag.getDoubleOr(i * 6 + 0, 0.0) / halfWidth,",
+      "                tag.getDoubleOr(i * 6 + 1, 0.0) / halfHeight,",
+      "                tag.getDoubleOr(i * 6 + 2, 0.0) / halfWidth,",
+      "                tag.getDoubleOr(i * 6 + 3, 0.0) / halfHeight,",
+      "                tag.getDoubleOr(i * 6 + 4, 0.0) / halfWidth,",
+      "                tag.getDoubleOr(i * 6 + 5, 0.0) / halfHeight"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/Portal.java": {
+   "hunks": [
+    {
+     "line": 294,
+     "old": [
+      "                compoundTag.getFloat(\"rotationC\"),"
+     ],
+     "new": [
+      "                compoundTag.getFloatOr(\"rotationC\", 0.0f),"
+     ]
+    },
+    {
+     "line": 1058,
+     "old": [
+      "        return Direction.getNearest("
+     ],
+     "new": [
+      "        return Direction.getApproximateNearest("
+     ]
+    },
+    {
+     "line": 1661,
+     "old": [
+      "        return Direction.getNearest("
+     ],
+     "new": [
+      "        return Direction.getApproximateNearest("
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/PortalExtension.java": {
+   "hunks": [
+    {
+     "line": 103,
+     "old": [
+      "        if (compoundTag.hasUUID(\"reversePortalId\")) {",
+      "            reversePortalId = compoundTag.getUUID(\"reversePortalId\");"
+     ],
+     "new": [
+      "        if (McCompat.hasUUID(compoundTag, \"reversePortalId\")) {",
+      "            reversePortalId = McCompat.getUUID(compoundTag, \"reversePortalId\");"
+     ]
+    },
+    {
+     "line": 109,
+     "old": [
+      "        if (compoundTag.hasUUID(\"flippedPortalId\")) {",
+      "            flippedPortalId = compoundTag.getUUID(\"flippedPortalId\");"
+     ],
+     "new": [
+      "        if (McCompat.hasUUID(compoundTag, \"flippedPortalId\")) {",
+      "            flippedPortalId = McCompat.getUUID(compoundTag, \"flippedPortalId\");"
+     ]
+    },
+    {
+     "line": 115,
+     "old": [
+      "        if (compoundTag.hasUUID(\"parallelPortalId\")) {",
+      "            parallelPortalId = compoundTag.getUUID(\"parallelPortalId\");"
+     ],
+     "new": [
+      "        if (McCompat.hasUUID(compoundTag, \"parallelPortalId\")) {",
+      "            parallelPortalId = McCompat.getUUID(compoundTag, \"parallelPortalId\");"
+     ]
+    },
+    {
+     "line": 130,
+     "old": [
+      "            compoundTag.putUUID(\"reversePortalId\", reversePortalId);"
+     ],
+     "new": [
+      "            McCompat.putUUID(compoundTag, \"reversePortalId\", reversePortalId);"
+     ]
+    },
+    {
+     "line": 133,
+     "old": [
+      "            compoundTag.putUUID(\"flippedPortalId\", flippedPortalId);"
+     ],
+     "new": [
+      "            McCompat.putUUID(compoundTag, \"flippedPortalId\", flippedPortalId);"
+     ]
+    },
+    {
+     "line": 136,
+     "old": [
+      "            compoundTag.putUUID(\"parallelPortalId\", parallelPortalId);"
+     ],
+     "new": [
+      "            McCompat.putUUID(compoundTag, \"parallelPortalId\", parallelPortalId);"
+     ]
+    }
+   ],
+   "imports": [
+    "dev.claudeportals.McCompat"
+   ]
+  },
+  "qouteall/imm_ptl/core/portal/PortalState.java": {
+   "hunks": [
+    {
+     "line": 104,
+     "old": [
+      "        ResourceKey<Level> fromWorld = Helper.dimIdToKey(tag.getString(\"fromWorld\"));",
+      "        ResourceKey<Level> toWorld = Helper.dimIdToKey(tag.getString(\"toWorld\"));"
+     ],
+     "new": [
+      "        ResourceKey<Level> fromWorld = Helper.dimIdToKey(tag.getStringOr(\"fromWorld\", \"\"));",
+      "        ResourceKey<Level> toWorld = Helper.dimIdToKey(tag.getStringOr(\"toWorld\", \"\"));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/DeltaUnilateralPortalState.java": {
+   "hunks": [
+    {
+     "line": 57,
+     "old": [
+      "                tag.getDouble(\"sizeScalingY\"),"
+     ],
+     "new": [
+      "                tag.getDoubleOr(\"sizeScalingY\", 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/animation/UnilateralPortalState.java": {
+   "hunks": [
+    {
+     "line": 152,
+     "old": [
+      "        ResourceKey<Level> dimension = Helper.dimIdToKey(tag.getString(\"dimension\"));"
+     ],
+     "new": [
+      "        ResourceKey<Level> dimension = Helper.dimIdToKey(tag.getStringOr(\"dimension\", \"\"));"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/nether_portal/BlockPortalShape.java": {
+   "hunks": [
+    {
+     "line": 73,
+     "old": [
+      "                list.getInt(i * 3 + 1),"
+     ],
+     "new": [
+      "                list.getIntOr(i * 3 + 1, 0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/nether_portal/BreakablePortalEntity.java": {
+   "hunks": [
+    {
+     "line": 64,
+     "old": [
+      "        if (level().isClientSide) {"
+     ],
+     "new": [
+      "        if (level().isClientSide()) {"
+     ]
+    },
+    {
+     "line": 181,
+     "old": [
+      "        Validate.isTrue(!level().isClientSide);"
+     ],
+     "new": [
+      "        Validate.isTrue(!level().isClientSide());"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/core/portal/nether_portal/FastBlockAccess.java": {
+   "hunks": [
+    {
+     "line": 40,
+     "old": [
+      "        int lowerCY = world.getMinSection();"
+     ],
+     "new": [
+      "        int lowerCY = world.getMinSectionY();"
+     ]
+    },
+    {
+     "line": 43,
+     "old": [
+      "        int upperCY = world.getMaxSection();"
+     ],
+     "new": [
+      "        int upperCY = (world.getMaxSectionY() + 1);"
+     ]
+    },
+    {
+     "line": 63,
+     "old": [
+      "        int minSectionY = world.getMinSection();",
+      "        int maxSectionYExclusive = world.getMaxSection();"
+     ],
+     "new": [
+      "        int minSectionY = world.getMinSectionY();",
+      "        int maxSectionYExclusive = (world.getMaxSectionY() + 1);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/CommandStickItem.java": {
+   "hunks": [
+    {
+     "line": 77,
+     "old": [
+      "                tag.getString(\"command\"),"
+     ],
+     "new": [
+      "                tag.getStringOr(\"command\", \"\"),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/PortalHelperItem.java": {
+   "hunks": [
+    {
+     "line": 28,
+     "old": [
+      "                    context.getPlayer().sendSystemMessage("
+     ],
+     "new": [
+      "                    context.getPlayer().displayClientMessage("
+     ]
+    },
+    {
+     "line": 34,
+     "old": [
+      "                    );"
+     ],
+     "new": [
+      "                    , false);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/dim_stack/DimStackManagement.java": {
+   "hunks": [
+    {
+     "line": 146,
+     "old": [
+      "                    for (int y = chunk.getMinBuildHeight(); y < chunk.getMaxBuildHeight(); y++) {"
+     ],
+     "new": [
+      "                    for (int y = chunk.getMinY(); y < (chunk.getMaxY() + 1); y++) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/mixin/client/alternate_dimension/MixinFogRenderer_A_CVB.java": {
+   "hunks": [
+    {
+     "line": 27,
+     "old": [
+      "                camera.getPosition().x,",
+      "                Math.max(32.0, camera.getPosition().y),",
+      "                camera.getPosition().z"
+     ],
+     "new": [
+      "                camera.position().x,",
+      "                Math.max(32.0, camera.position().y),",
+      "                camera.position().z"
+     ]
+    },
+    {
+     "line": 33,
+     "old": [
+      "            return camera.getPosition();"
+     ],
+     "new": [
+      "            return camera.position();"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/mixin/common/end_portal/MixinEnderEyeItem_CVB.java": {
+   "hunks": [
+    {
+     "line": 45,
+     "old": [
+      "            if (world.isClientSide) {"
+     ],
+     "new": [
+      "            if (world.isClientSide()) {"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/imm_ptl/peripheral/wand/PortalWandItem.java": {
+   "hunks": [
+    {
+     "line": 252,
+     "old": [
+      "        player.sendSystemMessage(Component.translatable(\"imm_ptl.wand.settings_1\"));",
+      "        player.sendSystemMessage(Component.translatable(\"imm_ptl.wand.settings_alignment\"));"
+     ],
+     "new": [
+      "        player.displayClientMessage(Component.translatable(\"imm_ptl.wand.settings_1\"), false);",
+      "        player.displayClientMessage(Component.translatable(\"imm_ptl.wand.settings_alignment\"), false);"
+     ]
+    },
+    {
+     "line": 271,
+     "old": [
+      "        player.sendSystemMessage("
+     ],
+     "new": [
+      "        player.displayClientMessage("
+     ]
+    },
+    {
+     "line": 273,
+     "old": [
+      "        );"
+     ],
+     "new": [
+      "        , false);"
+     ]
+    },
+    {
+     "line": 275,
+     "old": [
+      "        player.sendSystemMessage(Component.translatable("
+     ],
+     "new": [
+      "        player.displayClientMessage(Component.translatable("
+     ]
+    },
+    {
+     "line": 277,
+     "old": [
+      "        ));"
+     ],
+     "new": [
+      "        ), false);"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/Helper.java": {
+   "hunks": [
+    {
+     "line": 635,
+     "old": [
+      "            compoundTag.getDouble(name + \"Y\"),"
+     ],
+     "new": [
+      "            compoundTag.getDoubleOr(name + \"Y\", 0.0),"
+     ]
+    },
+    {
+     "line": 659,
+     "old": [
+      "            compoundTag.getInt(name + \"Y\"),"
+     ],
+     "new": [
+      "            compoundTag.getIntOr(name + \"Y\", 0),"
+     ]
+    },
+    {
+     "line": 678,
+     "old": [
+      "                compoundTag.getDouble(name + \"Y\"),"
+     ],
+     "new": [
+      "                compoundTag.getDoubleOr(name + \"Y\", 0.0),"
+     ]
+    },
+    {
+     "line": 930,
+     "old": [
+      "        return new UUID(tag.getLongOr(key1, 0L), tag.getLong(key + \"Least\"));"
+     ],
+     "new": [
+      "        return new UUID(tag.getLongOr(key1, 0L), tag.getLongOr(key + \"Least\", 0L));"
+     ]
+    },
+    {
+     "line": 1470,
+     "old": [
+      "                    listTag.getDouble(1),"
+     ],
+     "new": [
+      "                    listTag.getDoubleOr(1, 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/my_util/DQuaternion.java": {
+   "hunks": [
+    {
+     "line": 454,
+     "old": [
+      "            compoundTag.getDouble(\"y\"),"
+     ],
+     "new": [
+      "            compoundTag.getDoubleOr(\"y\", 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/my_util/IntBox.java": {
+   "hunks": [
+    {
+     "line": 507,
+     "old": [
+      "                tag.getInt(\"lY\"),"
+     ],
+     "new": [
+      "                tag.getIntOr(\"lY\", 0),"
+     ]
+    },
+    {
+     "line": 512,
+     "old": [
+      "                tag.getInt(\"hY\"),"
+     ],
+     "new": [
+      "                tag.getIntOr(\"hY\", 0),"
+     ]
+    }
+   ],
+   "imports": []
+  },
+  "qouteall/q_misc_util/my_util/Mesh2D.java": {
+   "hunks": [
+    {
+     "line": 1719,
+     "old": [
+      "                pointCoords.getDouble(p0Index * 2 + 1),"
+     ],
+     "new": [
+      "                pointCoords.getDoubleOr(p0Index * 2 + 1, 0.0),"
+     ]
+    }
+   ],
+   "imports": []
+  }
+ }
+}

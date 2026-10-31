@@ -58,6 +58,11 @@ dependencies {
     }
 }
 
+// Access widener of the ported Immersive Portals code (entries for members that no longer exist are ignored by Loom).
+loom {
+    accessWidenerPath = file('src/main/resources/imm_ptl.accesswidener')
+}
+
 java {
     sourceCompatibility = JavaVersion.toVersion(javaRelease)
     targetCompatibility = JavaVersion.toVersion(javaRelease)

@@ -8,7 +8,7 @@
 #   bash tools/import_wave.sh
 #
 # Order: copy PATHS -> delete DELETE -> copy overlays/ on top -> tools/port_codemods.py -> tools/port_sites.py
-#        -> tools/port_patches.py.
+#        -> tools/port_patches.py -> tools/port_wave2.py.
 # overlays/ holds our hand-made fixes (same layout as the repo root); because they are re-applied on every
 # import, re-importing upstream never wipes them out.
 set -euo pipefail
@@ -62,6 +62,10 @@ fi
 
 if [ -f tools/port_patches.py ]; then
   python3 tools/port_patches.py
+fi
+
+if [ -f tools/port_wave2.py ]; then
+  python3 tools/port_wave2.py .
 fi
 
 if [ -n "${GITHUB_ENV:-}" ]; then echo "SRC_SHA=$sha" >> "$GITHUB_ENV"; fi

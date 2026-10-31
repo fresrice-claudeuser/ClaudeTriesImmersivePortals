@@ -1,0 +1,31 @@
+# Upstream files removed after import because they do not compile on 1.21.11 yet (one per line, path under src/main/java).
+# Mixin files listed here are also unregistered from the mixin json files by tools/port_wave2.py.
+# Restore a file by deleting its line AFTER fixing it in a patch/site; every entry names the wave that must bring it back.
+# Render / shader / framebuffer mixins: Wave 4 (render rewrite). Chunk-sync mixins: chunk-system rewrite (Wave 2b).
+# Packet/position/entity-sync mixins: Wave 3 (client multi-world + teleport).
+qouteall/imm_ptl/core/mixin/client/MixinGlDebug.java
+qouteall/imm_ptl/core/mixin/client/multiworld_awareness/MixinFogRenderer.java
+qouteall/imm_ptl/core/mixin/client/render/MixinLevelRenderer.java
+qouteall/imm_ptl/core/mixin/client/render/MixinLevelRenderer_Optional.java
+qouteall/imm_ptl/core/mixin/client/render/MixinMultiBufferSourceBufferSource.java
+qouteall/imm_ptl/core/mixin/client/render/MixinRenderSystem_Clipping.java
+qouteall/imm_ptl/core/mixin/client/render/MixinShaderInstanceForIris.java
+qouteall/imm_ptl/core/mixin/client/render/framebuffer/MixinMainTarget.java
+qouteall/imm_ptl/core/mixin/client/render/framebuffer/MixinRenderTarget.java
+qouteall/imm_ptl/core/mixin/client/render/optimization/MixinLevelRenderer_Clouds.java
+qouteall/imm_ptl/core/mixin/client/render/optimization/MixinSectionBufferBuilderPack.java
+qouteall/imm_ptl/core/mixin/client/render/shader/MixinGameRenderer_Shaders.java
+qouteall/imm_ptl/core/mixin/client/render/shader/MixinProgram.java
+qouteall/imm_ptl/core/mixin/client/render/shader/MixinShaderInstance.java
+qouteall/imm_ptl/core/mixin/client/sync/MixinClientPacketListener.java
+qouteall/imm_ptl/core/mixin/client/sync/MixinReceivingLevelScreen.java
+qouteall/imm_ptl/core/mixin/common/MixinLivingEntity.java
+qouteall/imm_ptl/core/mixin/common/chunk_sync/IEChunkTaskPriorityQueueSorter.java
+qouteall/imm_ptl/core/mixin/common/chunk_sync/IEDistanceManager.java
+qouteall/imm_ptl/core/mixin/common/chunk_sync/MixinDistanceManager.java
+qouteall/imm_ptl/core/mixin/common/entity_sync/MixinServerPlayer.java
+qouteall/imm_ptl/core/mixin/common/position_sync/MixinServerGamePacketListenerImpl.java
+qouteall/imm_ptl/core/platform_specific/mixin/common/MixinServerPlayerEntity_MA.java
+qouteall/imm_ptl/peripheral/mixin/client/alternate_dimension/MixinFogRenderer_A_CVB.java
+qouteall/imm_ptl/peripheral/mixin/common/dim_stack/MixinMinecraftServer_DimStack_CVB.java
+qouteall/q_misc_util/mixin/MixinMinecraftServer_Misc.java
